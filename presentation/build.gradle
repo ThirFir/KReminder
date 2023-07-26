@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace 'com.thirfir.presentation'
+    namespace 'com.thirifr.presentation'
     compileSdk 33
 
     defaultConfig {

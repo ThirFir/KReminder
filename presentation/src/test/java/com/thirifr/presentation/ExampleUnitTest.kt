@@ -1,4 +1,4 @@
-package com.thirfir.presentation
+package com.thirifr.presentation
 
 import org.junit.Test
 
