@@ -4,6 +4,7 @@ buildscript {
         dagger_version = "2.44"
         coroutine_version = "1.6.4"
         jsoup_version = "1.14.2"
+        room_version = "2.5.2"
     }
 }
 
