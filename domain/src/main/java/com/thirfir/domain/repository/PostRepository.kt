@@ -4,5 +4,5 @@ import com.thirfir.domain.model.Post
 import kotlinx.coroutines.flow.Flow
 
 interface PostRepository {
-    fun getPost(pid: Int) : Post
+    fun getPost(bulletin: Int, pid: Int) : Flow<Post>
 }
