@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_menu">Menu</string>
+    <string name="setting">설정</string>
+    <string name="notification">알림</string>
+    <string name="keyword">키워드</string>
+</resources>

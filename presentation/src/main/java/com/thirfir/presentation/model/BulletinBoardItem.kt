@@ -1,6 +1,6 @@
 package com.thirfir.presentation.model
 
-data class BulletinBoard(
+data class BulletinBoardItem(
     val title: String,
     val url: String
 )
