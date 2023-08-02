@@ -8,8 +8,7 @@ import javax.inject.Inject
 class GetPostHeaderUseCase @Inject constructor(
     private val postHeaderRepository: PostHeaderRepository
 ) {
-    operator fun invoke(bulletin: Int, page: Int) : Flow<List<PostHeader>> {
-        return postHeaderRepository.getPostHeaders(bulletin, page)
+    operator fun invoke(bulletin: Int, page: Int) {
 
     }
 }

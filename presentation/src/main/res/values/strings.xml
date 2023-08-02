@@ -1,6 +1,7 @@
 <resources>
     <string name="action_menu">Menu</string>
     <string name="setting">Settings</string>
+    <string name="watchlist">Watchlist</string>
     <string name="notification">Notification</string>
     <string name="keyword">Keywords</string>
 </resources>

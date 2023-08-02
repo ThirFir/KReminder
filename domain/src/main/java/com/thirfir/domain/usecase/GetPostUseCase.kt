@@ -8,7 +8,7 @@ import javax.inject.Inject
 class GetPostUseCase @Inject constructor(
     private val postRepository: PostRepository
 ) {
-    operator fun invoke(pid: Int) : Post {
-        return postRepository.getPost(pid)
+    operator fun invoke(pid: Int) {
+
     }
 }

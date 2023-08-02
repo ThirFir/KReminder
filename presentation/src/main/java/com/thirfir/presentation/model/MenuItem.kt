@@ -1,3 +1,7 @@
 package com.thirfir.presentation.model
 
-data class SettingItem(val title: String, val onClick: () -> Unit)
+data class MenuItem(
+    val icon: Int? = null,
+    val title: String,
+    val onClick: () -> Unit
+)

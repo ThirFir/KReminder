@@ -4,18 +4,18 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.thirfir.presentation.databinding.ItemSettingBinding
-import com.thirfir.presentation.model.SettingItem
+import com.thirfir.presentation.model.MenuItem
 
 class SettingsAdapter(
-    private val settings: List<SettingItem>,
+    private val menuItems: List<MenuItem>,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     class SettingViewHolder(private val binding: ItemSettingBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(setting: SettingItem) {
-            binding.textViewSettingTitle.text = setting.title
+        fun bind(menuItem: MenuItem) {
+            binding.textViewSettingTitle.text = menuItem.title
             binding.root.setOnClickListener {
-                setting.onClick()
+                menuItem.onClick()
             }
         }
     }
@@ -29,9 +29,9 @@ class SettingsAdapter(
             )
         )
 
-    override fun getItemCount(): Int = settings.size
+    override fun getItemCount(): Int = menuItems.size
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as SettingViewHolder).bind(settings[position])
+        (holder as SettingViewHolder).bind(menuItems[position])
     }
 }

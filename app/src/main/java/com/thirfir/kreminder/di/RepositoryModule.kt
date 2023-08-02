@@ -4,6 +4,8 @@ import com.thirfir.data.datasource.remote.PostHeaderRemoteDataSource
 import com.thirfir.data.datasource.remote.PostRemoteDataSource
 import com.thirfir.data.repository.PostHeaderRepositoryImpl
 import com.thirfir.data.repository.PostRepositoryImpl
+import com.thirfir.domain.repository.PostHeaderRepository
+import com.thirfir.domain.repository.PostRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,14 +18,14 @@ object RepositoryModule {
     @Provides
     fun providePostHeaderRepository(
         postHeaderRemoteDataSource: PostHeaderRemoteDataSource
-    ): PostHeaderRepositoryImpl {
+    ): PostHeaderRepository {
         return PostHeaderRepositoryImpl(postHeaderRemoteDataSource)
     }
 
     @Provides
     fun providePostRepository(
         postRemoteDataSource: PostRemoteDataSource
-    ): PostRepositoryImpl {
+    ): PostRepository {
         return PostRepositoryImpl(postRemoteDataSource)
     }
 

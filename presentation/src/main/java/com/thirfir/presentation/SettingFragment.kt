@@ -8,21 +8,23 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.thirfir.presentation.adapter.SettingsAdapter
 import com.thirfir.presentation.databinding.FragmentSettingBinding
-import com.thirfir.presentation.model.SettingItem
+import com.thirfir.presentation.model.MenuItem
+import dagger.hilt.android.AndroidEntryPoint
 
-
-class SettingFragment private constructor(): Fragment() {
+@AndroidEntryPoint
+class SettingFragment private constructor() : Fragment() {
     private lateinit var binding: FragmentSettingBinding
-    private val settingItems : List<SettingItem> by lazy {
+    private val menuItems: List<MenuItem> by lazy {
         listOf(
-            SettingItem(requireContext().getString(R.string.setting)) {
-                // TODO : Navigate to SettingActivity(or Fragment)
+            MenuItem(title = requireContext().getString(R.string.notification)) {
+                // TODO : Navigate to NotificationActivity(or Fragment)
             },
-            SettingItem(requireContext().getString(R.string.keyword)) {
+            MenuItem(title = requireContext().getString(R.string.keyword)) {
                 // TODO : Navigate to KeywordActivity(or Fragment)
             },
         )
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -38,7 +40,7 @@ class SettingFragment private constructor(): Fragment() {
 
     private fun initRecyclerView() {
         binding.recyclerViewSetting.layoutManager = LinearLayoutManager(requireContext())
-        binding.recyclerViewSetting.adapter = SettingsAdapter(settingItems)
+        binding.recyclerViewSetting.adapter = SettingsAdapter(menuItems)
     }
 
 

@@ -25,9 +25,6 @@ class PostHeadersViewModel @Inject constructor(
     fun fetchPostHeaders(bulletin: Int, page: Int) {
         viewModelScope.launch {
             _postHeaders.value = emptyList()
-            getPostHeadersUseCase(bulletin, page).collect { postHeaders ->
-                _postHeaders.emit(postHeaders)
-            }
         }
     }
 }

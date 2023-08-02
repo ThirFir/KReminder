@@ -2,6 +2,7 @@
 <resources>
     <string name="action_menu">Menu</string>
     <string name="setting">설정</string>
+    <string name="watchlist">즐겨찾기</string>
     <string name="notification">알림</string>
     <string name="keyword">키워드</string>
 </resources>
