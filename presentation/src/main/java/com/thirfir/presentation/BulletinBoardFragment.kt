@@ -17,7 +17,6 @@ class BulletinBoardFragment private constructor(): Fragment() {
     private lateinit var binding: FragmentBulletinBoardBinding
     private lateinit var onBulletinBoardClickListener: (BulletinBoardItem) -> Unit
 
-    /* 이게 맞나? */
     private val bulletinBoardItems = listOf(
         BulletinBoardItem("일반공지", BASE_URL.addQueryString("b", 14)),
         BulletinBoardItem("장학공지", BASE_URL.addQueryString("b", 15)),
