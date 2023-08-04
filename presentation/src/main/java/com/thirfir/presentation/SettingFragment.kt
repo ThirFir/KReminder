@@ -18,9 +18,10 @@ class SettingFragment private constructor() : Fragment() {
         listOf(
             MenuItem(title = requireContext().getString(R.string.notification)) {
                 // TODO : Navigate to NotificationActivity(or Fragment)
-            },
-            MenuItem(title = requireContext().getString(R.string.keyword)) {
-                // TODO : Navigate to KeywordActivity(or Fragment)
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.settings_fragment_container, NotificationSettingFragment.newInstance())
+                    .addToBackStack(null)
+                    .commit()
             },
         )
     }
@@ -34,8 +35,15 @@ class SettingFragment private constructor() : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         binding = FragmentSettingBinding.inflate(layoutInflater, container, false)
+        initClickListeners()
         initRecyclerView()
         return binding.root
+    }
+
+    private fun initClickListeners() {
+        binding.topAppBar.setNavigationOnClickListener {
+            requireActivity().finish()
+        }
     }
 
     private fun initRecyclerView() {

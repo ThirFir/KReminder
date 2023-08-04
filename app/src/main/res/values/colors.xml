@@ -2,4 +2,20 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="primary">#FFFFFF</color>           <!-- Action Bar -->
+    <color name="primaryVariant">#FFFFFF</color>    <!-- System Bar -->
+    <color name="onPrimary">#343434</color>         <!-- Text or Icon on primary -->
+
+    <color name="secondary">#6dd5ed</color>         <!-- Floating, Radio ... -->
+    <color name="secondaryVariant">#2193b0</color>
+    <color name="onSecondary">#FFFFFF</color>
+
+    <color name="background">#F0F2F5</color>        <!-- Scrollable background -->
+    <color name="onBackground">#343434</color>
+
+    <color name="colorSurface">#FFFFFF</color>      <!-- CardView, BottomSheet, Dialog, ... -->
+    <color name="colorOnSurface">#343434</color>
+
+    <color name="textColor">#343434</color>
 </resources>

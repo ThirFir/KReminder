@@ -30,6 +30,15 @@ class OverflowMenuModalBottomSheet : BottomSheetDialogFragment() {
                 // TODO : Navigate to WatchlistActivity(or Fragment)
                 dismiss()
             },
+            MenuItem(
+                icon = R.drawable.ic_speech_bubble,
+                title = requireContext().getString(R.string.keyword)) {
+                // TODO : Navigate to KeywordActivity(or Fragment)
+                requireContext().startActivity(
+                    Intent(requireContext(), KeywordActivity::class.java)
+                )
+                dismiss()
+            },
         )
     }
     override fun onCreateView(

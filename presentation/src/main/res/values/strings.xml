@@ -4,4 +4,8 @@
     <string name="watchlist">Watchlist</string>
     <string name="notification">Notification</string>
     <string name="keyword">Keywords</string>
+    <string name="notification_state">Get Notification</string>
+    <string name="input_keyword">Keyword</string>
+    <string name="keyword_helper_text">You will get notifications including keywords</string>
+    <string name="added_keyword">Added keyword</string>
 </resources>

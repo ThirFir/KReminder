@@ -13,6 +13,7 @@ class SettingsAdapter(
     class SettingViewHolder(private val binding: ItemSettingBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(menuItem: MenuItem) {
+            // TODO : add icon - Glide
             binding.textViewSettingTitle.text = menuItem.title
             binding.root.setOnClickListener {
                 menuItem.onClick()
