@@ -1,9 +1,12 @@
 package com.thirfir.kreminder.di
 
+import com.thirfir.data.datasource.local.KeywordLocalDataSource
 import com.thirfir.data.datasource.remote.PostHeaderRemoteDataSource
 import com.thirfir.data.datasource.remote.PostRemoteDataSource
+import com.thirfir.data.repository.KeywordRepositoryImpl
 import com.thirfir.data.repository.PostHeaderRepositoryImpl
 import com.thirfir.data.repository.PostRepositoryImpl
+import com.thirfir.domain.repository.KeywordRepository
 import com.thirfir.domain.repository.PostHeaderRepository
 import com.thirfir.domain.repository.PostRepository
 import dagger.Module
@@ -29,4 +32,10 @@ object RepositoryModule {
         return PostRepositoryImpl(postRemoteDataSource)
     }
 
+    @Provides
+    fun provideKeywordRepository(
+        keywordLocalDataSource: KeywordLocalDataSource
+    ): KeywordRepository {
+        return KeywordRepositoryImpl(keywordLocalDataSource)
+    }
 }

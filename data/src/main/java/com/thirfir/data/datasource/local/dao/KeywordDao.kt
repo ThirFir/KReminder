@@ -15,4 +15,7 @@ interface KeywordDao {
 
     @Query("DELETE FROM keyword WHERE name = :name")
     fun delete(name: String)
+
+    @Query("DELETE FROM keyword")
+    fun deleteAll()
 }
