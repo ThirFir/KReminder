@@ -2,14 +2,13 @@ package com.thirfir.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.thirfir.presentation.databinding.ActivityMainBinding
+import com.thirfir.presentation.databinding.ActivityKeywordBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
-    private val binding: ActivityMainBinding by lazy {
-        ActivityMainBinding.inflate(layoutInflater)
+class KeywordActivity : AppCompatActivity() {
+    private val binding: ActivityKeywordBinding by lazy {
+        ActivityKeywordBinding.inflate(layoutInflater)
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,7 +19,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initViews() {
         supportFragmentManager.beginTransaction()
-            .add(binding.mainFragmentContainer.id, BulletinBoardFragment.newInstance())
+            .add(binding.keywordFragmentContainer.id, KeywordFragment.newInstance())
             .commit()
     }
 }

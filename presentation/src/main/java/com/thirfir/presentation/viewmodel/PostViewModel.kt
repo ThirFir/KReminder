@@ -13,9 +13,9 @@ class PostViewModel @Inject constructor(
     private val getPostUseCase: GetPostUseCase
 ) : ViewModel() {
 
-    fun fetchPost(pid: Int, onResponseCallback: (Post) -> Unit) {
+    fun fetchPost(pid: Int, onResponseCallback: () -> Unit) {
         viewModelScope.launch {
-            onResponseCallback(getPostUseCase(pid))
+            onResponseCallback()
         }
     }
 }

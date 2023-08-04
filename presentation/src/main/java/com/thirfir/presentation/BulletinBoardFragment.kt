@@ -1,17 +1,22 @@
 package com.thirfir.presentation
 
+import android.graphics.Rect
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.thirfir.domain.BASE_URL
 import com.thirfir.domain.addQueryString
 import com.thirfir.presentation.adapter.BulletinBoardsAdapter
 import com.thirfir.presentation.databinding.FragmentBulletinBoardBinding
 import com.thirfir.presentation.model.BulletinBoardItem
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class BulletinBoardFragment private constructor(): Fragment() {
 
     private lateinit var binding: FragmentBulletinBoardBinding
@@ -27,6 +32,10 @@ class BulletinBoardFragment private constructor(): Fragment() {
         BulletinBoardItem("사회봉사공지", BASE_URL.addQueryString("b", 191)),
         BulletinBoardItem("자유게시판", BASE_URL.addQueryString("b", 22)),
     )
+
+    private val modalBottomSheet : BottomSheetDialogFragment by lazy {
+        OverflowMenuModalBottomSheet()
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -47,11 +56,43 @@ class BulletinBoardFragment private constructor(): Fragment() {
         onBulletinBoardClickListener = {
             // TODO("START POST LIST ACTIVITY")
         }
+        binding.topAppBar.setOnMenuItemClickListener {
+            when(it.itemId) {
+                R.id.overflow_menu -> {
+                    modalBottomSheet.show(requireActivity().supportFragmentManager, OverflowMenuModalBottomSheet.TAG)
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     private fun initRecyclerView() {
-        binding.recyclerViewBulletinBoard.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerViewBulletinBoard.layoutManager = object : LinearLayoutManager(requireContext()) {
+            override fun canScrollVertically(): Boolean {
+                return false
+            }
+        }
         binding.recyclerViewBulletinBoard.adapter = BulletinBoardsAdapter(bulletinBoardItems, onBulletinBoardClickListener)
+        binding.recyclerViewBulletinBoard.addItemDecoration(
+            object : RecyclerView.ItemDecoration() {
+                override fun getItemOffsets(
+                    outRect: Rect,
+                    view: View,
+                    parent: RecyclerView,
+                    state: RecyclerView.State,
+                ) {
+                    super.getItemOffsets(outRect, view, parent, state)
+                    val position = parent.getChildAdapterPosition(view)
+                    val count = state.itemCount
+                    val spacing = 80
+
+                    outRect.top = spacing
+                    if(position == count - 1)
+                        outRect.bottom = spacing
+                }
+            }
+        )
     }
 
     companion object {

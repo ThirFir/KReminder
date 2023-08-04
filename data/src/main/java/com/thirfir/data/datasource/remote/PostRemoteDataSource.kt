@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.Flow
 
 class PostRemoteDataSource {
 
-    fun getPostDTO(pid: Int) : PostDTO {
-        TODO("실제 게시물 가져오기")
+    fun getPostDTO(pid: Int) {
+
     }
 }

@@ -8,21 +8,24 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.thirfir.presentation.adapter.SettingsAdapter
 import com.thirfir.presentation.databinding.FragmentSettingBinding
-import com.thirfir.presentation.model.SettingItem
+import com.thirfir.presentation.model.MenuItem
+import dagger.hilt.android.AndroidEntryPoint
 
-
-class SettingFragment private constructor(): Fragment() {
+@AndroidEntryPoint
+class SettingFragment private constructor() : Fragment() {
     private lateinit var binding: FragmentSettingBinding
-    private val settingItems : List<SettingItem> by lazy {
+    private val menuItems: List<MenuItem> by lazy {
         listOf(
-            SettingItem(requireContext().getString(R.string.setting)) {
-                // TODO : Navigate to SettingActivity(or Fragment)
-            },
-            SettingItem(requireContext().getString(R.string.keyword)) {
-                // TODO : Navigate to KeywordActivity(or Fragment)
+            MenuItem(title = requireContext().getString(R.string.notification)) {
+                // TODO : Navigate to NotificationActivity(or Fragment)
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.settings_fragment_container, NotificationSettingFragment.newInstance())
+                    .addToBackStack(null)
+                    .commit()
             },
         )
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -32,13 +35,20 @@ class SettingFragment private constructor(): Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         binding = FragmentSettingBinding.inflate(layoutInflater, container, false)
+        initClickListeners()
         initRecyclerView()
         return binding.root
     }
 
+    private fun initClickListeners() {
+        binding.topAppBar.setNavigationOnClickListener {
+            requireActivity().finish()
+        }
+    }
+
     private fun initRecyclerView() {
         binding.recyclerViewSetting.layoutManager = LinearLayoutManager(requireContext())
-        binding.recyclerViewSetting.adapter = SettingsAdapter(settingItems)
+        binding.recyclerViewSetting.adapter = SettingsAdapter(menuItems)
     }
 
 

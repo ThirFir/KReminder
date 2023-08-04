@@ -1,23 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/menu_item.selectable_menu_item">
+    style="@style/menu_item">
 
     <TextView
-        android:id="@+id/text_view_setting_title"
+        android:id="@+id/text_view_added_keyword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"/>
 
     <ImageView
-        android:id="@+id/image_view_setting_icon"
+        android:id="@+id/image_view_delete_keyword"
         style="@style/icon_medium"
-        android:src="@drawable/ic_arrow_right_36"
+        app:layout_constraintTop_toTopOf="@id/text_view_added_keyword"
+        app:layout_constraintBottom_toBottomOf="@id/text_view_added_keyword"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/text_view_setting_title"
-        app:layout_constraintBottom_toBottomOf="@id/text_view_setting_title"/>
+        android:src="@drawable/ic_clear_36"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
