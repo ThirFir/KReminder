@@ -12,14 +12,14 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class PostHeadersViewModel @Inject constructor(
+class PostHeaderViewModel @Inject constructor(
     private val getPostHeadersUseCase: GetPostHeaderUseCase
 ) : ViewModel() {
     private val _postHeaders: MutableStateFlow<List<PostHeader>> = MutableStateFlow(emptyList())
     val postHeaders: StateFlow<List<PostHeader>> get() = _postHeaders.asStateFlow()
 
     init {
-        fetchPostHeaders(1, 14) // TODO : bulletin번호 -> AssistedInject ?
+        fetchPostHeaders(14, 1) // TODO : bulletin번호 -> AssistedInject ?
     }
 
     fun fetchPostHeaders(bulletin: Int, page: Int) {

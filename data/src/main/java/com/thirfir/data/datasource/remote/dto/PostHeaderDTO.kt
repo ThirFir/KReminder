@@ -2,5 +2,10 @@ package com.thirfir.data.datasource.remote.dto
 
 data class PostHeaderDTO(
     val pid: Int,
-    // TODO : 데이터 정의
+    val title: String,
+    val category: String = "",
+    val author: String,
+    val date: String,
+    val views: String,
+    val isTopFixed: Boolean,
 )

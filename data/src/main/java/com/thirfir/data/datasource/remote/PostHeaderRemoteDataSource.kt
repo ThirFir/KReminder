@@ -3,9 +3,7 @@ package com.thirfir.data.datasource.remote
 import com.thirfir.data.datasource.remote.dto.PostHeaderDTO
 import kotlinx.coroutines.flow.Flow
 
-class PostHeaderRemoteDataSource {
+interface PostHeaderRemoteDataSource {
 
-    fun getPostHeaders(bulletin: Int, page: Int) {
-
-    }
+    fun getPostHeadersDTO(bulletin: Int, page: Int): Flow<List<PostHeaderDTO>>
 }
