@@ -8,6 +8,7 @@ import com.thirfir.presentation.databinding.ItemAddedKeywordBinding
 
 class KeywordsAdapter(
     private val keywords: List<Keyword>,
+    private val onDelete: (Keyword) -> Unit,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
         KeywordViewHolder(
@@ -29,6 +30,9 @@ class KeywordsAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(keyword: Keyword) {
             binding.textViewAddedKeyword.text = keyword.name
+            binding.imageViewDeleteKeyword.setOnClickListener {
+                onDelete(keyword)
+            }
         }
     }
 }

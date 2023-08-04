@@ -15,8 +15,10 @@
         <item name="colorSurface">@color/colorSurface</item>
         <item name="colorOnSurface">@color/colorOnSurface</item>
 
-
         <item name="android:textColor">@color/textColor</item>
+
+        <item name="boxStrokeColor">@color/secondary</item>
+        <item name="hintTextColor">@color/secondaryVariant</item>
 
     </style>
 

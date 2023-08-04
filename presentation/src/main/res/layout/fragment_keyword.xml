@@ -13,6 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/input_keyword"
+        app:boxStrokeColor="@color/secondary"
+        app:hintTextColor="@color/secondaryVariant"
         app:endIconMode="clear_text"
         app:helperText="@string/keyword_helper_text"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">

@@ -11,4 +11,12 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
+
+    <ImageView
+        android:id="@+id/image_view_delete_keyword"
+        style="@style/icon_medium"
+        app:layout_constraintTop_toTopOf="@id/text_view_added_keyword"
+        app:layout_constraintBottom_toBottomOf="@id/text_view_added_keyword"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@drawable/ic_clear_36"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

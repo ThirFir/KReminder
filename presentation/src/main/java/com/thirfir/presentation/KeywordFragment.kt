@@ -33,7 +33,10 @@ class KeywordFragment private constructor(): Fragment() {
 
     private fun initRecyclerView() {
         binding.recyclerViewKeyword.layoutManager = LinearLayoutManager(requireContext())
-        binding.recyclerViewKeyword.adapter = KeywordsAdapter(listOf()) // TODO : KeywordViewModel에서 가져오기
+        binding.recyclerViewKeyword.adapter = KeywordsAdapter(listOf()) {
+            // TODO : KeywordViewModel
+            // keywordViewModel.deleteKeyword(it)
+        }
     }
     companion object {
 
