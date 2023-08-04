@@ -1,7 +1,7 @@
 package com.thirfir.presentation
 
 import android.os.Bundle
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import androidx.appcompat.app.AppCompatActivity
 import com.thirfir.presentation.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
