@@ -9,7 +9,9 @@ import com.thirfir.kreminder.databinding.FragmentContentBinding
 
 
 class ContentFragment : Fragment() {
-    private lateinit var binding: FragmentContentBinding
+    private var _binding: FragmentContentBinding? = null
+    private val binding get() = _binding!!
+   // private lateinit var binding: FragmentContentBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -19,7 +21,7 @@ class ContentFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {//아마 수정을 좀 많이 해야할지도..?
-
+        _binding = FragmentContentBinding.inflate(inflater, container, false)
         val url = arguments?.getString(ARG_URL) ?: ""// 일단 url 받아오긴했는데..
 
         binding.postTitle.text="크롤링"// 게시글 제목 설정
