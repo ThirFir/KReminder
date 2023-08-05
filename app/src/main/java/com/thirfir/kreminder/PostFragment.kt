@@ -15,6 +15,11 @@ class PostFragment private constructor(): Fragment() {
 
     private lateinit var binding: FragmentPostBinding
     private lateinit var onPostClickListener: (PostItem) -> Unit
+    private lateinit var postAdapter: PostAdapter
+    // 페이지 번호
+    private var currentPage = 1
+    // 한 페이지당 보여줄 게시글 개수
+    private val postsPerPage = 20
 
     val BASE_URL = "https://portal.koreatech.ac.kr/ctt/bb/bulletin"//임시로 여기다 놓음.
     fun String.addQueryString(query: String, number: Int, postnum: Int): String {
@@ -42,6 +47,7 @@ class PostFragment private constructor(): Fragment() {
 
         initClickListeners()
         initRecyclerView()
+        initPaginationButtons()
 
         return binding.root
     }
@@ -60,9 +66,50 @@ class PostFragment private constructor(): Fragment() {
 
     private fun initRecyclerView() {
         binding.recyclerViewPost.layoutManager = LinearLayoutManager(requireContext())
-        binding.recyclerViewPost.adapter = PostAdapter(PostItems, onPostClickListener)
+        binding.recyclerViewPost.adapter = PostAdapter(PostItems.subList(0, postsPerPage), onPostClickListener)
+        binding.recyclerViewPost.adapter = postAdapter
     }
 
+
+    private fun initPaginationButtons() {
+        binding.prevButton.setOnClickListener {
+            if (currentPage > 1) {
+                currentPage--
+                updateRecyclerViewData()
+            }
+        }
+
+        binding.nextButton.setOnClickListener {
+            val totalPage = (PostItems.size + postsPerPage - 1) / postsPerPage
+            if (currentPage < totalPage) {
+                currentPage++
+                updateRecyclerViewData()
+            }
+        }
+
+        // 버튼 초기 상태 업데이트
+        updateButtonState()
+    }
+
+    private fun updateRecyclerViewData() {
+        val start = (currentPage - 1) * postsPerPage
+        val end = minOf(start + postsPerPage, PostItems.size)
+        val sublist = PostItems.subList(start, end)
+        postAdapter.updateData(sublist)
+        updateButtonState()
+    }
+
+
+    private fun updateButtonState() {
+        val totalPage = (PostItems.size + postsPerPage - 1) / postsPerPage
+        binding.page1Button.isEnabled = currentPage != 1
+        binding.page2Button.isEnabled = currentPage != 2
+        binding.page3Button.isEnabled = currentPage != 3
+        binding.page4Button.isEnabled = currentPage != 4
+        binding.page5Button.isEnabled = currentPage != 5
+        binding.prevButton.isEnabled = currentPage > 1
+        binding.nextButton.isEnabled = currentPage < totalPage
+    }
     companion object {
         @JvmStatic
         fun newInstance() =
@@ -72,4 +119,6 @@ class PostFragment private constructor(): Fragment() {
                 }
             }
     }
+
+
 }

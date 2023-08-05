@@ -9,10 +9,14 @@ import com.thirfir.kreminder.item.PostItem
 
 
 class PostAdapter(
-    private val items: List<PostItem>,
+    private var items: List<PostItem>,
     private val onClick: (PostItem) -> Unit,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+    fun updateData(newData: List<PostItem>) {
+        items = newData
+        notifyDataSetChanged()
+    }
     inner class MainViewHolder(private val binding: ItemPostBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: PostItem) {
@@ -36,4 +40,6 @@ class PostAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         (holder as MainViewHolder).bind(items[position])
     }
+
+
 }
