@@ -17,8 +17,7 @@ fun PostHeaderDTO.toPostHeader(): PostHeader =
 
 fun PostDTO.toPost(): Post =
     Post(
-        body = body,
-        file = file
+        textElements = textElements,
     )
 
 fun KeywordEntity.toKeyword() = Keyword(

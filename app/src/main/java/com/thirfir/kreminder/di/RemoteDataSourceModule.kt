@@ -11,7 +11,7 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-object RemoteDataModule {
+object RemoteDataSourceModule {
     @Provides
     fun providePostHeaderRemoteDataSource(): PostHeaderRemoteDataSource {
         return PostHeaderRemoteDataSourceImpl()

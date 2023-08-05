@@ -9,7 +9,7 @@ import javax.inject.Inject
 class PostRepositoryImpl @Inject constructor(
     private val postRemoteDataSource: PostRemoteDataSource
 ) : PostRepository {
-    override fun getPost(bulletin: Int, pid: Int): Post {
+    override suspend fun getPost(bulletin: Int, pid: Int): Post {
         return postRemoteDataSource.getPostDTO(bulletin, pid).toPost()
     }
 }

@@ -27,9 +27,10 @@ object UseCaseModule {
 
     @Provides
     fun provideGetPostUseCase(
-        postRepository: PostRepository
+        postRepository: PostRepository,
+        @IoDispatcher ioDispatcher: CoroutineDispatcher,
     ): GetPostUseCase {
-        return GetPostUseCase(postRepository)
+        return GetPostUseCase(postRepository, ioDispatcher)
     }
 
     @Provides
