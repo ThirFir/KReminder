@@ -4,18 +4,18 @@ package com.thirfir.kreminder.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.thirfir.kreminder.databinding.ItemMainBinding
-import com.thirfir.kreminder.item.MainItem
+import com.thirfir.kreminder.databinding.ItemPostBinding
+import com.thirfir.kreminder.item.PostItem
 
 
-class MainAdapter(
-    private val items: List<MainItem>,
-    private val onClick: (MainItem) -> Unit,
+class PostAdapter(
+    private val items: List<PostItem>,
+    private val onClick: (PostItem) -> Unit,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    inner class MainViewHolder(private val binding: ItemMainBinding) :
+    inner class MainViewHolder(private val binding: ItemPostBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: MainItem) {
+        fun bind(item: PostItem) {
             binding.root.setOnClickListener {
                 onClick(item)
             }
@@ -24,7 +24,7 @@ class MainAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
         MainViewHolder(
-            ItemMainBinding.inflate(
+            ItemPostBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false

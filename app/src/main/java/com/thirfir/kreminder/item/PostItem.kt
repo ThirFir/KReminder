@@ -1,6 +1,7 @@
 package com.thirfir.kreminder.item
 
-data class MainItem(
+data class PostItem (
+    val num:Int,
     val title: String,
     val url: String
 )
