@@ -47,8 +47,14 @@ class PostFragment private constructor(): Fragment() {
     }
 
     private fun initClickListeners() {
-        onPostClickListener = {
-            // TODO("START POST LIST ACTIVITY")
+        onPostClickListener = {//아이템 선택시 해당 url을 content페이지로 넘겨줘서 현재 어느 곳에 접속해있는지를 알려줌. 흠..
+                postItem ->
+            // START POST LIST ACTIVITY (Replace with the code to navigate to content_fragment)
+            val contentFragment = ContentFragment.newInstance(postItem.url)//postItem.title..???
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.main_fragment_container, contentFragment)
+                .addToBackStack(null)
+                .commit()
         }
     }
 

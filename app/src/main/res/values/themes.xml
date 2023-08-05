@@ -6,4 +6,5 @@
     </style>
 
     <style name="Theme.KReminder" parent="Base.Theme.KReminder" />
+
 </resources>
