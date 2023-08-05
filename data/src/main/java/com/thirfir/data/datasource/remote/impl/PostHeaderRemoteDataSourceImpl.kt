@@ -8,9 +8,8 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import javax.inject.Inject
 
-class PostHeaderRemoteDataSourceImpl @Inject constructor() : PostHeaderRemoteDataSource {
+class PostHeaderRemoteDataSourceImpl : PostHeaderRemoteDataSource {
 
     override fun getPostHeadersDTO(bulletin: Int, page: Int): Flow<List<PostHeaderDTO>> = flow {
         try {

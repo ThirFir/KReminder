@@ -1,7 +1,6 @@
 package com.thirfir.data.datasource.remote.dto
 
 data class PostDTO(
-    val headerDTO: PostHeaderDTO,
     val body: List<String>,
     val file: List<String>? = null // ["/ctt/bb/bulletin?b=14&p=30949&a=fd&fs=1", "..."]
     // TODO : 데이터 정의
