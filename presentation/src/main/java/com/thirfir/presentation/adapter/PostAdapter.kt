@@ -3,31 +3,19 @@ package com.thirfir.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.thirfir.presentation.databinding.ItemPostBinding
 import com.thirfir.presentation.model.PostItem
 
 
 class PostAdapter(
-    private var items: List<PostItem>,
-    private val onClick: (PostItem) -> Unit,
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private val onClick: (PostItem) -> Unit
+) : ListAdapter<PostItem, PostAdapter.PostViewHolder>(PostItemDiffCallback()) {
 
-    fun updateData(newData: List<PostItem>) {
-        items = newData
-        notifyDataSetChanged()
-    }
-    inner class MainViewHolder(private val binding: ItemPostBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: PostItem) {
-            binding.root.setOnClickListener {
-                onClick(item)
-            }
-        }
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
-        MainViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder =
+        PostViewHolder(
             ItemPostBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
@@ -35,11 +23,35 @@ class PostAdapter(
             )
         )
 
-    override fun getItemCount(): Int = items.size
-
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as MainViewHolder).bind(items[position])
+    override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
+        holder.bind(getItem(position))
     }
 
+    inner class PostViewHolder(private val binding: ItemPostBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
+        fun bind(item: PostItem) {
+            binding.textViewSettingNum.text = item.num.toString()
+            binding.textViewSettingTitle.text = item.title
+            binding.root.setOnClickListener {
+                binding.root.setOnClickListener {
+                    onClick(item) // 클릭 이벤트 처리를 PostFragment로 전달
+                }
+            }
+        }
+    }
+
+    fun updateData(newData: List<PostItem>) {
+        submitList(newData)
+    }
+
+    private class PostItemDiffCallback : DiffUtil.ItemCallback<PostItem>() {
+        override fun areItemsTheSame(oldItem: PostItem, newItem: PostItem): Boolean {
+            return oldItem.num == newItem.num
+        }
+
+        override fun areContentsTheSame(oldItem: PostItem, newItem: PostItem): Boolean {
+            return oldItem == newItem
+        }
+    }
 }
