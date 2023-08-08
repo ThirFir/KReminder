@@ -5,15 +5,19 @@ import com.thirfir.data.datasource.remote.dto.PostDTO
 import com.thirfir.domain.BASE_URL
 import com.thirfir.domain.BOLD
 import com.thirfir.domain.BOLD_TAG
+import com.thirfir.domain.COLSPAN
 import com.thirfir.domain.FONT_WEIGHT
 import com.thirfir.domain.H3_TAG
 import com.thirfir.domain.ITALIC
 import com.thirfir.domain.ITALIC_TAG
 import com.thirfir.domain.LINE_THROUGH
 import com.thirfir.domain.P_TAG
+import com.thirfir.domain.ROWSPAN
 import com.thirfir.domain.STRIKE_TAG
 import com.thirfir.domain.STYLE
 import com.thirfir.domain.TABLE_TAG
+import com.thirfir.domain.TBODY_TAG
+import com.thirfir.domain.TD_TAG
 import com.thirfir.domain.TEXT_DECORATION_LINE
 import com.thirfir.domain.UNDERLINE
 import com.thirfir.domain.UNDERLINE_TAG
@@ -51,7 +55,7 @@ class PostRemoteDataSourceImpl : PostRemoteDataSource {
             }
             else if(element.tagName() == TABLE_TAG) {
                 parentElements[index].enabledRootTag = EnabledRootTag.TABLE
-                extractTable(element.select("tbody")[0], index)
+                extractTable(element.select(TBODY_TAG)[0], index)
             }
             else if(element.tagName() == H3_TAG)
                 parentElements[index].enabledRootTag = EnabledRootTag.H3
@@ -106,6 +110,10 @@ class PostRemoteDataSourceImpl : PostRemoteDataSource {
         }
     }
 
+    /**
+     * @param tbody tbody
+     * @param index 최상위 태그(table) index
+     */
     private fun extractTable(tbody: Element, index: Int) {
         // 테이블 사이즈 구하기 및 초기화
         val rowSize = getTableHeight(tbody)
@@ -121,32 +129,41 @@ class PostRemoteDataSourceImpl : PostRemoteDataSource {
         }
 
         tbody.children().forEachIndexed { trIndex, tr ->
-            tr.children().forEachIndexed { tdIndex, td ->
-                if (td.tagName() == "td") {
-                    if(parentElements[index].tables!![trIndex][tdIndex] == null)
-                        return@forEachIndexed
-                    var rowSpan = 1
-                    if(td.attr("rowspan") != "")
-                        rowSpan = td.attr("rowspan").toInt()
-                    var colSpan = 1
-                    if(td.attr("colspan") != "")
-                        colSpan = td.attr("colspan").toInt()
+            for(tdIndex in 0 until colSize) {
+                if(parentElements[index].tables!![trIndex][tdIndex] == null)
+                    continue
 
-                    for(rowIndex in 1 until rowSpan)
-                        parentElements[index].tables!![trIndex + rowIndex][tdIndex] = null  // rowspan 만큼 아래 칸 무효화
-                    for(columnIndex in 1 until colSpan)
-                        parentElements[index].tables!![trIndex][tdIndex + columnIndex] = null  // colspan 만큼 오른쪽 칸 무효화
-                    extractTdTextElements(td, index, trIndex, tdIndex)
+                var indexInHtml = tdIndex
+                for(i in 0 until tdIndex)
+                    if(parentElements[index].tables!![trIndex][i] == null)
+                        --indexInHtml
+
+                tr.child(indexInHtml).let { td ->
+                    if(td.tagName() == TD_TAG) {
+                        var rowSpan = 1
+                        val rowSpanAttr = td.attr(ROWSPAN)
+                        if(rowSpanAttr.isNotEmpty())
+                            rowSpan = rowSpanAttr.toInt()
+                        var colSpan = 1
+                        val colSpanAttr = td.attr(COLSPAN)
+                        if(colSpanAttr.isNotEmpty())
+                            colSpan = colSpanAttr.toInt()
+
+                        for(rowIndex in 1 until rowSpan)
+                            parentElements[index].tables!![trIndex + rowIndex][tdIndex] = null // rowspan 만큼 아래 칸 무효화
+                        for(columnIndex in 1 until colSpan)
+                            parentElements[index].tables!![trIndex][tdIndex + columnIndex] = null  // colspan 만큼 오른쪽 칸 무효화
+                        extractTdTextElements(td, index, trIndex, tdIndex)
+                    }
                 }
             }
         }
-
     }
 
     private fun extractTdTextElements(e: Element, index: Int, rowIndex: Int, colIndex: Int) {
         e.children().forEach {
-            parentElements[index].tables!![rowIndex][colIndex]!!.textElement
-                .add(TextElement(it.ownText(), extractStyles(it.attr("style"))))
+            parentElements[index].tables!![rowIndex][colIndex]?.textElement
+                ?.add(TextElement(it.ownText(), extractStyles(it.attr(STYLE))))
 
             extractTdTextElements(it, index, rowIndex, colIndex)
         }
@@ -176,7 +193,7 @@ class PostRemoteDataSourceImpl : PostRemoteDataSource {
         return styles
     }
 
-    data class Decorations(
+    private data class Decorations(
         var underline: Boolean = false,
         var bold: Boolean = false,
         var italic: Boolean = false,
