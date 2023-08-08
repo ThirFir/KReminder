@@ -6,7 +6,14 @@ import com.thirfir.domain.BASE_URL
 import com.thirfir.domain.BOLD
 import com.thirfir.domain.BOLD_TAG
 import com.thirfir.domain.FONT_WEIGHT
+import com.thirfir.domain.H3_TAG
+import com.thirfir.domain.ITALIC
+import com.thirfir.domain.ITALIC_TAG
+import com.thirfir.domain.LINE_THROUGH
+import com.thirfir.domain.P_TAG
+import com.thirfir.domain.STRIKE_TAG
 import com.thirfir.domain.STYLE
+import com.thirfir.domain.TABLE_TAG
 import com.thirfir.domain.TEXT_DECORATION_LINE
 import com.thirfir.domain.UNDERLINE
 import com.thirfir.domain.UNDERLINE_TAG
@@ -38,18 +45,17 @@ class PostRemoteDataSourceImpl : PostRemoteDataSource {
                 )
                 )
             }
-            if(element.tagName() == "p") {
+            if(element.tagName() == P_TAG) {
                 parentElements[index].enabledRootTag = EnabledRootTag.P
-                extractTextElements(element, index)
+                extractTextElements(element, index, Decorations(), extractStyles(element.attr(STYLE)))
             }
-            else if(element.tagName() == "table") {
+            else if(element.tagName() == TABLE_TAG) {
                 parentElements[index].enabledRootTag = EnabledRootTag.TABLE
                 extractTable(element.select("tbody")[0], index)
             }
-            else if(element.tagName() == "h3")
+            else if(element.tagName() == H3_TAG)
                 parentElements[index].enabledRootTag = EnabledRootTag.H3
 
-            extractTextElements(element, index)
         }
 
         return PostDTO(parentElements)
@@ -61,32 +67,42 @@ class PostRemoteDataSourceImpl : PostRemoteDataSource {
      * @param u 현재 element가 underline인지
      * @param b 현재 element가 bold인지
      */
-    private fun extractTextElements(element: Element, index: Int, u: Boolean = false, b: Boolean = false, styles: Map<String, String> = mutableMapOf()) {
+    private fun extractTextElements(element: Element, index: Int, parentDeco: Decorations, parentStyles: Map<String, String>) {
 
 
         // 모든 자식 element 순환
         element.children().forEach {
-            var underline = u
-            var bold = b
+            var deco = parentDeco
+
             if (it.tagName().trim() == UNDERLINE_TAG)
-                underline = true
+                deco.underline = true
             else if (it.tagName().trim() == BOLD_TAG)
-                bold = true
+                deco.bold = true
+            else if (it.tagName().trim() == STRIKE_TAG)
+                deco.strike = true
+            else if (it.tagName().trim() == ITALIC_TAG)
+                deco.italic = true
+
             val styles = extractStyles(it.attr(STYLE)).apply {
                 // 자식 뷰에 부모 스타일 적용
-                styles.forEach { style ->
-                    if(this[style.key] == null)
-                        this[style.key] = style.value
+                parentStyles.forEach { parentStyle ->
+                    if(this[parentStyle.key] == null)
+                        this[parentStyle.key] = parentStyle.value
                 }
             }
             parentElements[index].textElements.add(TextElement(it.ownText(), styles))
-            if (underline)
+            if (deco.underline)
                 parentElements[index].textElements[parentElements[index].textElements.lastIndex].style[TEXT_DECORATION_LINE] =
                     UNDERLINE
-            if (bold)
+            if (deco.bold)
                 parentElements[index].textElements[parentElements[index].textElements.lastIndex].style[FONT_WEIGHT] = BOLD
+            if (deco.strike)
+                parentElements[index].textElements[parentElements[index].textElements.lastIndex].style[TEXT_DECORATION_LINE] =
+                    LINE_THROUGH
+            if (deco.italic)
+                parentElements[index].textElements[parentElements[index].textElements.lastIndex].style[FONT_WEIGHT] = ITALIC
 
-            extractTextElements(it, index, underline, bold, styles)
+            extractTextElements(it, index, deco, styles)
         }
     }
 
@@ -159,6 +175,13 @@ class PostRemoteDataSourceImpl : PostRemoteDataSource {
         }
         return styles
     }
+
+    data class Decorations(
+        var underline: Boolean = false,
+        var bold: Boolean = false,
+        var italic: Boolean = false,
+        var strike: Boolean = false,
+    )
 }
 
 

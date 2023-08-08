@@ -4,6 +4,11 @@ const val BASE_URL = "https://portal.koreatech.ac.kr/ctt/bb/bulletin"
 
 const val UNDERLINE_TAG = "u"
 const val BOLD_TAG = "b"
+const val STRIKE_TAG = "strike"
+const val ITALIC_TAG = "i"
+const val P_TAG = "p"
+const val TABLE_TAG = "table"
+const val H3_TAG = "h3"
 
 const val STYLE = "style"
 const val COLOR = "color"
@@ -17,8 +22,9 @@ const val TEXT_DECORATION_LINE = "text-decoration-line"
 
 const val CENTER = "center"
 const val UNDERLINE = "underline"
-const val LINE_THROUGH = "line-through"
+const val LINE_THROUGH = "line-through"     // strike
 const val NONE = "none"
 const val TRANSPARENT = "transparent"
 const val BOLD = "bold"
+const val ITALIC = "italic"
 const val SOLID = "solid"
