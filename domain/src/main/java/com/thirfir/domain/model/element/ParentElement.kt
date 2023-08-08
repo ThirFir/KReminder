@@ -1,8 +1,5 @@
-package com.thirfir.domain.model
+package com.thirfir.domain.model.element
 
-enum class EnabledRootTag {
-    P, TABLE, H3
-}
 
 data class ParentElement(   // 이거의 list
     val textElements: MutableList<TextElement>,
@@ -25,8 +22,3 @@ parentElement[2].table[0][0] = <td>...</td>
 parentElement[2].table[0][0].textElement.text = "내용"
 parentElement[2].table[0][0].textElement.style[BACKGROUND] // = "red"
  */
-data class TableElement(
-    val textElement: MutableList<TextElement>,
-    var rowSpan: Int = 1,
-    var colSpan: Int = 1
-)

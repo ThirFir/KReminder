@@ -8,10 +8,10 @@ import com.thirfir.domain.FONT_WEIGHT
 import com.thirfir.domain.TEXT_DECORATION_LINE
 import com.thirfir.domain.UNDERLINE
 import com.thirfir.domain.addQueryString
-import com.thirfir.domain.model.EnabledRootTag
-import com.thirfir.domain.model.ParentElement
-import com.thirfir.domain.model.TableElement
-import com.thirfir.domain.model.TextElement
+import com.thirfir.domain.model.element.EnabledRootTag
+import com.thirfir.domain.model.element.ParentElement
+import com.thirfir.domain.model.element.TableElement
+import com.thirfir.domain.model.element.TextElement
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 
@@ -62,10 +62,6 @@ class PostRemoteDataSourceImpl : PostRemoteDataSource {
 
 
         // 모든 자식 element 순환
-        /**
-         * @param it : 현재 태그
-         */
-
         element.children().forEach {
             var underline = u
             var bold = b
@@ -121,8 +117,8 @@ class PostRemoteDataSourceImpl : PostRemoteDataSource {
 
     }
 
-    private fun extractTdTextElements(td: Element, index: Int, rowIndex: Int, colIndex: Int) {
-        td.children().forEach {
+    private fun extractTdTextElements(e: Element, index: Int, rowIndex: Int, colIndex: Int) {
+        e.children().forEach {
             parentElements[index].tables!![rowIndex][colIndex]!!.textElement
                 .add(TextElement(it.ownText(), extractStyles(it.attr("style"))))
 
@@ -152,30 +148,6 @@ class PostRemoteDataSourceImpl : PostRemoteDataSource {
             }
         }
         return styles
-    }
-
-
-
-    private fun processTableElement(element: Element, index: Int) {
-        val tableData: MutableList<MutableList<String>> = mutableListOf()
-
-        val rows = element.select("tr")
-        rows.forEach { rowElement ->
-            val rowData: MutableList<String> = mutableListOf()
-
-            val cells = rowElement.select("td")
-            cells.forEach { cellElement ->
-                rowData.add(cellElement.text())
-            }
-
-            tableData.add(rowData)
-        }
-        val tableText = tableData.joinToString("\n") { row ->
-            row.joinToString("\t")
-        }
-
-        val tableStyles = extractStyles(element.attr("style")) // Get styles for the table
-        //textElements[index].add(TextElement(tableText, tableStyles))
     }
 
 }
