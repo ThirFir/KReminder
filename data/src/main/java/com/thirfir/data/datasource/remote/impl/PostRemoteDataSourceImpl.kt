@@ -153,6 +153,8 @@ class PostRemoteDataSourceImpl : PostRemoteDataSource {
                             parentElements[index].tables!![trIndex + rowIndex][tdIndex] = null // rowspan 만큼 아래 칸 무효화
                         for(columnIndex in 1 until colSpan)
                             parentElements[index].tables!![trIndex][tdIndex + columnIndex] = null  // colspan 만큼 오른쪽 칸 무효화
+                        parentElements[index].tables!![trIndex][tdIndex]?.rowSpan = rowSpan
+                        parentElements[index].tables!![trIndex][tdIndex]?.colSpan = colSpan
                         extractTdTextElements(td, index, trIndex, tdIndex)
                     }
                 }
@@ -164,7 +166,6 @@ class PostRemoteDataSourceImpl : PostRemoteDataSource {
         e.children().forEach {
             parentElements[index].tables!![rowIndex][colIndex]?.textElement
                 ?.add(TextElement(it.ownText(), extractStyles(it.attr(STYLE))))
-
             extractTdTextElements(it, index, rowIndex, colIndex)
         }
     }
