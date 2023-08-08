@@ -53,10 +53,10 @@ class PostRemoteDataSourceImpl : PostRemoteDataSource {
     }
 
     /**
-     * @param element : 현재 element
-     * @param index : 최상위 태그 index
-     * @param u : 현재 element가 underline인지
-     * @param b : 현재 element가 bold인지
+     * @param element 현재 element
+     * @param index 최상위 태그 index
+     * @param u 현재 element가 underline인지
+     * @param b 현재 element가 bold인지
      */
     private fun extractTextElements(element: Element, index: Int, u: Boolean = false, b: Boolean = false) {
 
@@ -82,8 +82,8 @@ class PostRemoteDataSourceImpl : PostRemoteDataSource {
 
     private fun extractTable(tbody: Element, index: Int) {
         // 테이블 사이즈 구하기 및 초기화
-        var rowSize = getTableHeight(tbody)
-        var colSize = getTableWidth(tbody)
+        val rowSize = getTableHeight(tbody)
+        val colSize = getTableWidth(tbody)
         for (i in 0 until rowSize) {
             for (j in 0 until colSize) {
                 parentElements[index].tables = MutableList(rowSize) { MutableList(colSize) { TableElement(
