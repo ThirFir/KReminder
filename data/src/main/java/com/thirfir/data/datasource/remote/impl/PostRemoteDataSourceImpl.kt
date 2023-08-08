@@ -37,7 +37,10 @@ class PostRemoteDataSourceImpl : PostRemoteDataSource {
         element.children().forEach {
             var underline = u
             var bold = b
-            if (it.tagName().trim() == "u")
+            if (element.tagName() == "table") {
+                processTableElement(element, index)
+            }
+            else if (it.tagName().trim() == "u")
                 underline = true
             else if (it.tagName().trim() == "b")
                 bold = true
@@ -63,6 +66,29 @@ class PostRemoteDataSourceImpl : PostRemoteDataSource {
             }
         }
         return styles
+    }
+
+
+    private fun processTableElement(element: Element, index: Int) {
+        val tableData: MutableList<MutableList<String>> = mutableListOf()
+
+        val rows = element.select("tr")
+        rows.forEach { rowElement ->
+            val rowData: MutableList<String> = mutableListOf()
+
+            val cells = rowElement.select("td")
+            cells.forEach { cellElement ->
+                rowData.add(cellElement.text())
+            }
+
+            tableData.add(rowData)
+        }
+        val tableText = tableData.joinToString("\n") { row ->
+            row.joinToString("\t")
+        }
+
+        val tableStyles = extractStyles(element.attr("style")) // Get styles for the table
+        textElements[index].add(TextElement(tableText, tableStyles))
     }
 
 }
