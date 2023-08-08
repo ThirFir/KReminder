@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.thirfir.presentation.adapter.KeywordsAdapter
 import com.thirfir.presentation.databinding.FragmentKeywordBinding
@@ -24,7 +25,9 @@ class KeywordFragment private constructor(): Fragment() {
         binding = FragmentKeywordBinding.inflate(layoutInflater, container, false)
         initClickListeners()
         initRecyclerView()
-        return binding.root
+
+
+        return binding.root // 리니어레이아웃 예를들어
     }
 
     private fun initClickListeners() {
