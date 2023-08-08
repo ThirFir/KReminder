@@ -4,9 +4,12 @@ import com.thirfir.data.datasource.remote.PostRemoteDataSource
 import com.thirfir.data.datasource.remote.dto.PostDTO
 import com.thirfir.domain.BASE_URL
 import com.thirfir.domain.BOLD
+import com.thirfir.domain.BOLD_TAG
 import com.thirfir.domain.FONT_WEIGHT
+import com.thirfir.domain.STYLE
 import com.thirfir.domain.TEXT_DECORATION_LINE
 import com.thirfir.domain.UNDERLINE
+import com.thirfir.domain.UNDERLINE_TAG
 import com.thirfir.domain.addQueryString
 import com.thirfir.domain.model.element.EnabledRootTag
 import com.thirfir.domain.model.element.ParentElement
@@ -58,25 +61,32 @@ class PostRemoteDataSourceImpl : PostRemoteDataSource {
      * @param u 현재 element가 underline인지
      * @param b 현재 element가 bold인지
      */
-    private fun extractTextElements(element: Element, index: Int, u: Boolean = false, b: Boolean = false) {
+    private fun extractTextElements(element: Element, index: Int, u: Boolean = false, b: Boolean = false, styles: Map<String, String> = mutableMapOf()) {
 
 
         // 모든 자식 element 순환
         element.children().forEach {
             var underline = u
             var bold = b
-            if (it.tagName().trim() == "u")
+            if (it.tagName().trim() == UNDERLINE_TAG)
                 underline = true
-            else if (it.tagName().trim() == "b")
+            else if (it.tagName().trim() == BOLD_TAG)
                 bold = true
-            parentElements[index].textElements.add(TextElement(it.ownText(), extractStyles(it.attr("style"))))
+            val styles = extractStyles(it.attr(STYLE)).apply {
+                // 자식 뷰에 부모 스타일 적용
+                styles.forEach { style ->
+                    if(this[style.key] == null)
+                        this[style.key] = style.value
+                }
+            }
+            parentElements[index].textElements.add(TextElement(it.ownText(), styles))
             if (underline)
                 parentElements[index].textElements[parentElements[index].textElements.lastIndex].style[TEXT_DECORATION_LINE] =
                     UNDERLINE
             if (bold)
                 parentElements[index].textElements[parentElements[index].textElements.lastIndex].style[FONT_WEIGHT] = BOLD
 
-            extractTextElements(it, index, underline, bold)
+            extractTextElements(it, index, underline, bold, styles)
         }
     }
 
@@ -149,7 +159,6 @@ class PostRemoteDataSourceImpl : PostRemoteDataSource {
         }
         return styles
     }
-
 }
 
 

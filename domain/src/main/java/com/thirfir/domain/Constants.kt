@@ -2,6 +2,10 @@ package com.thirfir.domain
 
 const val BASE_URL = "https://portal.koreatech.ac.kr/ctt/bb/bulletin"
 
+const val UNDERLINE_TAG = "u"
+const val BOLD_TAG = "b"
+
+const val STYLE = "style"
 const val COLOR = "color"
 const val BACKGROUND = "background"
 const val BACKGROUND_COLOR = "background-color"     // Text의 배경색
