@@ -27,7 +27,7 @@ class KeywordFragment private constructor(): Fragment() {
         initRecyclerView()
 
 
-        return binding.root // 리니어레이아웃 예를들어
+        return binding.root
     }
 
     private fun initClickListeners() {
