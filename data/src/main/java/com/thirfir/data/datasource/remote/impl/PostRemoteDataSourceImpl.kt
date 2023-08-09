@@ -38,6 +38,7 @@ class PostRemoteDataSourceImpl : PostRemoteDataSource {
             Jsoup.connect(
                 BASE_URL.addQueryString("b", bulletin)
                     .addQueryString("p", pid)).get()
+        doc.outputSettings().prettyPrint(false)
         val mParentElements = doc.select(".bc-s-post-ctnt-area > *")
 
         mParentElements.forEachIndexed { index, element ->
