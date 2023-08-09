@@ -80,7 +80,6 @@ class PostRemoteDataSourceImpl : PostRemoteDataSource {
 
         // 모든 자식 element 순환
         element.children().forEach {
-            setStyleOfTag(it, index)
             val styles = extractParentStylesWithItself(it, parentStyles)
             if(it.wholeOwnText().isBlank() && parentElements[index].textElements.isNotEmpty())
                 parentElements[index].textElements.last().text += it.wholeOwnText()
@@ -92,6 +91,11 @@ class PostRemoteDataSourceImpl : PostRemoteDataSource {
                             "\n" + parentElements[index].textElements[parentElements[index].textElements.lastIndex].text
                 }
             }
+            setStyleOfTag(it, index)
+            if(parentElements[index].textElements[parentElements[index].textElements.lastIndex].style[TEXT_DECORATION_LINE] != null)
+                styles[TEXT_DECORATION_LINE] = parentElements[index].textElements[parentElements[index].textElements.lastIndex].style[TEXT_DECORATION_LINE]!!
+            if(parentElements[index].textElements[parentElements[index].textElements.lastIndex].style[FONT_WEIGHT] != null )
+                styles[FONT_WEIGHT] = parentElements[index].textElements[parentElements[index].textElements.lastIndex].style[FONT_WEIGHT]!!
             if(it.tagName() == TABLE_TAG) {
                 parentElements[index].enabledRootTag = EnabledRootTag.TABLE
                 extractTable(it.select(TBODY_TAG)[0], index, styles)
