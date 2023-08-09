@@ -62,7 +62,7 @@ class PostRemoteDataSourceImpl : PostRemoteDataSource {
                 )
             }
 
-            parentElements[index].textElements = extractSubstrings(element.text(), parentElements[index].textElements)
+            parentElements[index].textElements = getSortedTextElements(element.wholeText(), parentElements[index].textElements)
         }
 
         return PostDTO(parentElements)
@@ -79,14 +79,17 @@ class PostRemoteDataSourceImpl : PostRemoteDataSource {
         // 모든 자식 element 순환
         element.children().forEach {
             val styles = extractParentStylesWithItself(it, parentStyles)
-            parentElements[index].textElements.add(TextElement(it.wholeOwnText(), styles))
-            if(parentElements[index].textElements.size > 1) {   // 첫번째가 아닌 P_TAG는 줄바꿈
-                if (it.tagName() == P_TAG)
-                    parentElements[index].textElements[parentElements[index].textElements.lastIndex].text =
-                        "\n" + parentElements[index].textElements[parentElements[index].textElements.lastIndex].text
+            if(it.wholeOwnText().isBlank())
+                parentElements[index].textElements.last().text += it.wholeOwnText()
+            else {
+                parentElements[index].textElements.add(TextElement(it.wholeOwnText(), styles))
+                if (parentElements[index].textElements.size > 1) {   // 첫번째가 아닌 P_TAG는 줄바꿈
+                    if (it.tagName() == P_TAG)
+                        parentElements[index].textElements[parentElements[index].textElements.lastIndex].text =
+                            "\n" + parentElements[index].textElements[parentElements[index].textElements.lastIndex].text
+                }
+                setStyleOfTag(it, index)
             }
-            setStyleOfTag(it, index)
-
             if(it.tagName() == TABLE_TAG) {
                 parentElements[index].enabledRootTag = EnabledRootTag.TABLE
                 extractTable(it.select(TBODY_TAG)[0], index, styles)
@@ -210,8 +213,8 @@ class PostRemoteDataSourceImpl : PostRemoteDataSource {
                 ITALIC
     }
 
-    private fun extractSubstrings(baseText: String, elements: MutableList<TextElement>): MutableList<TextElement> {
-        val sortedElements = elements.sortedBy { baseText.indexOf(it.text.trim()) }
+    private fun getSortedTextElements(baseText: String, elements: MutableList<TextElement>): MutableList<TextElement> {
+        val sortedElements = elements.sortedBy { baseText.indexOf(it.text.replaceFirst("\n", "")) }
         return sortedElements.toMutableList()
     }
 }
