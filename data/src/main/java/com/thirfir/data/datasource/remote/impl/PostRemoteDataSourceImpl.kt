@@ -5,6 +5,7 @@ import com.thirfir.data.datasource.remote.PostRemoteDataSource
 import com.thirfir.data.datasource.remote.dto.PostDTO
 import com.thirfir.domain.BASE_URL
 import com.thirfir.domain.BOLD
+import com.thirfir.domain.BR_TAG
 import com.thirfir.domain.B_TAG
 import com.thirfir.domain.COLSPAN
 import com.thirfir.domain.DEL_TAG
@@ -87,8 +88,11 @@ class PostRemoteDataSourceImpl : PostRemoteDataSource {
             var styles = extractParentStylesWithItself(it, parentStyles)
             if(it.tagName().isStyleTag())
                 parentElements[index].textElements.add(TextElement(it.wholeOwnText(), styles))
-            else if(it.wholeOwnText().isBlank() && parentElements[index].textElements.isNotEmpty())
+            else if(it.wholeOwnText().isBlank() && parentElements[index].textElements.isNotEmpty()) {
                 parentElements[index].textElements.last().text += it.wholeOwnText()
+                if(it.tagName() == P_TAG)
+                    parentElements[index].textElements.last().text += "\n"
+            }
             else {
                 parentElements[index].textElements.add(TextElement(it.wholeOwnText(), styles))
                 if (parentElements[index].textElements.size > 1) {   // 첫번째가 아닌 P_TAG는 줄바꿈

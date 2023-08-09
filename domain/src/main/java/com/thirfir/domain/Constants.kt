@@ -19,6 +19,7 @@ const val DIV_TAG = "div"
 const val TBODY_TAG = "tbody"
 const val TR_TAG = "tr"
 const val TD_TAG = "td"
+const val BR_TAG = "br"
 
 const val STYLE = "style"
 const val COLOR = "color"
