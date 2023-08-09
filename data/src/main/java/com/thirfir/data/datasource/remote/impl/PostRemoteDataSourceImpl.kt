@@ -80,8 +80,9 @@ class PostRemoteDataSourceImpl : PostRemoteDataSource {
         element.children().forEach {
             val styles = extractParentStylesWithItself(it, parentStyles)
             parentElements[index].textElements.add(TextElement(it.wholeOwnText(), styles).apply {
-                if(it.tagName() == P_TAG)
-                    this.text = "\n" + this.text
+                if(parentElements[index].textElements.isNotEmpty())
+                    if (it.tagName() == P_TAG)
+                        this.text = "\n" + this.text
             })
             setStyleOfTag(it, index)
             
@@ -151,8 +152,9 @@ class PostRemoteDataSourceImpl : PostRemoteDataSource {
             val styles = extractParentStylesWithItself(it, parentStyles)
             parentElements[index].tables!![rowIndex][colIndex]?.textElement
                 ?.add(TextElement(it.wholeOwnText(), styles).apply {
-                    if(it.tagName() == P_TAG)
-                        this.text = "\n" + this.text
+                    if(parentElements[index].textElements.isNotEmpty())
+                        if (it.tagName() == P_TAG)
+                            this.text = "\n" + this.text
                 })
             extractTdTextElements(it, index, rowIndex, colIndex, styles)
         }
@@ -169,7 +171,6 @@ class PostRemoteDataSourceImpl : PostRemoteDataSource {
         return maxWidth
     }
 
-    // "style:..." 에 나타나 있는 것들만 추출함
     private fun extractStyles(styleAttr: String): MutableMap<String, String> {
         val styleAttrs = styleAttr.split(";")
         val styles = mutableMapOf<String, String>()
