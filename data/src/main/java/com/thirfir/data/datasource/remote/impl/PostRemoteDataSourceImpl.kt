@@ -11,6 +11,7 @@ import com.thirfir.domain.FONT_WEIGHT
 import com.thirfir.domain.ITALIC
 import com.thirfir.domain.ITALIC_TAG
 import com.thirfir.domain.LINE_THROUGH
+import com.thirfir.domain.P_TAG
 import com.thirfir.domain.ROWSPAN
 import com.thirfir.domain.STRIKE_TAG
 import com.thirfir.domain.STRONG_TAG
@@ -77,7 +78,10 @@ class PostRemoteDataSourceImpl : PostRemoteDataSource {
         element.children().forEach {
 
             val styles = extractParentStylesWithItself(it, parentStyles)
-            parentElements[index].textElements.add(TextElement(it.ownText(), styles))
+            parentElements[index].textElements.add(TextElement(it.ownText(), styles).apply {
+                if(it.tagName() == P_TAG)
+                    this.text = "\n" + this.text
+            })
             setDecorations(it, index)
             
             if(it.tagName() == TABLE_TAG) {
