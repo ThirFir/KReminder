@@ -209,7 +209,7 @@ class PostRemoteDataSourceImpl : PostRemoteDataSource {
     }
 
     private fun extractSubstrings(baseText: String, elements: MutableList<TextElement>): MutableList<TextElement> {
-        val sortedElements = elements.sortedBy { baseText.indexOf(it.text) }
+        val sortedElements = elements.sortedBy { baseText.indexOf(it.text.trim()) }
         return sortedElements.toMutableList()
     }
 }
