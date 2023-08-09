@@ -80,7 +80,7 @@ class PostRemoteDataSourceImpl : PostRemoteDataSource {
 
         // 모든 자식 element 순환
         element.children().forEach {
-            val styles = extractParentStylesWithItself(it, parentStyles)
+            var styles = extractParentStylesWithItself(it, parentStyles)
             if(it.wholeOwnText().isBlank() && parentElements[index].textElements.isNotEmpty())
                 parentElements[index].textElements.last().text += it.wholeOwnText()
             else {
@@ -91,11 +91,12 @@ class PostRemoteDataSourceImpl : PostRemoteDataSource {
                             "\n" + parentElements[index].textElements[parentElements[index].textElements.lastIndex].text
                 }
             }
-            setStyleOfTag(it, index)
-            if(parentElements[index].textElements[parentElements[index].textElements.lastIndex].style[TEXT_DECORATION_LINE] != null)
-                styles[TEXT_DECORATION_LINE] = parentElements[index].textElements[parentElements[index].textElements.lastIndex].style[TEXT_DECORATION_LINE]!!
-            if(parentElements[index].textElements[parentElements[index].textElements.lastIndex].style[FONT_WEIGHT] != null )
-                styles[FONT_WEIGHT] = parentElements[index].textElements[parentElements[index].textElements.lastIndex].style[FONT_WEIGHT]!!
+            styles = setStyleOfTag(it, index, styles)    // "현재" 태그에 대한 스타일 지정
+//            if(parentElements[index].textElements[parentElements[index].textElements.lastIndex].style[TEXT_DECORATION_LINE] != null)
+//                styles[TEXT_DECORATION_LINE] = parentElements[index].textElements[parentElements[index].textElements.lastIndex].style[TEXT_DECORATION_LINE]!!
+//            if(parentElements[index].textElements[parentElements[index].textElements.lastIndex].style[FONT_WEIGHT] != null )
+//                styles[FONT_WEIGHT] = parentElements[index].textElements[parentElements[index].textElements.lastIndex].style[FONT_WEIGHT]!!
+
             if(it.tagName() == TABLE_TAG) {
                 parentElements[index].enabledRootTag = EnabledRootTag.TABLE
                 extractTable(it.select(TBODY_TAG)[0], index, styles)
@@ -108,6 +109,7 @@ class PostRemoteDataSourceImpl : PostRemoteDataSource {
     /**
      * @param tbody tbody
      * @param index 최상위 태그(table) index
+     * @param parentStyles 부모 스타일
      */
     private fun extractTable(tbody: Element, index: Int, parentStyles: Map<String, String>) {
         // 테이블 사이즈 구하기 및 초기화
@@ -205,19 +207,33 @@ class PostRemoteDataSourceImpl : PostRemoteDataSource {
         }
     }
 
-    private fun setStyleOfTag(element: Element, index: Int) {
-        if (element.tagName().trim() == U_TAG || element.tagName().trim() == INS_TAG)
+    private fun setStyleOfTag(element: Element, index: Int, styles: MutableMap<String, String>) : MutableMap<String, String> {
+        if (element.tagName().trim() == U_TAG || element.tagName().trim() == INS_TAG) {
             parentElements[index].textElements[parentElements[index].textElements.lastIndex].style[TEXT_DECORATION_LINE] =
-                UNDERLINE
+                UNDERLINE.also {
+                    if(styles[TEXT_DECORATION_LINE] == null)
+                        styles[TEXT_DECORATION_LINE] = it
+                }
+        }
         else if (element.tagName().trim() == B_TAG || element.tagName().trim() == STRONG_TAG)
             parentElements[index].textElements[parentElements[index].textElements.lastIndex].style[FONT_WEIGHT] =
-                BOLD
+                BOLD.also {
+                    if(styles[FONT_WEIGHT] == null)
+                        styles[FONT_WEIGHT] = it
+                }
         else if (element.tagName().trim() == STRIKE_TAG || element.tagName().trim() == DEL_TAG)
             parentElements[index].textElements[parentElements[index].textElements.lastIndex].style[TEXT_DECORATION_LINE] =
-                LINE_THROUGH
+                LINE_THROUGH.also {
+                    if(styles[TEXT_DECORATION_LINE] == null)
+                        styles[TEXT_DECORATION_LINE] = it
+                }
         else if (element.tagName().trim() == I_TAG || element.tagName().trim() == EM_TAG)
             parentElements[index].textElements[parentElements[index].textElements.lastIndex].style[FONT_WEIGHT] =
-                ITALIC
+                ITALIC.also {
+                    if(styles[FONT_WEIGHT] == null)
+                        styles[FONT_WEIGHT] = it
+                }
+        return styles
     }
 
     private fun getSortedTextElements(baseText: String, elements: MutableList<TextElement>): MutableList<TextElement> {
