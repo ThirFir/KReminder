@@ -80,12 +80,12 @@ class PostRemoteDataSourceImpl : PostRemoteDataSource {
         element.children().forEach {
             val styles = extractParentStylesWithItself(it, parentStyles)
             parentElements[index].textElements.add(TextElement(it.wholeOwnText(), styles).apply {
-                if(parentElements[index].textElements.isNotEmpty())
+                if(parentElements[index].textElements.size <= 1)
                     if (it.tagName() == P_TAG)
                         this.text = "\n" + this.text
             })
             setStyleOfTag(it, index)
-            
+
             if(it.tagName() == TABLE_TAG) {
                 parentElements[index].enabledRootTag = EnabledRootTag.TABLE
                 extractTable(it.select(TBODY_TAG)[0], index, styles)
@@ -152,7 +152,7 @@ class PostRemoteDataSourceImpl : PostRemoteDataSource {
             val styles = extractParentStylesWithItself(it, parentStyles)
             parentElements[index].tables!![rowIndex][colIndex]?.textElement
                 ?.add(TextElement(it.wholeOwnText(), styles).apply {
-                    if(parentElements[index].textElements.isNotEmpty())
+                    if(parentElements[index].textElements.size <= 1)
                         if (it.tagName() == P_TAG)
                             this.text = "\n" + this.text
                 })
