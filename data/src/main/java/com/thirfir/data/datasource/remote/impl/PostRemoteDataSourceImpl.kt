@@ -79,11 +79,12 @@ class PostRemoteDataSourceImpl : PostRemoteDataSource {
         // 모든 자식 element 순환
         element.children().forEach {
             val styles = extractParentStylesWithItself(it, parentStyles)
-            parentElements[index].textElements.add(TextElement(it.wholeOwnText(), styles).apply {
-                if(parentElements[index].textElements.size > 0)
-                    if (it.tagName() == P_TAG)
-                        this.text = "\n" + this.text
-            })
+            parentElements[index].textElements.add(TextElement(it.wholeOwnText(), styles))
+            if(parentElements[index].textElements.size > 1) {   // 첫번째가 아닌 P_TAG는 줄바꿈
+                if (it.tagName() == P_TAG)
+                    parentElements[index].textElements[parentElements[index].textElements.lastIndex].text =
+                        "\n" + parentElements[index].textElements[parentElements[index].textElements.lastIndex].text
+            }
             setStyleOfTag(it, index)
 
             if(it.tagName() == TABLE_TAG) {
@@ -151,11 +152,11 @@ class PostRemoteDataSourceImpl : PostRemoteDataSource {
         e.children().forEach {
             val styles = extractParentStylesWithItself(it, parentStyles)
             parentElements[index].tables!![rowIndex][colIndex]?.textElement
-                ?.add(TextElement(it.wholeOwnText(), styles).apply {
-                    if(parentElements[index].textElements.size > 0)
-                        if (it.tagName() == P_TAG)
-                            this.text = "\n" + this.text
-                })
+                ?.add(TextElement(it.wholeOwnText(), styles))
+            if(parentElements[index].tables!![rowIndex][colIndex]?.textElement?.size!! > 1)
+                if (it.tagName() == P_TAG)
+                    parentElements[index].tables!![rowIndex][colIndex]?.textElement?.last()?.text =
+                        "\n" + parentElements[index].tables!![rowIndex][colIndex]?.textElement?.last()?.text
             extractTdTextElements(it, index, rowIndex, colIndex, styles)
         }
     }
