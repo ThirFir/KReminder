@@ -80,7 +80,7 @@ class PostRemoteDataSourceImpl : PostRemoteDataSource {
         element.children().forEach {
             val styles = extractParentStylesWithItself(it, parentStyles)
             parentElements[index].textElements.add(TextElement(it.wholeOwnText(), styles).apply {
-                if(parentElements[index].textElements.size > 1)
+                if(parentElements[index].textElements.size > 0)
                     if (it.tagName() == P_TAG)
                         this.text = "\n" + this.text
             })
@@ -152,7 +152,7 @@ class PostRemoteDataSourceImpl : PostRemoteDataSource {
             val styles = extractParentStylesWithItself(it, parentStyles)
             parentElements[index].tables!![rowIndex][colIndex]?.textElement
                 ?.add(TextElement(it.wholeOwnText(), styles).apply {
-                    if(parentElements[index].textElements.size > 1)
+                    if(parentElements[index].textElements.size > 0)
                         if (it.tagName() == P_TAG)
                             this.text = "\n" + this.text
                 })
