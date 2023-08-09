@@ -3,7 +3,7 @@ buildscript {
     ext {
         dagger_version = "2.44"
         coroutine_version = "1.6.4"
-        jsoup_version = "1.14.2"
+        jsoup_version = "1.15.3"
         room_version = "2.5.2"
         glide_version = "4.15.1"
     }

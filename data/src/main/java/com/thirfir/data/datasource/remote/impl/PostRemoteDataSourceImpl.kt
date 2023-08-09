@@ -38,7 +38,6 @@ class PostRemoteDataSourceImpl : PostRemoteDataSource {
             Jsoup.connect(
                 BASE_URL.addQueryString("b", bulletin)
                     .addQueryString("p", pid)).get()
-        doc.outputSettings().prettyPrint(false)
         val mParentElements = doc.select(".bc-s-post-ctnt-area > *")
 
         mParentElements.forEachIndexed { index, element ->
@@ -80,7 +79,7 @@ class PostRemoteDataSourceImpl : PostRemoteDataSource {
         // 모든 자식 element 순환
         element.children().forEach {
             val styles = extractParentStylesWithItself(it, parentStyles)
-            parentElements[index].textElements.add(TextElement(it.ownText(), styles).apply {
+            parentElements[index].textElements.add(TextElement(it.wholeOwnText(), styles).apply {
                 if(it.tagName() == P_TAG)
                     this.text = "\n" + this.text
             })
