@@ -4,12 +4,14 @@ import com.thirfir.data.datasource.remote.PostRemoteDataSource
 import com.thirfir.data.datasource.remote.dto.PostDTO
 import com.thirfir.domain.BASE_URL
 import com.thirfir.domain.BOLD
-import com.thirfir.domain.BOLD_TAG
+import com.thirfir.domain.B_TAG
 import com.thirfir.domain.COLSPAN
+import com.thirfir.domain.DEL_TAG
 import com.thirfir.domain.EM_TAG
 import com.thirfir.domain.FONT_WEIGHT
+import com.thirfir.domain.INS_TAG
 import com.thirfir.domain.ITALIC
-import com.thirfir.domain.ITALIC_TAG
+import com.thirfir.domain.I_TAG
 import com.thirfir.domain.LINE_THROUGH
 import com.thirfir.domain.P_TAG
 import com.thirfir.domain.ROWSPAN
@@ -21,7 +23,7 @@ import com.thirfir.domain.TBODY_TAG
 import com.thirfir.domain.TD_TAG
 import com.thirfir.domain.TEXT_DECORATION_LINE
 import com.thirfir.domain.UNDERLINE
-import com.thirfir.domain.UNDERLINE_TAG
+import com.thirfir.domain.U_TAG
 import com.thirfir.domain.addQueryString
 import com.thirfir.domain.model.element.EnabledRootTag
 import com.thirfir.domain.model.element.ParentElement
@@ -78,6 +80,7 @@ class PostRemoteDataSourceImpl : PostRemoteDataSource {
 
         // 모든 자식 element 순환
         element.children().forEach {
+            setStyleOfTag(it, index)
             val styles = extractParentStylesWithItself(it, parentStyles)
             if(it.wholeOwnText().isBlank() && parentElements[index].textElements.isNotEmpty())
                 parentElements[index].textElements.last().text += it.wholeOwnText()
@@ -88,7 +91,6 @@ class PostRemoteDataSourceImpl : PostRemoteDataSource {
                         parentElements[index].textElements[parentElements[index].textElements.lastIndex].text =
                             "\n" + parentElements[index].textElements[parentElements[index].textElements.lastIndex].text
                 }
-                setStyleOfTag(it, index)
             }
             if(it.tagName() == TABLE_TAG) {
                 parentElements[index].enabledRootTag = EnabledRootTag.TABLE
@@ -190,7 +192,8 @@ class PostRemoteDataSourceImpl : PostRemoteDataSource {
 
     private fun extractParentStylesWithItself(element: Element, parentStyles: Map<String, String>) : MutableMap<String, String> {
         return extractStyles(element.attr(STYLE)).apply {
-            // 자식 뷰에 부모 스타일 적용
+            // 자식 스타일 추출한 다음 지정되지 않은 스타일만
+            // 부모 스타일 적용
             parentStyles.forEach { parentStyle ->
                 if(this[parentStyle.key] == null)
                     this[parentStyle.key] = parentStyle.value
@@ -199,16 +202,16 @@ class PostRemoteDataSourceImpl : PostRemoteDataSource {
     }
 
     private fun setStyleOfTag(element: Element, index: Int) {
-        if (element.tagName().trim() == UNDERLINE_TAG)
+        if (element.tagName().trim() == U_TAG || element.tagName().trim() == INS_TAG)
             parentElements[index].textElements[parentElements[index].textElements.lastIndex].style[TEXT_DECORATION_LINE] =
                 UNDERLINE
-        else if (element.tagName().trim() == BOLD_TAG || element.tagName().trim() == STRONG_TAG)
+        else if (element.tagName().trim() == B_TAG || element.tagName().trim() == STRONG_TAG)
             parentElements[index].textElements[parentElements[index].textElements.lastIndex].style[FONT_WEIGHT] =
                 BOLD
-        else if (element.tagName().trim() == STRIKE_TAG)
+        else if (element.tagName().trim() == STRIKE_TAG || element.tagName().trim() == DEL_TAG)
             parentElements[index].textElements[parentElements[index].textElements.lastIndex].style[TEXT_DECORATION_LINE] =
                 LINE_THROUGH
-        else if (element.tagName().trim() == ITALIC_TAG || element.tagName().trim() == EM_TAG)
+        else if (element.tagName().trim() == I_TAG || element.tagName().trim() == EM_TAG)
             parentElements[index].textElements[parentElements[index].textElements.lastIndex].style[FONT_WEIGHT] =
                 ITALIC
     }

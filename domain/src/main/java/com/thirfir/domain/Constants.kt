@@ -3,11 +3,13 @@ package com.thirfir.domain
 const val BASE_URL = "https://portal.koreatech.ac.kr/ctt/bb/bulletin"
 
 
-const val UNDERLINE_TAG = "u"
-const val BOLD_TAG = "b"
+const val U_TAG = "u"
+const val B_TAG = "b"
 const val STRIKE_TAG = "strike"
-const val ITALIC_TAG = "i"
+const val I_TAG = "i"
 const val STRONG_TAG = "strong"
+const val INS_TAG = "ins"
+const val DEL_TAG = "del"
 const val EM_TAG = "em"
 const val SPAN_TAG = "span"
 const val P_TAG = "p"
