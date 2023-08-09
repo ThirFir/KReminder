@@ -2,7 +2,7 @@ package com.thirfir.domain.model.element
 
 
 data class ParentElement(   // 이거의 list
-    val textElements: MutableList<TextElement>,
+    var textElements: MutableList<TextElement>,
     var enabledRootTag: EnabledRootTag,
     var tables: MutableList<MutableList<TableElement?>>? = null
 )

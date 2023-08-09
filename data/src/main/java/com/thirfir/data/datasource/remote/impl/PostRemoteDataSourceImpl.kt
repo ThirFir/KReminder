@@ -61,6 +61,8 @@ class PostRemoteDataSourceImpl : PostRemoteDataSource {
                     extractStyles(element.attr(STYLE))
                 )
             }
+
+            parentElements[index].textElements = extractSubstrings(element.text(), parentElements[index].textElements)
         }
 
         return PostDTO(parentElements)
@@ -76,13 +78,12 @@ class PostRemoteDataSourceImpl : PostRemoteDataSource {
 
         // 모든 자식 element 순환
         element.children().forEach {
-
             val styles = extractParentStylesWithItself(it, parentStyles)
             parentElements[index].textElements.add(TextElement(it.ownText(), styles).apply {
                 if(it.tagName() == P_TAG)
                     this.text = "\n" + this.text
             })
-            setDecorations(it, index)
+            setStyleOfTag(it, index)
             
             if(it.tagName() == TABLE_TAG) {
                 parentElements[index].enabledRootTag = EnabledRootTag.TABLE
@@ -192,7 +193,7 @@ class PostRemoteDataSourceImpl : PostRemoteDataSource {
         }
     }
 
-    private fun setDecorations(element: Element, index: Int) {
+    private fun setStyleOfTag(element: Element, index: Int) {
         if (element.tagName().trim() == UNDERLINE_TAG)
             parentElements[index].textElements[parentElements[index].textElements.lastIndex].style[TEXT_DECORATION_LINE] =
                 UNDERLINE
@@ -205,6 +206,11 @@ class PostRemoteDataSourceImpl : PostRemoteDataSource {
         else if (element.tagName().trim() == ITALIC_TAG || element.tagName().trim() == EM_TAG)
             parentElements[index].textElements[parentElements[index].textElements.lastIndex].style[FONT_WEIGHT] =
                 ITALIC
+    }
+
+    private fun extractSubstrings(baseText: String, parts: MutableList<TextElement>): MutableList<TextElement> {
+        val sortedParts = parts.sortedBy { baseText.indexOf(it.text) }
+        return sortedParts.toMutableList()
     }
 }
 
