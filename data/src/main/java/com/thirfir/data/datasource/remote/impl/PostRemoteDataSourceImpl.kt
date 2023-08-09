@@ -75,11 +75,11 @@ class PostRemoteDataSourceImpl : PostRemoteDataSource {
 
         // 모든 자식 element 순환
         element.children().forEach {
-            setDecorations(it, index)
 
             val styles = extractParentStylesWithItself(it, parentStyles)
             parentElements[index].textElements.add(TextElement(it.ownText(), styles))
-
+            setDecorations(it, index)
+            
             if(it.tagName() == TABLE_TAG) {
                 parentElements[index].enabledRootTag = EnabledRootTag.TABLE
                 extractTable(it.select(TBODY_TAG)[0], index, styles)
