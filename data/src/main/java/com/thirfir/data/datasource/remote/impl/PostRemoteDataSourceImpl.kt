@@ -79,7 +79,7 @@ class PostRemoteDataSourceImpl : PostRemoteDataSource {
         // 모든 자식 element 순환
         element.children().forEach {
             val styles = extractParentStylesWithItself(it, parentStyles)
-            if(it.wholeOwnText().isBlank())
+            if(it.wholeOwnText().isBlank() && parentElements[index].textElements.isNotEmpty())
                 parentElements[index].textElements.last().text += it.wholeOwnText()
             else {
                 parentElements[index].textElements.add(TextElement(it.wholeOwnText(), styles))
