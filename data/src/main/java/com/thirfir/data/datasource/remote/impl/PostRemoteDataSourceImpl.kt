@@ -86,9 +86,10 @@ class PostRemoteDataSourceImpl : PostRemoteDataSource {
                     styles = setStyleOfTag(childNode, index, styles)
 
                 var p = pDepth
-                if(childNode.tagName() == P_TAG) {
-                    if(childIndex != 0)
+                if(childNode.tagName() == P_TAG && childIndex != 0) {
+                    if(!isEmptyNode(childNode)) {
                         ++p
+                    }
                 }
                 if(childNode.tagName() == BR_TAG) {
                     parentElements[index].textElements.add(TextElement("\n", parentStyles as MutableMap))
@@ -105,7 +106,22 @@ class PostRemoteDataSourceImpl : PostRemoteDataSource {
             }
         }
     }
-
+    private fun isEmptyNode(element: Element): Boolean {
+        for (child in element.childNodes()) {
+            if (child is TextNode) {
+                val text = child.text().trim()
+                if (text.isNotEmpty()) {
+                    return false
+                }
+            } else if (child is Element) {
+                val childElement = child
+                if (!isEmptyNode(childElement)) {
+                    return false
+                }
+            }
+        }
+        return true
+    }
     /**
      * @param tbody tbody
      * @param index 최상위 태그(table) index
