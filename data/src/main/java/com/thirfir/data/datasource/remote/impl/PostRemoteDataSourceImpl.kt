@@ -45,42 +45,29 @@ class PostRemoteDataSourceImpl : PostRemoteDataSource {
 
     private val parentElements: MutableList<ParentElement> = mutableListOf()
     override suspend fun getPostDTO(bulletin: Int, pid: Int): PostDTO {
-        val doc =
-            Jsoup.connect(
+        val doc = Jsoup.connect(
                 BASE_URL.addQueryString("b", bulletin)
                     .addQueryString("p", pid)).get()
         val mParentElements = doc.select(".bc-s-post-ctnt-area > *")
 
         mParentElements.forEachIndexed { index, element ->
             if (index >= parentElements.size) {
-                parentElements.add(
-                    ParentElement(
-                        mutableListOf(),
-                        EnabledRootTag.P,
-                        mutableListOf()
-                    )
-                )
+                parentElements.add(ParentElement(mutableListOf(), EnabledRootTag.P, mutableListOf()))
             }
+
+            val parentStyle = extractStyles(element.attr(STYLE)).apply {
+                if(this[FONT_SIZE] == null)
+                    this[FONT_SIZE] = "12pt"
+            }
+
             if(element.tagName() == TABLE_TAG) {
                 parentElements[index].enabledRootTag = EnabledRootTag.TABLE
-                extractTable(element.select(TBODY_TAG)[0], index, extractStyles(element.attr(STYLE)).apply {
-                    if(this[FONT_SIZE] == null)
-                        this[FONT_SIZE] = "10pt"
-                })
+                extractTable(element.select(TBODY_TAG)[0], index, parentStyle)
             } else {
                 parentElements[index].enabledRootTag = EnabledRootTag.P
-                extractTextElements(
-                    element,
-                    index,
-                    extractStyles(element.attr(STYLE)).apply {
-                        if(this[FONT_SIZE] == null)
-                            this[FONT_SIZE] = "10pt"
-                    }
-                )
+                extractTextElements(element, index, parentStyle)
             }
-
         }
-
         return PostDTO(parentElements)
     }
 
@@ -88,6 +75,7 @@ class PostRemoteDataSourceImpl : PostRemoteDataSource {
      * @param element 현재 element
      * @param index 최상위 태그 index
      * @param parentStyles 부모 스타일
+     * @param pDepth 줄바꿈 횟수
      */
     private fun extractTextElements(element: Element, index: Int, parentStyles: Map<String, String>, pDepth: Int = 0) {
 
