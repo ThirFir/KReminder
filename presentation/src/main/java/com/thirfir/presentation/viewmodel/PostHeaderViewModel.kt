@@ -8,6 +8,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,7 +25,9 @@ class PostHeaderViewModel @Inject constructor(
 
     fun fetchPostHeaders(bulletin: Int, page: Int) {
         viewModelScope.launch {
-            _postHeaders.value = emptyList()
+            getPostHeadersUseCase(bulletin, page).collect {
+                _postHeaders.emit(it)
+            }
         }
     }
 }
