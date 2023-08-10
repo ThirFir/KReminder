@@ -14,6 +14,8 @@ class PostViewModel @Inject constructor(
     private val getPostUseCase: GetPostUseCase
 ) : ViewModel() {
 
+    private var exceptionCallback: ExceptionCallback? = null
+
     /**
      * @param bulletin 게시판 번호
      * @param pid 글 번호
@@ -25,8 +27,16 @@ class PostViewModel @Inject constructor(
                 onResponseCallback(getPostUseCase(bulletin, pid))
             } catch (e: Exception) {
                 Log.e("PostViewModel", e.toString())
-                // TODO : WebView로 페이지 열기
+                exceptionCallback?.onException(e)
             }
         }
+    }
+
+    interface ExceptionCallback {
+        fun onException(e: Exception)
+    }
+
+    fun registerExceptionCallback(callback: ExceptionCallback) {
+        this.exceptionCallback = callback
     }
 }

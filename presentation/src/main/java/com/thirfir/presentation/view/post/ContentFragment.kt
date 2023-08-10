@@ -1,5 +1,6 @@
 package com.thirfir.presentation.view.post
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
@@ -32,11 +33,9 @@ import com.thirfir.domain.toColor
 import com.thirfir.domain.toDP
 import com.thirfir.domain.toGravity
 import com.thirfir.domain.toTextStyle
-import com.thirfir.presentation.R
 import com.thirfir.presentation.databinding.FragmentContentBinding
 import com.thirfir.presentation.viewmodel.PostViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.NonDisposableHandle.parent
 import kotlin.math.roundToInt
 
 @AndroidEntryPoint
@@ -49,6 +48,16 @@ class ContentFragment private constructor(): Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        viewModel.registerExceptionCallback(object : PostViewModel.ExceptionCallback {
+            override fun onException(e: Exception) {
+                val intent = Intent(requireActivity(), PostWebViewActivity::class.java)
+                intent.putExtra(BULLETIN, bulletin)
+                intent.putExtra(PID, pid)
+                startActivity(intent)
+
+                requireActivity().finish()
+            }
+        })
     }
 
     override fun onCreateView(
@@ -71,7 +80,7 @@ class ContentFragment private constructor(): Fragment() {
                 addTextView(parentElement.textElements)
             }
             EnabledRootTag.TABLE -> {
-
+                binding.root.addView(TableView(requireContext(), parentElement.tables!!))
             }
             EnabledRootTag.H3 -> {
 
