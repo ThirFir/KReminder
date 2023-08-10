@@ -12,7 +12,7 @@
             android:name=".MainActivity"
             android:exported="true" />
         <activity
-            android:name=".PostActivity"
+            android:name=".PostListActivity"
             android:exported="true" />
     </application>
 
