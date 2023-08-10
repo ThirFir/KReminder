@@ -220,20 +220,19 @@ class PostRemoteDataSourceImpl : PostRemoteDataSource {
     }
 
     private fun setStyleOfTag(element: Element, index: Int, styles: MutableMap<String, String>) : MutableMap<String, String> {
-        if (element.tagName().trim() == U_TAG || element.tagName().trim() == INS_TAG)
-            if(styles[TEXT_DECORATION_LINE] == null)
+        if (element.tagName().trim() == U_TAG || element.tagName().trim() == INS_TAG) {
+            if (styles[TEXT_DECORATION_LINE] == null)
                 styles[TEXT_DECORATION_LINE] = UNDERLINE
-            else if (element.tagName().trim() == B_TAG || element.tagName().trim() == STRONG_TAG)
-                if(styles[FONT_WEIGHT] == null)
-                    styles[FONT_WEIGHT] = BOLD
-
-                else if (element.tagName().trim() == STRIKE_TAG || element.tagName().trim() == DEL_TAG)
-                    if(styles[TEXT_DECORATION_LINE] == null)
-                        styles[TEXT_DECORATION_LINE] = LINE_THROUGH
-
-                    else if (element.tagName().trim() == I_TAG || element.tagName().trim() == EM_TAG)
-                        if(styles[FONT_WEIGHT] == null)
-                            styles[FONT_WEIGHT] = ITALIC
+        } else if (element.tagName().trim() == B_TAG || element.tagName().trim() == STRONG_TAG) {
+            if (styles[FONT_WEIGHT] == null)
+                styles[FONT_WEIGHT] = BOLD
+        } else if (element.tagName().trim() == STRIKE_TAG || element.tagName().trim() == DEL_TAG) {
+            if (styles[TEXT_DECORATION_LINE] == null)
+                styles[TEXT_DECORATION_LINE] = LINE_THROUGH
+        } else if (element.tagName().trim() == I_TAG || element.tagName().trim() == EM_TAG) {
+            if (styles[FONT_WEIGHT] == null)
+                styles[FONT_WEIGHT] = ITALIC
+        }
         return styles
     }
 
