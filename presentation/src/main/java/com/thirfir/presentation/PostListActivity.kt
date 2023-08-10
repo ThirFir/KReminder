@@ -2,14 +2,13 @@ package com.thirfir.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.databinding.DataBindingUtil.setContentView
-import com.thirfir.presentation.databinding.ActivityPostBinding
+import com.thirfir.presentation.databinding.ActivityListBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class PostActivity : AppCompatActivity(){
-    private val binding: ActivityPostBinding by lazy {
-        ActivityPostBinding.inflate(layoutInflater)
+class PostListActivity : AppCompatActivity(){
+    private val binding: ActivityListBinding by lazy {
+        ActivityListBinding.inflate(layoutInflater)
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

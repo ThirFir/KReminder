@@ -16,7 +16,16 @@ class PostViewModel @Inject constructor(
 
     init {
         fetchPost(14,30975) {    // 페이지, 글번호
-            Log.d("PostViewModel", it.textElements.toString())
+            //Log.d("PostViewModel", it.parentElements.toString())
+            it.parentElements.forEach { pe ->
+                pe.tables?.forEach { table ->
+                    table?.forEach { te ->
+                        te?.textElement?.forEach { textElement ->
+                            Log.d("PostViewModel", textElement.text)
+                        }
+                    }
+                }
+            }
         }
     }
     fun fetchPost(bulletin: Int, pid: Int, onResponseCallback: (Post) -> Unit) {
