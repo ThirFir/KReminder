@@ -37,8 +37,8 @@ class PostFragment : Fragment() {
         initPaginationButtons()
 
         // 추가 데이터 아이템들...
-        postItems.add(PostItem(30976, "일반공지", BASE_URL.addQueryString("b", 14, 30976)))
-        postItems.add(PostItem(30978, "장학공지", BASE_URL.addQueryString("b", 14, 30978)))
+        postItems.add(PostItem(30976, "hi", BASE_URL.addQueryString("b", 14, 30976)))
+        postItems.add(PostItem(30978, "hi", BASE_URL.addQueryString("b", 14, 30978)))
         postItems.add(PostItem(30976, "일반공지", BASE_URL.addQueryString("b", 14, 30976)))
         postItems.add(PostItem(30978, "장학공지", BASE_URL.addQueryString("b", 14, 30978)))
         postItems.add(PostItem(30976, "일반공지", BASE_URL.addQueryString("b", 14, 30976)))
@@ -86,6 +86,11 @@ class PostFragment : Fragment() {
                 .replace(R.id.main_fragment_container, contentFragment)
                 .addToBackStack(null)
                 .commit()
+        }
+        binding.searchButton.setOnClickListener {
+            val searchText = binding.searchEditText.text.toString()
+            val filteredItems = postItems.filter { it.title.contains(searchText, ignoreCase = true) }
+            updateRecyclerViewData(filteredItems)
         }
     }
 
@@ -157,6 +162,13 @@ class PostFragment : Fragment() {
         updateButtonState()
     }
 
+    private fun updateRecyclerViewData(newList: List<PostItem>) {
+        val start = (currentPage - 1) * postsPerPage
+        val end = minOf(start + postsPerPage, newList.size)
+        val sublist = newList.subList(start, end)
+        postAdapter.submitList(sublist)
+        updateButtonState()
+    }
 
     private fun updateButtonState() {
         val totalPage = (postItems.size + postsPerPage - 1) / postsPerPage
