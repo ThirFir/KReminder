@@ -1,4 +1,4 @@
-package com.thirfir.presentation
+package com.thirfir.presentation.view.keyword
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

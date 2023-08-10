@@ -16,7 +16,7 @@
         android:theme="@style/Theme.KReminder"
         tools:targetApi="31">
         <activity
-            android:name="com.thirfir.presentation.MainActivity"
+            android:name="com.thirfir.presentation.view.main.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,7 +24,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.thirfir.presentation.SettingActivity"
+        <activity android:name="com.thirfir.presentation.view.setting.SettingActivity"
             android:exported="false"/>
     </application>
 

@@ -1,4 +1,4 @@
-package com.thirfir.presentation
+package com.thirfir.presentation.view.main
 
 import android.graphics.Rect
 import android.os.Bundle
@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.thirfir.domain.BASE_URL
 import com.thirfir.domain.addQueryString
+import com.thirfir.presentation.R
 import com.thirfir.presentation.adapter.BulletinBoardsAdapter
 import com.thirfir.presentation.databinding.FragmentBulletinBoardBinding
 import com.thirfir.presentation.model.BulletinBoardItem
@@ -59,7 +60,9 @@ class BulletinBoardFragment private constructor(): Fragment() {
         binding.topAppBar.setOnMenuItemClickListener {
             when(it.itemId) {
                 R.id.overflow_menu -> {
-                    modalBottomSheet.show(requireActivity().supportFragmentManager, OverflowMenuModalBottomSheet.TAG)
+                    modalBottomSheet.show(requireActivity().supportFragmentManager,
+                        OverflowMenuModalBottomSheet.TAG
+                    )
                     true
                 }
                 else -> false

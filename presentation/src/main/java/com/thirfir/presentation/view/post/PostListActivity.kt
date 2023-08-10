@@ -1,14 +1,14 @@
-package com.thirfir.presentation
+package com.thirfir.presentation.view.post
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.thirfir.presentation.databinding.ActivityListBinding
+import com.thirfir.presentation.databinding.ActivityPostListBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class PostListActivity : AppCompatActivity(){
-    private val binding: ActivityListBinding by lazy {
-        ActivityListBinding.inflate(layoutInflater)
+    private val binding: ActivityPostListBinding by lazy {
+        ActivityPostListBinding.inflate(layoutInflater)
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,7 +19,7 @@ class PostListActivity : AppCompatActivity(){
 
     private fun initView() {
         supportFragmentManager.beginTransaction()
-            .add(binding.postFragmentContainer.id, PostFragment.newInstance())
+            .add(binding.postFragmentContainer.id, PostListFragment.newInstance())
             .commit()
     }
 

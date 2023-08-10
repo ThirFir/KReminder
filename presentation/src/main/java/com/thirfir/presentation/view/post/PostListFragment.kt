@@ -1,4 +1,4 @@
-package com.thirfir.presentation
+package com.thirfir.presentation.view.post
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,15 +6,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.thirfir.presentation.R
 import com.thirfir.presentation.adapter.PostAdapter
-import com.thirfir.presentation.databinding.FragmentPostBinding
+import com.thirfir.presentation.databinding.FragmentPostListBinding
 import com.thirfir.presentation.model.PostItem
 
 
 
-class PostFragment : Fragment() {
+class PostListFragment : Fragment() {
 
-    private lateinit var binding: FragmentPostBinding
+    private lateinit var binding: FragmentPostListBinding
     private lateinit var postAdapter: PostAdapter
     private var currentPage = 1
     private val postsPerPage = 20
@@ -33,7 +34,7 @@ class PostFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentPostBinding.inflate(inflater, container, false)
+        binding = FragmentPostListBinding.inflate(inflater, container, false)
 
         initClickListeners()
         initRecyclerView()
@@ -57,11 +58,12 @@ class PostFragment : Fragment() {
 
     private fun initClickListeners() {
         postAdapter = PostAdapter { postItem ->
-            val contentFragment = ContentFragment.newInstance(postItem.url)
+            val postFragment = PostFragment.newInstance(postItem.url)
             requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.main_fragment_container, contentFragment)
+                .replace(R.id.main_fragment_container, postFragment)
                 .addToBackStack(null)
                 .commit()
+            // TODO Activity로 전환
         }
         binding.searchButton.setOnClickListener {
             val searchText = binding.searchEditText.text.toString()
@@ -73,9 +75,9 @@ class PostFragment : Fragment() {
     private fun initRecyclerView() {
         binding.recyclerViewPost.layoutManager = LinearLayoutManager(requireContext())
         postAdapter = PostAdapter { postItem ->
-            val contentFragment = ContentFragment.newInstance(postItem.url)
+            val postFragment = PostFragment.newInstance(postItem.url)
             requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.main_fragment_container, contentFragment)
+                .replace(R.id.main_fragment_container, postFragment)
                 .addToBackStack(null)
                 .commit()
         }
@@ -167,7 +169,7 @@ class PostFragment : Fragment() {
     companion object {
         @JvmStatic
         fun newInstance() =
-            PostFragment().apply {
+            PostListFragment().apply {
                 arguments = Bundle().apply {
                     // Add any arguments if needed
                 }

@@ -1,4 +1,4 @@
-package com.thirfir.presentation
+package com.thirfir.presentation.view.setting
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

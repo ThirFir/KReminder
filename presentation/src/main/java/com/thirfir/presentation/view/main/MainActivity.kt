@@ -1,4 +1,4 @@
-package com.thirfir.presentation
+package com.thirfir.presentation.view.main
 
 import android.os.Bundle
 import androidx.activity.viewModels

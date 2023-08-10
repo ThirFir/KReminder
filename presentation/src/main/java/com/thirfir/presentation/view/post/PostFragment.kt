@@ -1,15 +1,16 @@
-package com.thirfir.presentation
+package com.thirfir.presentation.view.post
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.thirfir.presentation.databinding.FragmentContentBinding
+import com.thirfir.presentation.R
+import com.thirfir.presentation.databinding.FragmentPostBinding
 
 
-class ContentFragment : Fragment() {
-    private var _binding: FragmentContentBinding? = null
+class PostFragment : Fragment() {
+    private var _binding: FragmentPostBinding? = null
     private val binding get() = _binding!!
     // private lateinit var binding: FragmentContentBinding
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,7 +22,7 @@ class ContentFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {//아마 수정을 좀 많이 해야할지도..?
-        _binding = FragmentContentBinding.inflate(inflater, container, false)
+        _binding = FragmentPostBinding.inflate(inflater, container, false)
         val url = arguments?.getString(ARG_URL) ?: ""// 일단 url 받아오긴했는데..
 
         binding.postTitle.text="크롤링"// 게시글 제목 설정
@@ -29,7 +30,7 @@ class ContentFragment : Fragment() {
         binding.postWriter.text="작성자 |" + "크롤링"
         binding.postDate.text="날짜 |" + "크롤링"
         binding.postContent.text= "크롤링"
-        return inflater.inflate(R.layout.fragment_content, container, false)
+        return inflater.inflate(R.layout.fragment_post, container, false)
     }
 
     companion object {
@@ -37,7 +38,7 @@ class ContentFragment : Fragment() {
 
         @JvmStatic
         fun newInstance(url: String) =
-            ContentFragment().apply {
+            PostFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_URL, url)
                 }
