@@ -1,60 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ContentFragment">
+    tools:context=".view.post.ContentFragment">
 
-    <!-- ScrollView로 스크롤 가능한 내용을 추가합니다 -->
-    <ScrollView
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <!-- 스크롤 가능한 뷰 그룹을 추가합니다 -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/post_detail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/bullet" />
-
-            <TextView
-                android:id="@+id/post_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/post_title" />
-
-            <TextView
-                android:id="@+id/post_writer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/author_label"
-                />
-
-            <TextView
-                android:id="@+id/post_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/post_date"
-                />
-
-            <TextView
-                android:id="@+id/post_content"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/post_text" />
-
-
-
-
-            <!-- 다른 뷰들... -->
-
-        </LinearLayout>
-
-    </ScrollView>
+        android:layout_height="match_parent"
+        android:text="@string/hello_blank_fragment" />
 
 </FrameLayout>

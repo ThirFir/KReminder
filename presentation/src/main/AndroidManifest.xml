@@ -3,16 +3,16 @@
 
     <application>
         <activity
-            android:name=".KeywordActivity"
+            android:name=".view.keyword.KeywordActivity"
             android:exported="false" />
         <activity
-            android:name=".SettingActivity"
+            android:name=".view.setting.SettingActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".view.main.MainActivity"
             android:exported="true" />
         <activity
-            android:name=".PostListActivity"
+            android:name=".view.post.PostListActivity"
             android:exported="true" />
     </application>
 

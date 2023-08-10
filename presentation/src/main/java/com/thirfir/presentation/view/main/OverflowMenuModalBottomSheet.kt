@@ -1,4 +1,4 @@
-package com.thirfir.presentation
+package com.thirfir.presentation.view.main
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,9 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.thirfir.presentation.R
 import com.thirfir.presentation.adapter.OverflowMenuAdapter
 import com.thirfir.presentation.databinding.ModalBottomSheetOverflowMenuBinding
 import com.thirfir.presentation.model.MenuItem
+import com.thirfir.presentation.view.keyword.KeywordActivity
+import com.thirfir.presentation.view.setting.SettingActivity
 
 class OverflowMenuModalBottomSheet : BottomSheetDialogFragment() {
     private lateinit var binding: ModalBottomSheetOverflowMenuBinding

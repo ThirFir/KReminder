@@ -1,7 +1,8 @@
-package com.thirfir.presentation
+package com.thirfir.presentation.view.setting
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.thirfir.presentation.R
 import com.thirfir.presentation.databinding.ActivitySettingBinding
 import dagger.hilt.android.AndroidEntryPoint
 
