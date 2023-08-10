@@ -20,6 +20,8 @@ class MainActivity : AppCompatActivity() {
 
         initViews()
         viewModel
+
+
     }
 
     private fun initViews() {
