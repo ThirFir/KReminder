@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.thirfir.presentation.databinding.ActivityMainBinding
+import com.thirfir.presentation.view.post.ContentFragment
 import com.thirfir.presentation.viewmodel.PostViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -26,7 +27,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initViews() {
         supportFragmentManager.beginTransaction()
-            .add(binding.mainFragmentContainer.id, BulletinBoardFragment.newInstance())
+            .add(binding.mainFragmentContainer.id, ContentFragment.newInstance(14 ,30949))
             .commit()
     }
 }

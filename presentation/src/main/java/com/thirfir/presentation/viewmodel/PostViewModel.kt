@@ -26,7 +26,7 @@ class PostViewModel @Inject constructor(
             try {
                 onResponseCallback(getPostUseCase(bulletin, pid))
             } catch (e: Exception) {
-                Log.e("PostViewModel", e.toString())
+                Log.e("onResponseCallback", e.toString())
                 exceptionCallback?.onException(e)
             }
         }

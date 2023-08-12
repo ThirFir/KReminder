@@ -1,5 +1,6 @@
 package com.thirfir.presentation.view.post
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.webkit.WebChromeClient
@@ -31,9 +32,11 @@ class PostWebViewActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     private fun setSettings() {
         binding.postWebView.settings.apply {
             setSupportZoom(true)
+            javaScriptEnabled = true
             // TODO 설정 추가
         }
     }

@@ -9,45 +9,45 @@ import android.view.Gravity
 import java.util.Locale
 
 fun String?.toColor(isBackground: Boolean = false): Int {
-    if(this == null)
+    if (this == null)
         return if (isBackground) Color.TRANSPARENT else Color.BLACK
-    if(contains("rgb", true)) {
+    if (contains("rgb", true)) {
         val rgb = this.substringAfter("rgb(").substringBefore(")").split(",")
         return Color.rgb(rgb[0].trim().toInt(), rgb[1].trim().toInt(), rgb[2].trim().toInt())
     }
-    if(contains("#", true)) {
+    if (contains("#", true)) {
         return Color.parseColor(this)
     }
     return when (this.trim().lowercase(Locale.ROOT)) {
-        "black" -> Color.BLACK
-        "blue" -> Color.BLUE
-        "cyan" -> Color.CYAN
-        "darkgray" -> Color.DKGRAY
-        "gray" -> Color.GRAY
-        "green" -> Color.GREEN
-        "lightgray" -> Color.LTGRAY
-        "magenta" -> Color.MAGENTA
-        "red" -> Color.RED
-        "white" -> Color.WHITE
-        "yellow" -> Color.YELLOW
-        "transparent" -> Color.TRANSPARENT
+        BLACK -> Color.BLACK
+        BLUE -> Color.BLUE
+        CYAN -> Color.CYAN
+        DARK_GRAY -> Color.DKGRAY
+        GRAY -> Color.GRAY
+        GREEN -> Color.GREEN
+        LIGHT_GRAY -> Color.LTGRAY
+        MAGENTA -> Color.MAGENTA
+        RED -> Color.RED
+        WHITE -> Color.WHITE
+        YELLOW -> Color.YELLOW
+        TRANSPARENT -> Color.TRANSPARENT
         else -> Color.BLACK
     }
 }
 
 /** font-weight to textStyle */
 fun String?.toTextStyle(): Int {
-    if(this == null) return Typeface.NORMAL
+    if (this == null) return Typeface.NORMAL
     return when (this.lowercase(Locale.ROOT)) {
-        "bold" -> Typeface.BOLD
-        "italic" -> Typeface.ITALIC
+        BOLD -> Typeface.BOLD
+        ITALIC -> Typeface.ITALIC
         "oblique" -> Typeface.BOLD_ITALIC
         else -> Typeface.NORMAL
     }
 }
 
 fun String?.toDP(context: Context): Float {
-    if(this == null) return 50f
+    if (this == null) return 50f
     val displayMetrics: DisplayMetrics = context.resources.displayMetrics
     val fontSizeRegex = Regex("[0-9]+\\.?[0-9]*") // 정규식으로 크기 추출
     val sizeValue = fontSizeRegex.find(this)?.value?.toFloatOrNull()
@@ -65,12 +65,11 @@ fun String?.toDP(context: Context): Float {
 }
 
 fun String?.toGravity(): Int {
-    if(this == null) return Gravity.START
+    if (this == null) return Gravity.START
     return when (this.lowercase(Locale.ROOT)) {
-        LEFT -> Gravity.START
-        CENTER -> Gravity.CENTER
-        RIGHT -> Gravity.END
-        JUSTIFY -> Gravity.CENTER
+        LEFT, START -> Gravity.START
+        CENTER, JUSTIFY -> Gravity.CENTER
+        RIGHT, END -> Gravity.END
         else -> Gravity.START
     }
 }
