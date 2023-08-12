@@ -41,14 +41,14 @@ import kotlin.math.roundToInt
 @AndroidEntryPoint
 class ContentFragment private constructor(): Fragment() {
     private lateinit var binding: FragmentContentBinding
-    private val viewModel: PostViewModel by viewModels()
+    private val postViewModel: PostViewModel by viewModels()
 
     private val bulletin: Int by lazy { arguments?.getInt(BULLETIN) ?: 0 }
     private val pid: Int by lazy { arguments?.getInt(PID) ?: 0 }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel.registerExceptionCallback(object : PostViewModel.ExceptionCallback {
+        postViewModel.registerExceptionCallback(object : PostViewModel.ExceptionCallback {
             override fun onException(e: Exception) {
                 val intent = Intent(requireActivity(), PostWebViewActivity::class.java)
                 intent.putExtra(BULLETIN, bulletin)
@@ -65,7 +65,7 @@ class ContentFragment private constructor(): Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         binding = FragmentContentBinding.inflate(layoutInflater, container, false)
-        viewModel.fetchPost(bulletin, pid) {
+        postViewModel.fetchPost(bulletin, pid) {
             it.parentElements.forEach { parentElement ->
                 addViewOfTag(parentElement)
             }

@@ -1,4 +1,4 @@
-package com.thirfir.presentation.custom
+package com.thirfir.presentation.view.post
 
 import android.content.Context
 import android.graphics.Paint

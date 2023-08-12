@@ -1,4 +1,4 @@
-package com.thirfir.presentation.custom
+package com.thirfir.presentation.view.post
 
 import android.content.Context
 import android.graphics.Canvas
@@ -13,7 +13,6 @@ import android.text.style.StrikethroughSpan
 import android.text.style.StyleSpan
 import android.text.style.UnderlineSpan
 import android.view.Gravity
-import android.widget.TextView
 import androidx.appcompat.widget.AppCompatTextView
 import com.thirfir.domain.BACKGROUND_COLOR
 import com.thirfir.domain.COLOR
