@@ -7,25 +7,38 @@
     tools:context=".view.keyword.KeywordFragment"
     android:padding="30dp">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/outlinedTextField"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+    <EditText
+        android:id="@+id/edit_text_keyword_input"
+        android:layout_width="0dp"
+        android:layout_height="44dp"
+        android:ems="10"
         android:hint="@string/input_keyword"
-        app:boxStrokeColor="@color/secondary"
-        app:hintTextColor="@color/secondaryVariant"
-        app:endIconMode="clear_text"
-        app:helperText="@string/keyword_helper_text"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        android:inputType="textPersonName"
+        android:maxLength="10"
+        android:maxLines="1"
+        android:padding="12dp"
+        android:textSize="14sp"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/button_subscribe"
+        app:layout_constraintTop_toTopOf="parent"
+        android:importantForAutofill="no">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edit_text_keyword_input"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:maxLines="1" />
+        <requestFocus />
+    </EditText>
 
-    </com.google.android.material.textfield.TextInputLayout>
+    <TextView
+        android:id="@+id/button_subscribe"
+        android:layout_width="60dp"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:text="@string/subscribe"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@id/edit_text_keyword_input"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toEndOf="@id/edit_text_keyword_input"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/edit_text_keyword_input" />
 
     <TextView
         android:id="@+id/text_view_keyword_title"
@@ -33,8 +46,8 @@
         android:layout_height="wrap_content"
         style="@style/text_title_large"
         android:text="@string/added_keyword"
-        app:layout_constraintTop_toBottomOf="@id/outlinedTextField"
-        app:layout_constraintStart_toStartOf="@id/outlinedTextField"
+        app:layout_constraintTop_toBottomOf="@id/edit_text_keyword_input"
+        app:layout_constraintStart_toStartOf="@id/edit_text_keyword_input"
         android:layout_marginTop="30dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -43,4 +56,15 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/text_view_keyword_title"
         android:layout_marginTop="30dp" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

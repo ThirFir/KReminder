@@ -23,4 +23,11 @@
     <string name="btn1">1</string>
     <string name="btn2">2</string>
     <string name="btn3">3</string>
+
+    <!-- ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ -->
+
+    <string name="firebase_notification_channel_id">CHANNEL_ID</string>
+    <string name="subscribe">등록</string>
+    <string name="database_error">키워드를 등록하지 못했습니다</string>
+    <string name="network_error">네트워크 상태를 확인해주세요</string>
 </resources>

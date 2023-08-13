@@ -1,6 +1,5 @@
 package com.thirfir.data.datasource.remote.impl
 
-import android.icu.lang.UCharacter.LineBreak.H2
 import com.thirfir.data.datasource.remote.PostRemoteDataSource
 import com.thirfir.data.datasource.remote.dto.PostDTO
 import com.thirfir.domain.BASE_URL
@@ -9,7 +8,6 @@ import com.thirfir.domain.BR_TAG
 import com.thirfir.domain.B_TAG
 import com.thirfir.domain.COLSPAN
 import com.thirfir.domain.DEL_TAG
-import com.thirfir.domain.DIV_TAG
 import com.thirfir.domain.EM_TAG
 import com.thirfir.domain.FONT_SIZE
 import com.thirfir.domain.FONT_WEIGHT
@@ -19,7 +17,6 @@ import com.thirfir.domain.I_TAG
 import com.thirfir.domain.LINE_THROUGH
 import com.thirfir.domain.P_TAG
 import com.thirfir.domain.ROWSPAN
-import com.thirfir.domain.SPAN_TAG
 import com.thirfir.domain.STRIKE_TAG
 import com.thirfir.domain.STRONG_TAG
 import com.thirfir.domain.STYLE
@@ -27,18 +24,15 @@ import com.thirfir.domain.TABLE_TAG
 import com.thirfir.domain.TBODY_TAG
 import com.thirfir.domain.TD_TAG
 import com.thirfir.domain.TEXT_DECORATION_LINE
-import com.thirfir.domain.TR_TAG
 import com.thirfir.domain.UNDERLINE
 import com.thirfir.domain.U_TAG
-import com.thirfir.domain.addQueryString
+import com.thirfir.domain.util.addQueryString
 import com.thirfir.domain.model.element.EnabledRootTag
 import com.thirfir.domain.model.element.ParentElement
 import com.thirfir.domain.model.element.TableElement
 import com.thirfir.domain.model.element.TextElement
 import org.jsoup.Jsoup
-import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
-import org.jsoup.nodes.Node
 import org.jsoup.nodes.TextNode
 
 class PostRemoteDataSourceImpl : PostRemoteDataSource {

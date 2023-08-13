@@ -59,12 +59,20 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1"
 
+    // Hilt
     implementation "com.google.dagger:hilt-android:$dagger_version"
     kapt "com.google.dagger:hilt-compiler:$dagger_version"
 
+    // Glide
     implementation "com.github.bumptech.glide:glide:$glide_version"
     annotationProcessor "com.github.bumptech.glide:compiler:$glide_version"
 
-    implementation 'androidx.activity:activity-ktx:1.7.2'
-    implementation 'androidx.fragment:fragment-ktx:1.6.1'
+    // 한영 변환
+    implementation "com.github.kimcore:inko.kt:1.2"
+
+    // Firebase
+    implementation 'com.google.firebase:firebase-auth-ktx:22.1.1'
+    implementation 'com.google.firebase:firebase-messaging-ktx:23.2.1'
+    implementation 'com.google.firebase:firebase-firestore-ktx:24.7.0'
+    implementation 'com.google.firebase:firebase-database-ktx:20.2.2'
 }

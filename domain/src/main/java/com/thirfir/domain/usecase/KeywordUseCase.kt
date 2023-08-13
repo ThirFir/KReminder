@@ -34,11 +34,4 @@ class KeywordUseCase @Inject constructor(
             onComplete()
         }
     }
-
-    fun deleteAll(onComplete: () -> Unit) {
-        ioScope.launch {
-            keywordRepository.deleteAll()
-            onComplete()
-        }
-    }
 }
