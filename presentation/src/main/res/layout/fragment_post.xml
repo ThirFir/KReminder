@@ -16,13 +16,28 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <Button
+                android:id="@+id/post_back"
+                 android:layout_width="20dp"
+                android:layout_height="20dp"
+                tools:ignore="MissingConstraints" />
+
+            <TextView
+                android:id="@+id/board_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/board"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/post_back"
+                tools:ignore="MissingConstraints" />
+
             <TextView
                 android:id="@+id/post_detail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/bullet"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/post_back"
                 tools:ignore="MissingConstraints" />
 
             <TextView
@@ -31,6 +46,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/post_title"
                 app:layout_constraintStart_toEndOf="@+id/post_detail"
+                app:layout_constraintTop_toTopOf="@+id/post_detail"
                 tools:ignore="MissingConstraints" />
 
             <TextView
@@ -38,7 +54,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/author_label"
-                app:layout_constraintTop_toBottomOf="@+id/post_title"
+                app:layout_constraintTop_toBottomOf="@+id/post_detail"
                 tools:ignore="MissingConstraints" />
 
             <TextView
@@ -47,6 +63,14 @@
                 android:layout_height="wrap_content"
                 android:text="@string/post_date"
                 app:layout_constraintTop_toBottomOf="@+id/post_writer"
+                tools:ignore="MissingConstraints" />
+
+            <Button
+                android:id="@+id/star"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 tools:ignore="MissingConstraints" />
 
             <androidx.fragment.app.FragmentContainerView
