@@ -4,7 +4,8 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:paddingHorizontal="8dp"
-    android:paddingVertical="6dp">
+    android:paddingVertical="6dp"
+    android:background="@drawable/ic_list">
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/text_view_setting_num"
