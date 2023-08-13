@@ -1,4 +1,5 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,50 +11,80 @@
         android:layout_height="match_parent">
 
         <!-- 스크롤 가능한 뷰 그룹을 추가합니다 -->
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
+
+            <Button
+                android:id="@+id/post_back"
+                 android:layout_width="20dp"
+                android:layout_height="20dp"
+                tools:ignore="MissingConstraints" />
+
+            <TextView
+                android:id="@+id/board_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/board"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/post_back"
+                tools:ignore="MissingConstraints" />
 
             <TextView
                 android:id="@+id/post_detail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/bullet" />
+                android:text="@string/bullet"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/post_back"
+                tools:ignore="MissingConstraints" />
 
             <TextView
                 android:id="@+id/post_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/post_title" />
+                android:text="@string/post_title"
+                app:layout_constraintStart_toEndOf="@+id/post_detail"
+                app:layout_constraintTop_toTopOf="@+id/post_detail"
+                tools:ignore="MissingConstraints" />
 
             <TextView
                 android:id="@+id/post_writer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/author_label"
-                />
+                app:layout_constraintTop_toBottomOf="@+id/post_detail"
+                tools:ignore="MissingConstraints" />
 
             <TextView
                 android:id="@+id/post_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/post_date"
-                />
+                app:layout_constraintTop_toBottomOf="@+id/post_writer"
+                tools:ignore="MissingConstraints" />
 
-            <TextView
+            <Button
+                android:id="@+id/star"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:ignore="MissingConstraints" />
+
+            <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/post_content"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="@string/post_text" />
-
-
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="parent" />
 
 
             <!-- 다른 뷰들... -->
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
 

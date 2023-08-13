@@ -2,18 +2,25 @@ package com.thirfir.data.datasource.remote.impl
 
 import com.thirfir.data.datasource.remote.PostHeaderRemoteDataSource
 import com.thirfir.data.datasource.remote.dto.PostHeaderDTO
+import com.thirfir.domain.BASE_URL
+import com.thirfir.domain.IoDispatcher
+import com.thirfir.domain.addQueryString
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
+import javax.inject.Inject
 
-class PostHeaderRemoteDataSourceImpl : PostHeaderRemoteDataSource {
+class PostHeaderRemoteDataSourceImpl @Inject constructor(
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
+): PostHeaderRemoteDataSource {
 
     override fun getPostHeadersDTO(bulletin: Int, page: Int): Flow<List<PostHeaderDTO>> = flow {
         try {
-            val url = "https://portal.koreatech.ac.kr/ctt/bb/bulletin?b=${bulletin}&ln=${page}&ls=20"
+            val url = BASE_URL.addQueryString("b", bulletin).addQueryString("ln", page).addQueryString("ls", 20)
             val doc = Jsoup.connect(url).get()
             val postList = getPostHeaderWithDoc(doc)
 
@@ -21,7 +28,7 @@ class PostHeaderRemoteDataSourceImpl : PostHeaderRemoteDataSource {
         } catch (e: Exception) {
             e.printStackTrace()
         }
-    }.flowOn(Dispatchers.IO)
+    }.flowOn(ioDispatcher)
 
     private fun getPostHeaderWithDoc(document: Document): List<PostHeaderDTO> {
         val newsList = mutableListOf<PostHeaderDTO>()

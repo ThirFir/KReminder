@@ -13,7 +13,7 @@ class PostHeaderRepositoryImpl @Inject constructor(
 ) : PostHeaderRepository {
     override fun getPostHeaders(bulletin: Int, page: Int): Flow<List<PostHeader>> {
         return postHeaderRemoteDataSource.getPostHeadersDTO(bulletin, page)
-            .map {dtoList -> dtoList.map{ it.toPostHeader() } }
+            .map { dtoList -> dtoList.map{ it.toPostHeader() } }
     }
 
 }
