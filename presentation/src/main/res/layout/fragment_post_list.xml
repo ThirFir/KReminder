@@ -59,32 +59,32 @@
             android:id="@+id/page_1_button"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:text="1" />
+            android:text="@string/btn1" />
 
 
         <Button
             android:id="@+id/page_2_button"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:text="2" />
+            android:text="@string/btn2" />
 
         <Button
             android:id="@+id/page_3_button"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:text="3" />
+            android:text="@string/btn3"/>
 
         <Button
             android:id="@+id/page_4_button"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:text="4" />
+            android:text="@string/btn4"/>
 
         <Button
             android:id="@+id/page_5_button"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:text="5" />
+            android:text="@string/btn5" />
 
         <!-- 나머지 버튼들도 같은 방식으로 추가합니다. -->
 

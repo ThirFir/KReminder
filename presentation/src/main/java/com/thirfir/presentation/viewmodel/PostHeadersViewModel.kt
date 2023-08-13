@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class PostHeaderViewModel @Inject constructor(
+class PostHeadersViewModel @Inject constructor(
     private val getPostHeadersUseCase: GetPostHeaderUseCase
 ) : ViewModel() {
     private val _postHeaders: MutableStateFlow<List<PostHeader>> = MutableStateFlow(emptyList())
@@ -24,7 +24,9 @@ class PostHeaderViewModel @Inject constructor(
 
     fun fetchPostHeaders(bulletin: Int, page: Int) {
         viewModelScope.launch {
-            _postHeaders.value = emptyList()
+            getPostHeadersUseCase(bulletin, page).collect {
+                _postHeaders.emit(it)
+            }
         }
     }
 }

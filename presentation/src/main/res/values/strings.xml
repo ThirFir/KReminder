@@ -19,8 +19,11 @@
     <string name="post_title">게시물 제목</string>
     <string name="post_text">게시물 내용</string>
     <string name="bullet">[교내활동]</string>
+    <string name="board">일반공지</string>
 
     <string name="btn1">1</string>
     <string name="btn2">2</string>
     <string name="btn3">3</string>
+    <string name="btn4">4</string>
+    <string name="btn5">5</string>
 </resources>
