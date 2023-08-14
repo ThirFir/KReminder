@@ -12,7 +12,7 @@
             />
         <path
             android:pathData="M0 42H328"
-            android:strokeWidth="2"
+            android:strokeWidth="1"
             android:strokeColor="#000000"
             />
     </group>

@@ -28,7 +28,7 @@ class ContentFragment : Fragment() {
         binding.postDetail.text="[크롤링]"
         binding.postWriter.text="작성자 |" + "크롤링"
         binding.postDate.text="날짜 |" + "크롤링"
-        binding.postContent.text= "크롤링"
+    //    binding.postContent.text= "크롤링"
         return inflater.inflate(R.layout.fragment_content, container, false)
     }
 

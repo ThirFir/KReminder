@@ -16,6 +16,7 @@ class PostFragment : Fragment() {
     private var currentPage = 1
     private val postsPerPage = 20
 
+
     val BASE_URL = "https://portal.koreatech.ac.kr/ctt/bb/bulletin"
 
     fun String.addQueryString(query: String, number: Int, postnum: Int): String {
@@ -31,10 +32,10 @@ class PostFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentPostBinding.inflate(inflater, container, false)
-
         initClickListeners()
         initRecyclerView()
         initPaginationButtons()
+        slideMenu()
 
         // 추가 데이터 아이템들...
         postItems.add(PostItem(30976, "hi", BASE_URL.addQueryString("b", 14, 30976)))
@@ -42,33 +43,6 @@ class PostFragment : Fragment() {
         postItems.add(PostItem(30976, "일반공지", BASE_URL.addQueryString("b", 14, 30976)))
         postItems.add(PostItem(30978, "장학공지", BASE_URL.addQueryString("b", 14, 30978)))
         postItems.add(PostItem(30976, "일반공지", BASE_URL.addQueryString("b", 14, 30976)))
-        postItems.add(PostItem(30978, "장학공지", BASE_URL.addQueryString("b", 14, 30978)))
-        postItems.add(PostItem(30976, "일반공지", BASE_URL.addQueryString("b", 14, 30976)))
-        postItems.add(PostItem(30978, "장학공지", BASE_URL.addQueryString("b", 14, 30978)))
-        postItems.add(PostItem(30976, "일반공지", BASE_URL.addQueryString("b", 14, 30976)))
-        postItems.add(PostItem(30978, "장학공지", BASE_URL.addQueryString("b", 14, 30978)))
-        postItems.add(PostItem(30976, "일반공지", BASE_URL.addQueryString("b", 14, 30976)))
-        postItems.add(PostItem(30978, "장학공지", BASE_URL.addQueryString("b", 14, 30978)))
-        postItems.add(PostItem(30976, "일반공지", BASE_URL.addQueryString("b", 14, 30976)))
-        postItems.add(PostItem(30978, "장학공지", BASE_URL.addQueryString("b", 14, 30978)))
-        postItems.add(PostItem(30976, "일반공지", BASE_URL.addQueryString("b", 14, 30976)))
-        postItems.add(PostItem(30978, "장학공지", BASE_URL.addQueryString("b", 14, 30978)))
-        postItems.add(PostItem(30976, "일반공지", BASE_URL.addQueryString("b", 14, 30976)))
-        postItems.add(PostItem(30978, "장학공지", BASE_URL.addQueryString("b", 14, 30978)))
-        postItems.add(PostItem(30976, "일반공지", BASE_URL.addQueryString("b", 14, 30976)))
-        postItems.add(PostItem(30978, "장학공지", BASE_URL.addQueryString("b", 14, 30978)))
-
-        postItems.add(PostItem(30976, "일반공지", BASE_URL.addQueryString("b", 14, 30976)))
-        postItems.add(PostItem(30978, "장학공지", BASE_URL.addQueryString("b", 14, 30978)))
-        postItems.add(PostItem(30976, "일반공지", BASE_URL.addQueryString("b", 14, 30976)))
-        postItems.add(PostItem(30978, "장학공지", BASE_URL.addQueryString("b", 14, 30978)))
-        postItems.add(PostItem(30976, "일반공지", BASE_URL.addQueryString("b", 14, 30976)))
-        postItems.add(PostItem(30978, "장학공지", BASE_URL.addQueryString("b", 14, 30978)))
-        postItems.add(PostItem(30976, "일반공지", BASE_URL.addQueryString("b", 14, 30976)))
-        postItems.add(PostItem(30978, "장학공지", BASE_URL.addQueryString("b", 14, 30978)))
-        postItems.add(PostItem(30976, "일반공지", BASE_URL.addQueryString("b", 14, 30976)))
-        postItems.add(PostItem(30978, "장학공지", BASE_URL.addQueryString("b", 14, 30978)))
-
 
         // 추가 데이터 아이템들...
 
@@ -76,6 +50,40 @@ class PostFragment : Fragment() {
         updateRecyclerViewData()
 
         return binding.root
+    }
+
+    private fun slideMenu(){
+        val drawerLayout = binding.drawerLayout
+        val navigationView = binding.navigationView
+
+// NavigationView의 메뉴 아이템 클릭 리스너 설정
+        navigationView.setNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.menu_item1 -> {
+                    // 메뉴 아이템 1 클릭 시 처리
+                    // 예: Toast 또는 다른 작업 수행
+                    true
+                }
+                R.id.menu_item2 -> {
+                    // 메뉴 아이템 2 클릭 시 처리
+                    // 예: 다른 Fragment로 이동 또는 다른 작업 수행
+                    true
+                }
+                // 다른 메뉴 아이템들에 대한 처리도 추가 가능
+                else -> false
+            }
+        }
+
+// post_menu 버튼 클릭 시 NavigationView를 열기/닫기
+        binding.postMenu.setOnClickListener {
+            if (drawerLayout.isDrawerOpen(navigationView)) {
+                drawerLayout.closeDrawer(navigationView)
+            } else {
+                drawerLayout.openDrawer(navigationView)
+            }
+        }
+
+
     }
 
 
@@ -157,11 +165,16 @@ class PostFragment : Fragment() {
     private fun updateRecyclerViewData() {
         val start = (currentPage - 1) * postsPerPage
         val end = minOf(start + postsPerPage, postItems.size)
-        val sublist = postItems.subList(start, end)
-        postAdapter.submitList(sublist)
+
+        if (start < end) { // Check if start is less than end before creating the sublist
+            val sublist = postItems.subList(start, end)
+            postAdapter.submitList(sublist)
+        } else {
+            postAdapter.submitList(emptyList()) // Submit an empty list if start >= end
+        }
+
         updateButtonState()
     }
-
     private fun updateRecyclerViewData(newList: List<PostItem>) {
         val start = (currentPage - 1) * postsPerPage
         val end = minOf(start + postsPerPage, newList.size)
@@ -180,12 +193,6 @@ class PostFragment : Fragment() {
         binding.prevButton.isEnabled = currentPage > 1
         binding.nextButton.isEnabled = currentPage < totalPage
 
-        // 다음 페이지의 버튼들을 업데이트합니다.
-        binding.page1Button.text = (currentPage + 1).toString()
-        binding.page2Button.text = (currentPage + 2).toString()
-        binding.page3Button.text = (currentPage + 3).toString()
-        binding.page4Button.text = (currentPage + 4).toString()
-        binding.page5Button.text = (currentPage + 5).toString()
     }
 
     companion object {
