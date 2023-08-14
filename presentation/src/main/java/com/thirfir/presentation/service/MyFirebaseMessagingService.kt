@@ -15,18 +15,19 @@ import com.thirfir.presentation.R
 class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
-        val currentBody = remoteMessage.data["body"]
-        val prefNotice = this.getSharedPreferences("lastBody", Context.MODE_PRIVATE)
-        val lastBody = prefNotice.getString("lastBody", "null")
+        val currentPostID = remoteMessage.data["post_id"]
+        val prefNotice = this.getSharedPreferences("lastPostID", Context.MODE_PRIVATE)
+        val lastPostID = prefNotice.getString("lastPostID", "null")
 
-        // 여러개의 키워드가 공지 하나의 타이틀에 모두 포함되어 있을경우 한번만 알림
-        if(currentBody != lastBody) {
+        // 같은 이름의 공지 한번만 알림
+        // TODO 이전 정보와 같을때만 필터링 됨, 앱이 killed 상태일땐 작동 안함
+        if(lastPostID != currentPostID) {
             if(remoteMessage.data.isNotEmpty()){
                 sendNotification(remoteMessage)
             }
 
             val editor = prefNotice.edit()
-            editor.putString("lastBody", remoteMessage.data["body"]).apply()
+            editor.putString("lastPostID", remoteMessage.data["post_id"]).apply()
             editor.commit()
         }
     }
@@ -47,15 +48,15 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
             .setSmallIcon(R.drawable.ic_settings_36)
-            .setContentTitle("공지사항")
-            .setContentText(remoteMessage.data["title"])
+            .setContentTitle(remoteMessage.notification!!.title)
+            .setContentText(remoteMessage.notification!!.body)
             .setAutoCancel(true)
             .setSound(soundUri)
             .setContentIntent(pendingIntent)
 
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         if ( notificationManager.getNotificationChannel(channelId) == null ) {
-            val channel = NotificationChannel(channelId, "Notice", NotificationManager.IMPORTANCE_DEFAULT)
+            val channel = NotificationChannel(channelId, "구독 공지 알림", NotificationManager.IMPORTANCE_DEFAULT)
             notificationManager.createNotificationChannel(channel)
         }
 
