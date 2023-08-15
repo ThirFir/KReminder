@@ -60,6 +60,8 @@ fun String?.toColor(isBackground: Boolean = false): Int {
 fun String?.toTextStyle(): Int {
     if (this == null) return Typeface.NORMAL
     return when (this.lowercase(Locale.ROOT)) {
+        "400" -> Typeface.NORMAL
+        "700" -> Typeface.BOLD
         BOLD -> Typeface.BOLD
         ITALIC -> Typeface.ITALIC
         "oblique" -> Typeface.BOLD_ITALIC
@@ -136,11 +138,11 @@ fun String?.extractPxValue(): Float {
     }
 }
 
-private val expandRate = 1.75f
+private const val UPSCALE_RATE = 1.75f
 
-fun Int.enlarge(): Int {
-    return (this * expandRate).roundToInt()
+fun Int.upscale(): Int {
+    return (this * UPSCALE_RATE).roundToInt()
 }
-fun Float.enlarge(): Float {
-    return this * expandRate
+fun Float.upscale(): Float {
+    return this * UPSCALE_RATE
 }

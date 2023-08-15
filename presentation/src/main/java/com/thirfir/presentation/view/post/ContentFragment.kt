@@ -15,11 +15,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.Dimension
 import androidx.core.view.isEmpty
 import androidx.fragment.app.viewModels
+import com.bumptech.glide.Glide
 import com.thirfir.domain.A
 import com.thirfir.domain.B
 import com.thirfir.domain.BACKGROUND_COLOR
@@ -35,6 +37,7 @@ import com.thirfir.domain.I
 import com.thirfir.domain.IMG
 import com.thirfir.domain.INS
 import com.thirfir.domain.ITALIC
+import com.thirfir.domain.KOREATECH_PORTAL_URL
 import com.thirfir.domain.LINE_THROUGH
 import com.thirfir.domain.P
 import com.thirfir.domain.PADDING
@@ -43,8 +46,10 @@ import com.thirfir.domain.PADDING_LEFT
 import com.thirfir.domain.PADDING_RIGHT
 import com.thirfir.domain.PADDING_TOP
 import com.thirfir.domain.SPAN
+import com.thirfir.domain.SRC
 import com.thirfir.domain.STRIKE
 import com.thirfir.domain.STRONG
+import com.thirfir.domain.TABLE
 import com.thirfir.domain.TEXT_ALIGN
 import com.thirfir.domain.TEXT_DECORATION_LINE
 import com.thirfir.domain.U
@@ -56,7 +61,7 @@ import com.thirfir.presentation.toGravity
 import com.thirfir.presentation.toPadding
 import com.thirfir.presentation.toTextStyle
 import com.thirfir.presentation.databinding.FragmentContentBinding
-import com.thirfir.presentation.enlarge
+import com.thirfir.presentation.upscale
 import com.thirfir.presentation.extractPxValue
 import com.thirfir.presentation.toDP
 import com.thirfir.presentation.viewmodel.PostViewModel
@@ -155,10 +160,28 @@ class ContentFragment private constructor(): Fragment() {
                     textView?.append("\n")
             }
             A -> {
-
+                // TODO : 링크
             }
             IMG -> {
+                val intent = Intent(requireActivity(), ImageActivity::class.java).apply {
 
+                }
+                ImageView(requireContext()).apply {
+                    layoutParams = ViewGroup.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT
+                    )
+                    setOnClickListener {
+                        startActivity(intent)
+                    }
+                }.also {
+                    parentLayout.addView(it)
+                    Glide.with(it).load(KOREATECH_PORTAL_URL + element.attributes[SRC])
+                        .into(it)
+                }
+            }
+            TABLE -> {
+                // TODO : Make Table
             }
             null -> {
                 textView?.append(getSpannableStringBuilder(element.text!!, element.styles))
@@ -183,7 +206,7 @@ class ContentFragment private constructor(): Fragment() {
         val flags = Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         return SpannableString(text).apply {
             setSpan(ForegroundColorSpan(styles[COLOR].toColor()), 0, length, flags)
-            setSpan(AbsoluteSizeSpan(styles[FONT_SIZE].toDP(requireContext()).enlarge().roundToInt(), true),
+            setSpan(AbsoluteSizeSpan(styles[FONT_SIZE].toDP(requireContext()).upscale().roundToInt(), true),
                 0, length, flags)
             setSpan(StyleSpan(styles[FONT_WEIGHT].toTextStyle()), 0, length, flags)
             setSpan(BackgroundColorSpan(styles[BACKGROUND_COLOR].toColor(isBackground = true)),
@@ -200,10 +223,10 @@ class ContentFragment private constructor(): Fragment() {
     private fun View.setPaddings(styles: Map<String, String>) {
         val padding = styles[PADDING]?.toPadding(requireContext()) ?: Padding(0f, 0f, 0f, 0f)
         setPadding(
-            padding.left.enlarge().roundToInt(),
-            padding.top.enlarge().roundToInt(),
-            padding.right.enlarge().roundToInt(),
-            padding.bottom.enlarge().roundToInt()
+            padding.left.upscale().roundToInt(),
+            padding.top.upscale().roundToInt(),
+            padding.right.upscale().roundToInt(),
+            padding.bottom.upscale().roundToInt()
         )
 
         val left = styles[PADDING_LEFT] ?: padding.left.toString()
@@ -211,10 +234,10 @@ class ContentFragment private constructor(): Fragment() {
         val right = styles[PADDING_RIGHT] ?: padding.right.toString()
         val bottom = styles[PADDING_BOTTOM] ?: padding.bottom.toString()
         setPadding(
-            left.extractPxValue().enlarge().roundToInt(),
-            top.extractPxValue().enlarge().roundToInt(),
-            right.extractPxValue().enlarge().roundToInt(),
-            bottom.extractPxValue().enlarge().roundToInt()
+            left.extractPxValue().upscale().roundToInt(),
+            top.extractPxValue().upscale().roundToInt(),
+            right.extractPxValue().upscale().roundToInt(),
+            bottom.extractPxValue().upscale().roundToInt()
         )
     }
 
@@ -239,6 +262,7 @@ class ContentFragment private constructor(): Fragment() {
         setPaddings(element.styles)
         setBackgroundColor(element.styles[BACKGROUND_COLOR].toColor(true))
     }
+
 
     companion object {
         private const val BULLETIN = "bulletin"

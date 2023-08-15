@@ -1,6 +1,7 @@
 package com.thirfir.domain
 
 const val BASE_URL = "https://portal.koreatech.ac.kr/ctt/bb/bulletin"
+const val KOREATECH_PORTAL_URL = "https://portal.koreatech.ac.kr"
 
 
 // ----------- HTML 태그 -----------
@@ -42,6 +43,7 @@ const val PADDING_LEFT = "padding-left"
 const val PADDING_RIGHT = "padding-right"
 const val PADDING_TOP = "padding-top"
 const val PADDING_BOTTOM = "padding-bottom"
+const val SRC = "src"
 
 const val START = "start"
 const val END = "end"

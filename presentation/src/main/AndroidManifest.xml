@@ -3,6 +3,9 @@
 
     <application>
         <activity
+            android:name=".view.post.ImageActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.post.PostWebViewActivity"
             android:exported="false" />
         <activity
