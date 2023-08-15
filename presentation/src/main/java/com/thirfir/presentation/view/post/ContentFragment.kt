@@ -164,7 +164,7 @@ class ContentFragment private constructor(): Fragment() {
             }
             IMG -> {
                 val intent = Intent(requireActivity(), ImageActivity::class.java).apply {
-
+                    putExtra(SRC, KOREATECH_PORTAL_URL + element.attributes[SRC])
                 }
                 ImageView(requireContext()).apply {
                     layoutParams = ViewGroup.LayoutParams(
