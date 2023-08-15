@@ -52,24 +52,3 @@ class PostRemoteDataSourceImpl : PostRemoteDataSource {
         return attrs
     }
 }
-fun main() {
-    val html = "<div><p style=\"font-family: 맑은고딕, 'Malgun Gothic', 돋움, Dotum, AppleGothic, sans-serif; line-height: 1.8; font-size: 13.33px;\"><span style=\"margin: 0px; padding: 0px; color: rgb(0, 0, 0); font-family: '맑은 고딕', AppleGothic, sans-serif; font-size: 11pt;\"><b>Chat GPT를 활용한 생성형 AI 교육</b>에 관심 있는 학부(과) 재학생 및 대학원생들의 많은 참여 바랍니다.</span></p></div>"
-    val doc = Jsoup.parse(html)
-    val mParentElements = doc.select("div > *")
-    mParentElements.forEach { r ->
-        r.childNodes().forEach {
-            d(it)
-        }
-    }
-}
-
-fun d(node: Node) {
-    if(node is Element) {
-        println("dd    " + node)
-        node.childNodes().forEach {
-            d(it)
-        }
-    } else if(node is TextNode) {
-        println(node.wholeText)
-    }
-}

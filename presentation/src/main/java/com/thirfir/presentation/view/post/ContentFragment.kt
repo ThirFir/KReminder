@@ -1,6 +1,5 @@
 package com.thirfir.presentation.view.post
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.text.Spannable
@@ -12,15 +11,16 @@ import android.text.style.ForegroundColorSpan
 import android.text.style.StrikethroughSpan
 import android.text.style.StyleSpan
 import android.text.style.UnderlineSpan
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.view.setPadding
+import androidx.annotation.Dimension
+import androidx.core.view.isEmpty
 import androidx.fragment.app.viewModels
+import com.thirfir.domain.A
 import com.thirfir.domain.B
 import com.thirfir.domain.BACKGROUND_COLOR
 import com.thirfir.domain.BOLD
@@ -32,6 +32,7 @@ import com.thirfir.domain.EM
 import com.thirfir.domain.FONT_SIZE
 import com.thirfir.domain.FONT_WEIGHT
 import com.thirfir.domain.I
+import com.thirfir.domain.IMG
 import com.thirfir.domain.INS
 import com.thirfir.domain.ITALIC
 import com.thirfir.domain.LINE_THROUGH
@@ -49,11 +50,15 @@ import com.thirfir.domain.TEXT_DECORATION_LINE
 import com.thirfir.domain.U
 import com.thirfir.domain.UNDERLINE
 import com.thirfir.domain.model.HtmlElement
-import com.thirfir.domain.toColor
-import com.thirfir.domain.toDP
-import com.thirfir.domain.toGravity
-import com.thirfir.domain.toTextStyle
+import com.thirfir.domain.model.Padding
+import com.thirfir.presentation.toColor
+import com.thirfir.presentation.toGravity
+import com.thirfir.presentation.toPadding
+import com.thirfir.presentation.toTextStyle
 import com.thirfir.presentation.databinding.FragmentContentBinding
+import com.thirfir.presentation.enlarge
+import com.thirfir.presentation.extractPxValue
+import com.thirfir.presentation.toDP
 import com.thirfir.presentation.viewmodel.PostViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.math.roundToInt
@@ -70,12 +75,7 @@ class ContentFragment private constructor(): Fragment() {
 
         postViewModel.registerExceptionCallback(object : PostViewModel.ExceptionCallback {
             override fun onException(e: Exception) {
-                val intent = Intent(requireActivity(), PostWebViewActivity::class.java)
-                intent.putExtra(BULLETIN, bulletin)
-                intent.putExtra(PID, pid)
-                startActivity(intent)
-
-                requireActivity().finish()
+                startWebView()
             }
         })
     }
@@ -87,132 +87,89 @@ class ContentFragment private constructor(): Fragment() {
         binding = FragmentContentBinding.inflate(layoutInflater, container, false)
         postViewModel.fetchPost(bulletin, pid) { post ->
             post.htmlElements.forEach {
-                addViewOfTag(it, binding.llContent)
+                addViewOfTag(it, binding.llContent, null)
             }
         }
 
         return binding.root
     }
 
-    @SuppressLint("SetTextI18n")
-    private fun addViewOfTag(element: HtmlElement, parentView: View) {
+    private fun addViewOfTag(element: HtmlElement, parentLayout: ViewGroup, textView: TextView?) {
         when(element.tag) {
             DIV -> {
-                val linearLayout = LinearLayout(requireContext()).apply {
-                    layoutParams = ViewGroup.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT
-                    )
-                    orientation = LinearLayout.VERTICAL
-                    gravity = element.styles[TEXT_ALIGN].toGravity()
-                    setPaddings(element.styles)
-                    setBackgroundColor(element.styles[BACKGROUND_COLOR].toColor(true))
-                }
-                (parentView as ViewGroup).addView(linearLayout)
+                val linearLayout = getLinearLayout(element)
+                val tv = getTextView(element)
+
+                parentLayout.addView(linearLayout)
+                linearLayout.addView(tv)
                 element.childElements?.forEach {
-                    addViewOfTag(it, linearLayout)
+                    addViewOfTag(it, linearLayout, tv)
                 }
+                if(tv.text.isEmpty())
+                    linearLayout.removeView(tv)
+                if(linearLayout.isEmpty())
+                    parentLayout.removeView(linearLayout)
             }
             P -> {
-                val textView = TextView(requireContext()).apply {
-                    layoutParams = ViewGroup.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT
-                    )
-                    gravity = element.styles[TEXT_ALIGN].toGravity()
-                    setBackgroundColor(element.styles[BACKGROUND_COLOR].toColor(true))
-                    setText("", TextView.BufferType.SPANNABLE)
-                }
-                (parentView as ViewGroup).addView(textView)
+                val tv = getTextView(element)
+                parentLayout.addView(tv)
                 element.childElements?.forEach {
-                    addViewOfTag(it, textView)
+                    addViewOfTag(it, parentLayout, tv)
                 }
+                if(tv.text.isEmpty())
+                    parentLayout.removeView(tv)
             }
             SPAN -> {
                 element.childElements?.forEach {
-                    addViewOfTag(it, parentView)
+                    addViewOfTag(it, parentLayout, textView)
                 }
             }
             B, STRONG -> {
+                addStyleToChildren(element, FONT_WEIGHT, BOLD)
                 element.childElements?.forEach {
-                    addStyleToChildren(it, FONT_WEIGHT, BOLD)
-                    addViewOfTag(it, parentView)
+                    addViewOfTag(it, parentLayout, textView)
                 }
             }
             U, INS -> {
+                addStyleToChildren(element, TEXT_DECORATION_LINE, UNDERLINE)
                 element.childElements?.forEach {
-                    addStyleToChildren(it, TEXT_DECORATION_LINE, UNDERLINE)
-                    addViewOfTag(it, parentView)
+                    addViewOfTag(it, parentLayout, textView)
                 }
             }
             I, EM -> {
+                addStyleToChildren(element, FONT_WEIGHT, ITALIC)
                 element.childElements?.forEach {
-                    addStyleToChildren(it, FONT_WEIGHT, ITALIC)
-                    addViewOfTag(it, parentView)
+                    addViewOfTag(it, parentLayout, textView)
                 }
             }
             STRIKE, DEL -> {
+                addStyleToChildren(element, TEXT_DECORATION_LINE, LINE_THROUGH)
                 element.childElements?.forEach {
-                    addStyleToChildren(it, TEXT_DECORATION_LINE, LINE_THROUGH)
-                    addViewOfTag(it, parentView)
+                    addViewOfTag(it, parentLayout, textView)
                 }
             }
             BR -> {
-                when(parentView) {
-                    is ViewGroup -> {
-                        val textView = TextView(requireContext()).apply {
-                            layoutParams = ViewGroup.LayoutParams(
-                                ViewGroup.LayoutParams.WRAP_CONTENT,
-                                ViewGroup.LayoutParams.WRAP_CONTENT
-                            )
-                            setBackgroundColor(element.styles[BACKGROUND_COLOR].toColor(true))
-                            text = "\n"
-                        }
-                        parentView.addView(textView)
-                    }
-                    is TextView -> {
-                        parentView.text = parentView.text.toString() + "\n"
-                    }
-                }
+                if(textView?.text?.isEmpty() == true)
+                    textView.append(" ")
+                else
+                    textView?.append("\n")
+            }
+            A -> {
+
+            }
+            IMG -> {
+
             }
             null -> {
-                //Log.d("ContentFragment", element.text + element.styles.toString())
-                when(parentView) {
-                    is ViewGroup -> {
-                        TextView(requireContext()).apply {
-                            layoutParams = ViewGroup.LayoutParams(
-                                ViewGroup.LayoutParams.WRAP_CONTENT,
-                                ViewGroup.LayoutParams.WRAP_CONTENT
-                            )
-                            setText(getSpannableStringBuilder(element.text!!, element.styles), TextView.BufferType.SPANNABLE)
-                            setBackgroundColor(element.styles[BACKGROUND_COLOR].toColor(true))
-                            parentView.addView(this)
-                        }
-                    }
-                    is TextView -> {
-                        parentView.append(getSpannableStringBuilder(element.text!!, element.styles))
-                    }
-                }
+                textView?.append(getSpannableStringBuilder(element.text!!, element.styles))
             }
         }
     }
 
     private fun addStyleToChildren(element: HtmlElement, key: String, value: String) {
-        Log.d("ContentFragment", element.toString())
         element.styles[key] = value
         element.childElements?.forEach {
             addStyleToChildren(it, key, value)
-        }
-    }
-
-    private fun View.addTextView(element: HtmlElement) {
-        val textView = TextView(requireContext()).apply {
-            layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-            )
-            gravity = element.styles[TEXT_ALIGN].toGravity()
-            setBackgroundColor(element.styles[BACKGROUND_COLOR].toColor(true))
         }
     }
 
@@ -226,9 +183,11 @@ class ContentFragment private constructor(): Fragment() {
         val flags = Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         return SpannableString(text).apply {
             setSpan(ForegroundColorSpan(styles[COLOR].toColor()), 0, length, flags)
-            setSpan(AbsoluteSizeSpan(styles[FONT_SIZE].toDP(requireContext()).roundToInt()), 0, length, flags)
+            setSpan(AbsoluteSizeSpan(styles[FONT_SIZE].toDP(requireContext()).enlarge().roundToInt(), true),
+                0, length, flags)
             setSpan(StyleSpan(styles[FONT_WEIGHT].toTextStyle()), 0, length, flags)
-            setSpan(BackgroundColorSpan(styles[BACKGROUND_COLOR].toColor(isBackground = true)), 0, length, flags)
+            setSpan(BackgroundColorSpan(styles[BACKGROUND_COLOR].toColor(isBackground = true)),
+                0, length, flags)
             if(styles[TEXT_DECORATION_LINE] == UNDERLINE) {
                 setSpan(UnderlineSpan(), 0, length, flags)
             }
@@ -239,13 +198,46 @@ class ContentFragment private constructor(): Fragment() {
     }
 
     private fun View.setPaddings(styles: Map<String, String>) {
-        setPadding(styles[PADDING].toDP(requireContext()).roundToInt())
+        val padding = styles[PADDING]?.toPadding(requireContext()) ?: Padding(0f, 0f, 0f, 0f)
         setPadding(
-            styles[PADDING_TOP].toDP(requireContext()).roundToInt(),
-            styles[PADDING_RIGHT].toDP(requireContext()).roundToInt(),
-            styles[PADDING_BOTTOM].toDP(requireContext()).roundToInt(),
-            styles[PADDING_LEFT].toDP(requireContext()).roundToInt()
+            padding.left.enlarge().roundToInt(),
+            padding.top.enlarge().roundToInt(),
+            padding.right.enlarge().roundToInt(),
+            padding.bottom.enlarge().roundToInt()
         )
+
+        val left = styles[PADDING_LEFT] ?: padding.left.toString()
+        val top = styles[PADDING_TOP] ?: padding.top.toString()
+        val right = styles[PADDING_RIGHT] ?: padding.right.toString()
+        val bottom = styles[PADDING_BOTTOM] ?: padding.bottom.toString()
+        setPadding(
+            left.extractPxValue().enlarge().roundToInt(),
+            top.extractPxValue().enlarge().roundToInt(),
+            right.extractPxValue().enlarge().roundToInt(),
+            bottom.extractPxValue().enlarge().roundToInt()
+        )
+    }
+
+    private fun getTextView(element: HtmlElement) = TextView(requireContext()).apply {
+        layoutParams = ViewGroup.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        setTextSize(Dimension.SP, 14f)
+        gravity = element.styles[TEXT_ALIGN].toGravity()
+        setBackgroundColor(element.styles[BACKGROUND_COLOR].toColor(true))
+        setText("", TextView.BufferType.SPANNABLE)
+    }
+
+    private fun getLinearLayout(element: HtmlElement) = LinearLayout(requireContext()).apply {
+        layoutParams = ViewGroup.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        orientation = LinearLayout.VERTICAL
+        gravity = element.styles[TEXT_ALIGN].toGravity()
+        setPaddings(element.styles)
+        setBackgroundColor(element.styles[BACKGROUND_COLOR].toColor(true))
     }
 
     companion object {
@@ -259,5 +251,14 @@ class ContentFragment private constructor(): Fragment() {
                     putInt(PID, pid)
                 }
             }
+    }
+
+    private fun startWebView() {
+        val intent = Intent(requireActivity(), PostWebViewActivity::class.java)
+        intent.putExtra(BULLETIN, bulletin)
+        intent.putExtra(PID, pid)
+        startActivity(intent)
+
+        requireActivity().finish()
     }
 }

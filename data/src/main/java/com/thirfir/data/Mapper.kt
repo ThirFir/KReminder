@@ -12,7 +12,9 @@ import com.thirfir.domain.BLACK
 import com.thirfir.domain.COLOR
 import com.thirfir.domain.FONT_SIZE
 import com.thirfir.domain.FONT_WEIGHT
+import com.thirfir.domain.MARGIN
 import com.thirfir.domain.NORMAL
+import com.thirfir.domain.PADDING
 import com.thirfir.domain.START
 import com.thirfir.domain.STYLE
 import com.thirfir.domain.TEXT_ALIGN
@@ -31,11 +33,14 @@ fun PostHeaderDTO.toPostHeader(): PostHeader =
 fun PostDTO.toPost(): Post =
     Post(
         htmlElements = htmlElementDTOs.map { it.toHtmlElement(
-            mutableMapOf(FONT_SIZE to "10pt",
+            mutableMapOf(FONT_SIZE to "12pt",
                 BACKGROUND_COLOR to TRANSPARENT,
                 COLOR to BLACK,
                 TEXT_ALIGN to START,
-                FONT_WEIGHT to NORMAL)
+                FONT_WEIGHT to NORMAL,
+                PADDING to "0px",
+                MARGIN to "0px"
+                )
         ) },
     )
 
@@ -76,5 +81,6 @@ private fun extractStyles(attrString: String?, parentStyles: MutableMap<String, 
             styles[parts[0].trim().lowercase()] = parts[1].trim().lowercase()
         }
     }
+
     return styles
 }
