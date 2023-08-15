@@ -17,9 +17,10 @@
             android:id="@+id/post_back"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:background="@drawable/ic_back"
             android:layout_marginLeft="5dp"
+            android:background="@drawable/ic_back"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/board_name"
             tools:ignore="MissingConstraints" />
 
         <Button
@@ -34,13 +35,15 @@
 
         <TextView
             android:id="@+id/board_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="60dp"
+            android:layout_height="20dp"
+            android:layout_margin="6dp"
+            android:background="@drawable/ic_board_name_rectangle"
+            android:gravity="center"
             android:text="@string/board"
             android:textSize="11dp"
-            android:layout_marginRight="10dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/post_back"
+            app:layout_constraintTop_toTopOf="parent"
             tools:ignore="MissingConstraints" />
 
         <TextView
@@ -49,6 +52,7 @@
             android:layout_height="wrap_content"
             android:text="@string/bullet"
             android:textSize="20dp"
+            android:textStyle="bold"
             android:layout_marginLeft="10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/post_back"
@@ -60,6 +64,7 @@
             android:layout_height="wrap_content"
             android:text="@string/post_title"
             android:textSize="20dp"
+            android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/post_detail"
             app:layout_constraintTop_toTopOf="@+id/post_detail"
             tools:ignore="MissingConstraints" />
