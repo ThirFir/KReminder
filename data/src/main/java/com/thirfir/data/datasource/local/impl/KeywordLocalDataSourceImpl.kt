@@ -19,8 +19,4 @@ class KeywordLocalDataSourceImpl @Inject constructor(
     override suspend fun deleteKeyword(name: String) {
         dao?.delete(name)
     }
-
-    override suspend fun deleteAll() {
-        dao?.deleteAll()
-    }
 }

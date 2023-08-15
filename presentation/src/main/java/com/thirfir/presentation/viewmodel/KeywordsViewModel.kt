@@ -21,6 +21,7 @@ class KeywordsViewModel @Inject constructor(
     init {
         getKeywords()
     }
+
     private fun getKeywords() {
         viewModelScope.launch {
             _keywords.value = keywordUseCase.getKeywords()
@@ -29,20 +30,13 @@ class KeywordsViewModel @Inject constructor(
 
     fun insertKeyword(name: String) {
         keywordUseCase.insertKeyword(name) {
-            _keywords.value = _keywords.value?.plus(it)
+            _keywords.postValue(_keywords.value?.plus(it))
         }
     }
 
     fun deleteKeyword(name: String) {
         keywordUseCase.deleteKeyword(name) {
-            _keywords.value = _keywords.value?.filter { it.name != name }
+            _keywords.postValue(_keywords.value?.filter { it.name != name })
         }
-    }
-
-    fun deleteAll() {
-        keywordUseCase.deleteAll {
-            _keywords.value = emptyList()
-        }
-
     }
 }

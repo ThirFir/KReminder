@@ -54,6 +54,6 @@ dependencies {
     kapt "com.google.dagger:hilt-compiler:$dagger_version"
 
     api "androidx.room:room-runtime:$room_version"
-    annotationProcessor "androidx.room:room-compiler:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
 
 }

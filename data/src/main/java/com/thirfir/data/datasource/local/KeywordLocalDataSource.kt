@@ -6,5 +6,4 @@ interface KeywordLocalDataSource {
     suspend fun getKeywords() : List<KeywordEntity>
     suspend fun insertKeyword(keyword: KeywordEntity)
     suspend fun deleteKeyword(name: String)
-    suspend fun deleteAll()
 }

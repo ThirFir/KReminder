@@ -6,5 +6,4 @@ interface KeywordRepository {
     suspend fun getKeywords() : List<Keyword>
     suspend fun insertKeyword(keyword: Keyword)
     suspend fun deleteKeyword(name: String)
-    suspend fun deleteAll()
 }
