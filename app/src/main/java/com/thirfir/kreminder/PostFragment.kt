@@ -38,13 +38,24 @@ class PostFragment : Fragment() {
         slideMenu()
 
         // 추가 데이터 아이템들...
-        postItems.add(PostItem(30976, "hi", BASE_URL.addQueryString("b", 14, 30976)))
+        postItems.add(PostItem(1, "hi", BASE_URL.addQueryString("b", 14, 30976)))
+        postItems.add(PostItem(30978, "hi", BASE_URL.addQueryString("b", 14, 30978)))
+        postItems.add(PostItem(30976, "일반공지", BASE_URL.addQueryString("b", 14, 30976)))
+        postItems.add(PostItem(30978, "장학공지", BASE_URL.addQueryString("b", 14, 30978)))
+        postItems.add(PostItem(30976, "일반공지", BASE_URL.addQueryString("b", 14, 30976)))
+        postItems.add(PostItem(2, "hi", BASE_URL.addQueryString("b", 14, 30976)))
+        postItems.add(PostItem(30978, "hi", BASE_URL.addQueryString("b", 14, 30978)))
+        postItems.add(PostItem(30976, "일반공지", BASE_URL.addQueryString("b", 14, 30976)))
+        postItems.add(PostItem(30978, "장학공지", BASE_URL.addQueryString("b", 14, 30978)))
+        postItems.add(PostItem(30976, "일반공지", BASE_URL.addQueryString("b", 14, 30976)))
+        postItems.add(PostItem(3, "hi", BASE_URL.addQueryString("b", 14, 30976)))
         postItems.add(PostItem(30978, "hi", BASE_URL.addQueryString("b", 14, 30978)))
         postItems.add(PostItem(30976, "일반공지", BASE_URL.addQueryString("b", 14, 30976)))
         postItems.add(PostItem(30978, "장학공지", BASE_URL.addQueryString("b", 14, 30978)))
         postItems.add(PostItem(30976, "일반공지", BASE_URL.addQueryString("b", 14, 30976)))
 
-        // 추가 데이터 아이템들...
+
+
 
         // 초기에 첫 페이지의 데이터를 표시합니다.
         updateRecyclerViewData()
@@ -61,12 +72,12 @@ class PostFragment : Fragment() {
             when (menuItem.itemId) {
                 R.id.menu_item1 -> {
                     // 메뉴 아이템 1 클릭 시 처리
-                    // 예: Toast 또는 다른 작업 수행
+
                     true
                 }
                 R.id.menu_item2 -> {
                     // 메뉴 아이템 2 클릭 시 처리
-                    // 예: 다른 Fragment로 이동 또는 다른 작업 수행
+
                     true
                 }
                 // 다른 메뉴 아이템들에 대한 처리도 추가 가능
