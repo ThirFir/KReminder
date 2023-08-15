@@ -1,0 +1,19 @@
+<vector
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="300dp"
+    android:height="44dp"
+    android:viewportWidth="300"
+    android:viewportHeight="44"
+    >
+    <group>
+        <!-- 원래의 전체 사각형을 표시하지 않도록 주석 처리 -->
+        <!--<clip-path android:pathData="M0 0H300V44H0V0Z"/>-->
+
+        <!-- 아래쪽 경계만 표시하는 path 추가 -->
+        <path
+            android:pathData="M0 44H300"
+            android:strokeWidth="2"
+            android:strokeColor="#595F9FFF"
+            />
+    </group>
+</vector>
