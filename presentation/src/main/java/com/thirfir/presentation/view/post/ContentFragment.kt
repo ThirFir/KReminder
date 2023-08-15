@@ -69,7 +69,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlin.math.roundToInt
 
 @AndroidEntryPoint
-class ContentFragment private constructor(): Fragment() {
+class ContentFragment: Fragment() {
     private lateinit var binding: FragmentContentBinding
     private val postViewModel: PostViewModel by viewModels()
 
@@ -92,7 +92,7 @@ class ContentFragment private constructor(): Fragment() {
         binding = FragmentContentBinding.inflate(layoutInflater, container, false)
         postViewModel.fetchPost(bulletin, pid) { post ->
             post.htmlElements.forEach {
-                addViewOfTag(it, binding.llContent, null)
+                addViewOfTag(it, binding.root, null)
             }
         }
 

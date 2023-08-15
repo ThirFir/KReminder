@@ -1,6 +1,7 @@
 package com.thirfir.presentation.view.post
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,15 +11,16 @@ import com.thirfir.presentation.R
 import com.thirfir.presentation.adapter.PostAdapter
 import com.thirfir.presentation.databinding.FragmentPostListBinding
 import com.thirfir.presentation.model.PostItem
+import dagger.hilt.android.AndroidEntryPoint
 
-
-
+@AndroidEntryPoint
 class PostListFragment : Fragment() {
 
     private lateinit var binding: FragmentPostListBinding
     private lateinit var postAdapter: PostAdapter
     private var currentPage = 1
     private val postsPerPage = 20
+
 
     val BASE_URL = "https://portal.koreatech.ac.kr/ctt/bb/bulletin"
 
@@ -35,19 +37,30 @@ class PostListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentPostListBinding.inflate(inflater, container, false)
-
         initClickListeners()
         initRecyclerView()
         initPaginationButtons()
-
+        slideMenu()
+        Log.d("PostListFragment", "onCreateView")
         // 추가 데이터 아이템들...
-        postItems.add(PostItem(30976, "hi", BASE_URL.addQueryString("b", 14, 30976)))
+        postItems.add(PostItem(1, "hi", BASE_URL.addQueryString("b", 14, 30976)))
+        postItems.add(PostItem(30978, "hi", BASE_URL.addQueryString("b", 14, 30978)))
+        postItems.add(PostItem(30976, "일반공지", BASE_URL.addQueryString("b", 14, 30976)))
+        postItems.add(PostItem(30978, "장학공지", BASE_URL.addQueryString("b", 14, 30978)))
+        postItems.add(PostItem(30976, "일반공지", BASE_URL.addQueryString("b", 14, 30976)))
+        postItems.add(PostItem(2, "hi", BASE_URL.addQueryString("b", 14, 30976)))
+        postItems.add(PostItem(30978, "hi", BASE_URL.addQueryString("b", 14, 30978)))
+        postItems.add(PostItem(30976, "일반공지", BASE_URL.addQueryString("b", 14, 30976)))
+        postItems.add(PostItem(30978, "장학공지", BASE_URL.addQueryString("b", 14, 30978)))
+        postItems.add(PostItem(30976, "일반공지", BASE_URL.addQueryString("b", 14, 30976)))
+        postItems.add(PostItem(3, "hi", BASE_URL.addQueryString("b", 14, 30976)))
         postItems.add(PostItem(30978, "hi", BASE_URL.addQueryString("b", 14, 30978)))
         postItems.add(PostItem(30976, "일반공지", BASE_URL.addQueryString("b", 14, 30976)))
         postItems.add(PostItem(30978, "장학공지", BASE_URL.addQueryString("b", 14, 30978)))
         postItems.add(PostItem(30976, "일반공지", BASE_URL.addQueryString("b", 14, 30976)))
 
-        // 추가 데이터 아이템들...
+
+
 
         // 초기에 첫 페이지의 데이터를 표시합니다.
         updateRecyclerViewData()
@@ -55,15 +68,48 @@ class PostListFragment : Fragment() {
         return binding.root
     }
 
+    private fun slideMenu(){
+        val drawerLayout = binding.drawerLayout
+        val navigationView = binding.navigationView
+
+// NavigationView의 메뉴 아이템 클릭 리스너 설정
+        navigationView.setNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.menu_item1 -> {
+                    // 메뉴 아이템 1 클릭 시 처리
+
+                    true
+                }
+                R.id.menu_item2 -> {
+                    // 메뉴 아이템 2 클릭 시 처리
+
+                    true
+                }
+                // 다른 메뉴 아이템들에 대한 처리도 추가 가능
+                else -> false
+            }
+        }
+
+// post_menu 버튼 클릭 시 NavigationView를 열기/닫기
+        binding.postMenu.setOnClickListener {
+            if (drawerLayout.isDrawerOpen(navigationView)) {
+                drawerLayout.closeDrawer(navigationView)
+            } else {
+                drawerLayout.openDrawer(navigationView)
+            }
+        }
+
+
+    }
+
 
     private fun initClickListeners() {
         postAdapter = PostAdapter { postItem ->
             val postFragment = PostFragment.newInstance(postItem.url)
             requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.main_fragment_container, postFragment)
+                .replace(R.id.post_fragment_container, postFragment)
                 .addToBackStack(null)
                 .commit()
-            // TODO Activity로 전환
         }
         binding.searchButton.setOnClickListener {
             val searchText = binding.searchEditText.text.toString()
@@ -77,7 +123,7 @@ class PostListFragment : Fragment() {
         postAdapter = PostAdapter { postItem ->
             val postFragment = PostFragment.newInstance(postItem.url)
             requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.main_fragment_container, postFragment)
+                .replace(R.id.post_fragment_container, postFragment)
                 .addToBackStack(null)
                 .commit()
         }
@@ -135,11 +181,16 @@ class PostListFragment : Fragment() {
     private fun updateRecyclerViewData() {
         val start = (currentPage - 1) * postsPerPage
         val end = minOf(start + postsPerPage, postItems.size)
-        val sublist = postItems.subList(start, end)
-        postAdapter.submitList(sublist)
+
+        if (start < end) { // Check if start is less than end before creating the sublist
+            val sublist = postItems.subList(start, end)
+            postAdapter.submitList(sublist)
+        } else {
+            postAdapter.submitList(emptyList()) // Submit an empty list if start >= end
+        }
+
         updateButtonState()
     }
-
     private fun updateRecyclerViewData(newList: List<PostItem>) {
         val start = (currentPage - 1) * postsPerPage
         val end = minOf(start + postsPerPage, newList.size)
@@ -158,12 +209,6 @@ class PostListFragment : Fragment() {
         binding.prevButton.isEnabled = currentPage > 1
         binding.nextButton.isEnabled = currentPage < totalPage
 
-        // 다음 페이지의 버튼들을 업데이트합니다.
-        binding.page1Button.text = (currentPage + 1).toString()
-        binding.page2Button.text = (currentPage + 2).toString()
-        binding.page3Button.text = (currentPage + 3).toString()
-        binding.page4Button.text = (currentPage + 4).toString()
-        binding.page5Button.text = (currentPage + 5).toString()
     }
 
     companion object {

@@ -2,8 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ContentFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -20,8 +19,7 @@
                 android:layout_marginLeft="5dp"
                 android:background="@drawable/ic_back"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/board_name"
-                tools:ignore="MissingConstraints" />
+                app:layout_constraintTop_toTopOf="@+id/board_name" />
 
             <Button
                 android:id="@+id/star"
@@ -30,8 +28,7 @@
                 android:layout_marginRight="10dp"
                 android:background="@drawable/ic_star"
                 app:layout_constraintBottom_toBottomOf="@+id/post_date"
-                app:layout_constraintEnd_toEndOf="parent"
-                tools:ignore="MissingConstraints" />
+                app:layout_constraintEnd_toEndOf="parent"/>
 
             <TextView
                 android:id="@+id/board_name"
@@ -43,8 +40,7 @@
                 android:text="@string/board"
                 android:textSize="11dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="MissingConstraints" />
+                app:layout_constraintTop_toTopOf="parent"/>
 
             <TextView
                 android:id="@+id/post_detail"

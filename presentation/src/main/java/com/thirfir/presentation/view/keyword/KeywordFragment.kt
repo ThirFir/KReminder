@@ -11,7 +11,7 @@ import com.thirfir.presentation.databinding.FragmentKeywordBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class KeywordFragment private constructor(): Fragment() {
+class KeywordFragment: Fragment() {
     private lateinit var binding: FragmentKeywordBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -2,6 +2,7 @@ package com.thirfir.presentation.view.post
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import com.thirfir.presentation.databinding.ActivityPostListBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -22,5 +23,4 @@ class PostListActivity : AppCompatActivity(){
             .add(binding.postFragmentContainer.id, PostListFragment.newInstance())
             .commit()
     }
-
 }

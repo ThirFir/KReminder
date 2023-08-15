@@ -13,7 +13,7 @@ import com.thirfir.presentation.model.MenuItem
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SettingFragment private constructor() : Fragment() {
+class SettingFragment : Fragment() {
     private lateinit var binding: FragmentSettingBinding
     private val menuItems: List<MenuItem> by lazy {
         listOf(

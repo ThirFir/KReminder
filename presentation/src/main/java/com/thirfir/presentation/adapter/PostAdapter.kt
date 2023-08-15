@@ -1,6 +1,5 @@
 package com.thirfir.presentation.adapter
 
-
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -9,7 +8,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.thirfir.presentation.databinding.ItemPostBinding
 import com.thirfir.presentation.model.PostItem
 
-
+data class PostItem (
+    val num:Int,
+    val title: String,
+    val url: String
+)
 class PostAdapter(
     private val onClick: (PostItem) -> Unit
 ) : ListAdapter<PostItem, PostAdapter.PostViewHolder>(PostItemDiffCallback()) {
@@ -34,10 +37,9 @@ class PostAdapter(
             binding.textViewSettingNum.text = item.num.toString()
             binding.textViewSettingTitle.text = item.title
             binding.root.setOnClickListener {
-                binding.root.setOnClickListener {
-                    onClick(item) // 클릭 이벤트 처리를 PostFragment로 전달
-                }
+                onClick(item) // 클릭 이벤트 처리를 PostFragment로 전달
             }
+
         }
     }
 

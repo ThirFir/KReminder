@@ -6,7 +6,9 @@ import com.bumptech.glide.Glide
 import com.thirfir.domain.SRC
 import com.thirfir.presentation.R
 import com.thirfir.presentation.databinding.ActivityImageBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ImageActivity : AppCompatActivity() {
     private val binding: ActivityImageBinding by lazy {
         ActivityImageBinding.inflate(layoutInflater)
