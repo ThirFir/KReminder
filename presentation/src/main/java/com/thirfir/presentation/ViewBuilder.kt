@@ -33,6 +33,7 @@ import com.thirfir.domain.DIV
 import com.thirfir.domain.EM
 import com.thirfir.domain.FONT_SIZE
 import com.thirfir.domain.FONT_WEIGHT
+import com.thirfir.domain.H3
 import com.thirfir.domain.I
 import com.thirfir.domain.IMG
 import com.thirfir.domain.INS
@@ -79,6 +80,16 @@ internal fun HtmlElement.addViewOfTag(parentLayout: ViewGroup, textView: TextVie
                 parentLayout.removeView(linearLayout)
         }
         P -> {
+            val tv = getTextView(context)
+            parentLayout.addView(tv)
+            childElements?.forEach {
+                it.addViewOfTag(parentLayout, tv, context)
+            }
+            if(tv.text.isEmpty())
+                parentLayout.removeView(tv)
+        }
+        H3 -> {
+            addStyleToChildren(FONT_WEIGHT, BOLD)
             val tv = getTextView(context)
             parentLayout.addView(tv)
             childElements?.forEach {
@@ -208,7 +219,8 @@ private fun HtmlElement.getColumnSize(): Int {
 }
 
 private fun HtmlElement.addStyleToChildren(key: String, value: String) {
-    styles[key] = value
+    if(styles[key] == null)
+        styles[key] = value
     childElements?.forEach {
         it.addStyleToChildren(key, value)
     }

@@ -144,7 +144,7 @@ internal fun String?.toBorder(): Border {
     var color = Color.BLACK
 
     for(value in values) {
-        if(value.contains("pt")) {
+        if(value.contains("pt") || value.contains("px")) {
             width = value.extractPxValue()
         } else if(value.contains(SOLID) || value.contains(DASHED) || value.contains(DOTTED)) {
             style = value

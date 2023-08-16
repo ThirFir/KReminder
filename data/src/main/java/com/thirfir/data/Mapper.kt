@@ -34,10 +34,6 @@ fun PostDTO.toPost(): Post =
     Post(
         htmlElements = htmlElementDTOs.map { it.toHtmlElement(
             mutableMapOf(FONT_SIZE to "12pt",
-                BACKGROUND_COLOR to TRANSPARENT,
-                COLOR to BLACK,
-                TEXT_ALIGN to START,
-                FONT_WEIGHT to NORMAL,
                 PADDING to "0px",
                 MARGIN to "0px"
                 )

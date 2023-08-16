@@ -82,6 +82,7 @@ class TableItemView(
         layoutParams.width = mWidth
         layoutParams.height = mHeight
         rect.set(0, 0, mWidth, mHeight)
+        setBackgroundColor(tableElement.styles[BACKGROUND].toColor(true))
         invalidate()
     }
 
@@ -107,16 +108,16 @@ class TableItemView(
             val border = tableElement.styles[BORDER]!!.toBorder()
             leftBorderPaint.color = border.color
             leftBorderPaint.strokeWidth = border.width.upscale()
-            leftBorderPaint.style = Paint.Style.STROKE
+            leftBorderPaint.setBorderStyle(border.style)
             rightBorderPaint.color = border.color
             rightBorderPaint.strokeWidth = border.width.upscale()
-            rightBorderPaint.style = Paint.Style.STROKE
+            rightBorderPaint.setBorderStyle(border.style)
             topBorderPaint.color = border.color
             topBorderPaint.strokeWidth = border.width.upscale()
-            topBorderPaint.style = Paint.Style.STROKE
+            topBorderPaint.setBorderStyle(border.style)
             bottomBorderPaint.color = border.color
             bottomBorderPaint.strokeWidth = border.width.upscale()
-            bottomBorderPaint.style = Paint.Style.STROKE
+            bottomBorderPaint.setBorderStyle(border.style)
         }
         if(tableElement.styles[BORDER_STYLE] == NONE) {
             leftBorderPaint.strokeWidth = 0f
