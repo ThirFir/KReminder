@@ -1,5 +1,6 @@
 package com.thirfir.data.repository
 
+import android.util.Log
 import com.thirfir.data.datasource.remote.PostRemoteDataSource
 import com.thirfir.data.toPost
 import com.thirfir.domain.model.Post

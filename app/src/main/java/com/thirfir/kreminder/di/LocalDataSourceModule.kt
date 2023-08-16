@@ -25,7 +25,7 @@ object LocalDataSourceModule {
     @Provides
     fun provideKeywordDao(
         @ApplicationContext context: Context
-    ) : KeywordDao? {
-        return KReminderDatabase.getInstance(context)?.keywordDao()
+    ) : KeywordDao {
+        return KReminderDatabase.getInstance(context).keywordDao()
     }
 }

@@ -14,23 +14,29 @@ class PostViewModel @Inject constructor(
     private val getPostUseCase: GetPostUseCase
 ) : ViewModel() {
 
-    init {
-        fetchPost(14,30975) {    // 페이지, 글번호
-            //Log.d("PostViewModel", it.parentElements.toString())
-            it.parentElements.forEach { pe ->
-                pe.tables?.forEach { table ->
-                    table?.forEach { te ->
-                        te?.textElement?.forEach { textElement ->
-                            Log.d("PostViewModel", textElement.text)
-                        }
-                    }
-                }
+    private var exceptionCallback: ExceptionCallback? = null
+
+    /**
+     * @param bulletin 게시판 번호
+     * @param pid 글 번호
+     * @param onResponseCallback UI 갱신을 위한 콜백
+     */
+    fun fetchPost(bulletin: Int, pid: Int, onResponseCallback: (Post) -> Unit) {
+        viewModelScope.launch {
+            try {
+                onResponseCallback(getPostUseCase(bulletin, pid))
+            } catch (e: Exception) {
+                Log.e("onResponseCallback", e.toString())
+                exceptionCallback?.onException(e)
             }
         }
     }
-    fun fetchPost(bulletin: Int, pid: Int, onResponseCallback: (Post) -> Unit) {
-        viewModelScope.launch {
-            onResponseCallback(getPostUseCase(bulletin, pid))
-        }
+
+    interface ExceptionCallback {
+        fun onException(e: Exception)
+    }
+
+    fun registerExceptionCallback(callback: ExceptionCallback) {
+        this.exceptionCallback = callback
     }
 }

@@ -1,7 +1,9 @@
 package com.thirfir.presentation.view.main
 
+import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,15 +12,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.thirfir.domain.BASE_URL
-import com.thirfir.domain.addQueryString
+import com.thirfir.domain.util.addQueryString
 import com.thirfir.presentation.R
 import com.thirfir.presentation.adapter.BulletinBoardsAdapter
 import com.thirfir.presentation.databinding.FragmentBulletinBoardBinding
 import com.thirfir.presentation.model.BulletinBoardItem
+import com.thirfir.presentation.view.post.PostListActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class BulletinBoardFragment private constructor(): Fragment() {
+class BulletinBoardFragment: Fragment() {
 
     private lateinit var binding: FragmentBulletinBoardBinding
     private lateinit var onBulletinBoardClickListener: (BulletinBoardItem) -> Unit
@@ -55,7 +58,8 @@ class BulletinBoardFragment private constructor(): Fragment() {
 
     private fun initClickListeners() {
         onBulletinBoardClickListener = {
-            // TODO("START POST LIST ACTIVITY")
+            val intent = Intent(requireContext(), PostListActivity::class.java)
+            startActivity(intent)
         }
         binding.topAppBar.setOnMenuItemClickListener {
             when(it.itemId) {

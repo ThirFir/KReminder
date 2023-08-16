@@ -10,7 +10,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class NotificationSettingFragment private constructor(): Fragment() {
+class NotificationSettingFragment: Fragment() {
     private lateinit var binding: FragmentNotificationSettingBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {

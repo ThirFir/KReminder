@@ -1,5 +1,4 @@
-package com.thirfir.domain
-
+package com.thirfir.domain.util
 
 /**
  *

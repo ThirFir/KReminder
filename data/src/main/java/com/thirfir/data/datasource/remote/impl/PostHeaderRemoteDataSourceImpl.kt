@@ -4,9 +4,8 @@ import com.thirfir.data.datasource.remote.PostHeaderRemoteDataSource
 import com.thirfir.data.datasource.remote.dto.PostHeaderDTO
 import com.thirfir.domain.BASE_URL
 import com.thirfir.domain.IoDispatcher
-import com.thirfir.domain.addQueryString
+import com.thirfir.domain.util.addQueryString
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
