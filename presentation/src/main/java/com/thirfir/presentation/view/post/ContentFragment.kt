@@ -11,6 +11,7 @@ import android.text.style.ForegroundColorSpan
 import android.text.style.StrikethroughSpan
 import android.text.style.StyleSpan
 import android.text.style.UnderlineSpan
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -28,6 +29,7 @@ import com.thirfir.domain.BACKGROUND_COLOR
 import com.thirfir.domain.BOLD
 import com.thirfir.domain.BR
 import com.thirfir.domain.COLOR
+import com.thirfir.domain.COLSPAN
 import com.thirfir.domain.DEL
 import com.thirfir.domain.DIV
 import com.thirfir.domain.EM
@@ -45,6 +47,7 @@ import com.thirfir.domain.PADDING_BOTTOM
 import com.thirfir.domain.PADDING_LEFT
 import com.thirfir.domain.PADDING_RIGHT
 import com.thirfir.domain.PADDING_TOP
+import com.thirfir.domain.ROWSPAN
 import com.thirfir.domain.SPAN
 import com.thirfir.domain.SRC
 import com.thirfir.domain.STRIKE
@@ -55,7 +58,8 @@ import com.thirfir.domain.TEXT_DECORATION_LINE
 import com.thirfir.domain.U
 import com.thirfir.domain.UNDERLINE
 import com.thirfir.domain.model.HtmlElement
-import com.thirfir.domain.model.Padding
+import com.thirfir.presentation.addViewOfTag
+import com.thirfir.presentation.model.Padding
 import com.thirfir.presentation.toColor
 import com.thirfir.presentation.toGravity
 import com.thirfir.presentation.toPadding
@@ -63,6 +67,7 @@ import com.thirfir.presentation.toTextStyle
 import com.thirfir.presentation.databinding.FragmentContentBinding
 import com.thirfir.presentation.upscale
 import com.thirfir.presentation.extractPxValue
+import com.thirfir.presentation.model.TableElement
 import com.thirfir.presentation.toDP
 import com.thirfir.presentation.viewmodel.PostViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -92,176 +97,226 @@ class ContentFragment: Fragment() {
         binding = FragmentContentBinding.inflate(layoutInflater, container, false)
         postViewModel.fetchPost(bulletin, pid) { post ->
             post.htmlElements.forEach {
-                addViewOfTag(it, binding.root, null)
+                it.addViewOfTag(binding.test, null, requireContext())
             }
         }
 
         return binding.root
     }
 
-    private fun addViewOfTag(element: HtmlElement, parentLayout: ViewGroup, textView: TextView?) {
-        when(element.tag) {
-            DIV -> {
-                val linearLayout = getLinearLayout(element)
-                val tv = getTextView(element)
-
-                parentLayout.addView(linearLayout)
-                linearLayout.addView(tv)
-                element.childElements?.forEach {
-                    addViewOfTag(it, linearLayout, tv)
-                }
-                if(tv.text.isEmpty())
-                    linearLayout.removeView(tv)
-                if(linearLayout.isEmpty())
-                    parentLayout.removeView(linearLayout)
-            }
-            P -> {
-                val tv = getTextView(element)
-                parentLayout.addView(tv)
-                element.childElements?.forEach {
-                    addViewOfTag(it, parentLayout, tv)
-                }
-                if(tv.text.isEmpty())
-                    parentLayout.removeView(tv)
-            }
-            SPAN -> {
-                element.childElements?.forEach {
-                    addViewOfTag(it, parentLayout, textView)
-                }
-            }
-            B, STRONG -> {
-                addStyleToChildren(element, FONT_WEIGHT, BOLD)
-                element.childElements?.forEach {
-                    addViewOfTag(it, parentLayout, textView)
-                }
-            }
-            U, INS -> {
-                addStyleToChildren(element, TEXT_DECORATION_LINE, UNDERLINE)
-                element.childElements?.forEach {
-                    addViewOfTag(it, parentLayout, textView)
-                }
-            }
-            I, EM -> {
-                addStyleToChildren(element, FONT_WEIGHT, ITALIC)
-                element.childElements?.forEach {
-                    addViewOfTag(it, parentLayout, textView)
-                }
-            }
-            STRIKE, DEL -> {
-                addStyleToChildren(element, TEXT_DECORATION_LINE, LINE_THROUGH)
-                element.childElements?.forEach {
-                    addViewOfTag(it, parentLayout, textView)
-                }
-            }
-            BR -> {
-                if(textView?.text?.isEmpty() == true)
-                    textView.append(" ")
-                else
-                    textView?.append("\n")
-            }
-            A -> {
-                // TODO : 링크
-            }
-            IMG -> {
-                val intent = Intent(requireActivity(), ImageActivity::class.java).apply {
-                    putExtra(SRC, KOREATECH_PORTAL_URL + element.attributes[SRC])
-                }
-                ImageView(requireContext()).apply {
-                    layoutParams = ViewGroup.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT
-                    )
-                    setOnClickListener {
-                        startActivity(intent)
-                    }
-                }.also {
-                    parentLayout.addView(it)
-                    Glide.with(it).load(KOREATECH_PORTAL_URL + element.attributes[SRC])
-                        .into(it)
-                }
-            }
-            TABLE -> {
-                // TODO : Make Table
-            }
-            null -> {
-                textView?.append(getSpannableStringBuilder(element.text!!, element.styles))
-            }
-        }
-    }
-
-    private fun addStyleToChildren(element: HtmlElement, key: String, value: String) {
-        element.styles[key] = value
-        element.childElements?.forEach {
-            addStyleToChildren(it, key, value)
-        }
-    }
-
-    private fun getSpannableStringBuilder(expandedText: String, styles: Map<String, String>) : SpannableStringBuilder {
-        return SpannableStringBuilder().apply {
-            append(getSpannableString(expandedText, styles))
-        }
-    }
-
-    private fun getSpannableString(text: String, styles: Map<String, String>) : SpannableString {
-        val flags = Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-        return SpannableString(text).apply {
-            setSpan(ForegroundColorSpan(styles[COLOR].toColor()), 0, length, flags)
-            setSpan(AbsoluteSizeSpan(styles[FONT_SIZE].toDP(requireContext()).upscale().roundToInt(), true),
-                0, length, flags)
-            setSpan(StyleSpan(styles[FONT_WEIGHT].toTextStyle()), 0, length, flags)
-            setSpan(BackgroundColorSpan(styles[BACKGROUND_COLOR].toColor(isBackground = true)),
-                0, length, flags)
-            if(styles[TEXT_DECORATION_LINE] == UNDERLINE) {
-                setSpan(UnderlineSpan(), 0, length, flags)
-            }
-            if(styles[TEXT_DECORATION_LINE] == LINE_THROUGH) {
-                setSpan(StrikethroughSpan(), 0, length, flags)
-            }
-        }
-    }
-
-    private fun View.setPaddings(styles: Map<String, String>) {
-        val padding = styles[PADDING]?.toPadding(requireContext()) ?: Padding(0f, 0f, 0f, 0f)
-        setPadding(
-            padding.left.upscale().roundToInt(),
-            padding.top.upscale().roundToInt(),
-            padding.right.upscale().roundToInt(),
-            padding.bottom.upscale().roundToInt()
-        )
-
-        val left = styles[PADDING_LEFT] ?: padding.left.toString()
-        val top = styles[PADDING_TOP] ?: padding.top.toString()
-        val right = styles[PADDING_RIGHT] ?: padding.right.toString()
-        val bottom = styles[PADDING_BOTTOM] ?: padding.bottom.toString()
-        setPadding(
-            left.extractPxValue().upscale().roundToInt(),
-            top.extractPxValue().upscale().roundToInt(),
-            right.extractPxValue().upscale().roundToInt(),
-            bottom.extractPxValue().upscale().roundToInt()
-        )
-    }
-
-    private fun getTextView(element: HtmlElement) = TextView(requireContext()).apply {
-        layoutParams = ViewGroup.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )
-        setTextSize(Dimension.SP, 14f)
-        gravity = element.styles[TEXT_ALIGN].toGravity()
-        setBackgroundColor(element.styles[BACKGROUND_COLOR].toColor(true))
-        setText("", TextView.BufferType.SPANNABLE)
-    }
-
-    private fun getLinearLayout(element: HtmlElement) = LinearLayout(requireContext()).apply {
-        layoutParams = ViewGroup.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )
-        orientation = LinearLayout.VERTICAL
-        gravity = element.styles[TEXT_ALIGN].toGravity()
-        setPaddings(element.styles)
-        setBackgroundColor(element.styles[BACKGROUND_COLOR].toColor(true))
-    }
+//    private fun addViewOfTag(element: HtmlElement, parentLayout: ViewGroup, textView: TextView?) {
+//        when(element.tag) {
+//            DIV -> {
+//                val linearLayout = getLinearLayout(element)
+//                val tv = getTextView(element)
+//
+//                parentLayout.addView(linearLayout)
+//                linearLayout.addView(tv)
+//                element.childElements?.forEach {
+//                    addViewOfTag(it, linearLayout, tv)
+//                }
+//                if(tv.text.isEmpty())
+//                    linearLayout.removeView(tv)
+//                if(linearLayout.isEmpty())
+//                    parentLayout.removeView(linearLayout)
+//            }
+//            P -> {
+//                val tv = getTextView(element)
+//                parentLayout.addView(tv)
+//                element.childElements?.forEach {
+//                    addViewOfTag(it, parentLayout, tv)
+//                }
+//                if(tv.text.isEmpty())
+//                    parentLayout.removeView(tv)
+//            }
+//            SPAN -> {
+//                element.childElements?.forEach {
+//                    addViewOfTag(it, parentLayout, textView)
+//                }
+//            }
+//            B, STRONG -> {
+//                addStyleToChildren(element, FONT_WEIGHT, BOLD)
+//                element.childElements?.forEach {
+//                    addViewOfTag(it, parentLayout, textView)
+//                }
+//            }
+//            U, INS -> {
+//                addStyleToChildren(element, TEXT_DECORATION_LINE, UNDERLINE)
+//                element.childElements?.forEach {
+//                    addViewOfTag(it, parentLayout, textView)
+//                }
+//            }
+//            I, EM -> {
+//                addStyleToChildren(element, FONT_WEIGHT, ITALIC)
+//                element.childElements?.forEach {
+//                    addViewOfTag(it, parentLayout, textView)
+//                }
+//            }
+//            STRIKE, DEL -> {
+//                addStyleToChildren(element, TEXT_DECORATION_LINE, LINE_THROUGH)
+//                element.childElements?.forEach {
+//                    addViewOfTag(it, parentLayout, textView)
+//                }
+//            }
+//            BR -> {
+//                if(textView?.text?.isEmpty() == true)
+//                    textView.append(" ")
+//                else
+//                    textView?.append("\n")
+//            }
+//            A -> {
+//                // TODO : 링크
+//            }
+//            IMG -> {
+//                val intent = Intent(requireActivity(), ImageActivity::class.java).apply {
+//                    putExtra(SRC, KOREATECH_PORTAL_URL + element.attributes[SRC])
+//                }
+//                ImageView(requireContext()).apply {
+//                    layoutParams = ViewGroup.LayoutParams(
+//                        ViewGroup.LayoutParams.MATCH_PARENT,
+//                        ViewGroup.LayoutParams.WRAP_CONTENT
+//                    )
+//                    setOnClickListener {
+//                        startActivity(intent)
+//                    }
+//                }.also {
+//                    parentLayout.addView(it)
+//                    Glide.with(it).load(KOREATECH_PORTAL_URL + element.attributes[SRC])
+//                        .into(it)
+//                }
+//            }
+//            TABLE -> {
+//                // TODO : Make Table
+//                element.childElements?.forEach {
+//                    makeTable(it)
+//                }
+//            }
+//            null -> {
+//                textView?.append(getSpannableStringBuilder(element.text!!, element.styles))
+//            }
+//        }
+//    }
+//
+//    private fun makeTable(tbodyElement: HtmlElement): Array<Array<TableElement?>> {
+//        var rowSize = 0
+//        var columnSize = 0
+//        tbodyElement.childElements?.forEach {
+//            columnSize = columnSize.coerceAtLeast(getColumnSize(it))
+//            ++rowSize
+//        }
+//        val table = Array(rowSize) { Array<TableElement?>(columnSize) { null } }
+//        val tableItemEnabled = Array(rowSize) { Array(columnSize) { true } }
+//
+//        var rowIndex = 0
+//        tbodyElement.childElements?.forEach { trElement ->
+//            var columnIndex = 0
+//            trElement.childElements?.forEach { tdElement ->
+//                if(tableItemEnabled[rowIndex][columnIndex]) {
+//                    var rowSpan = tdElement.attributes[ROWSPAN]?.trim()?.toInt() ?: 1
+//                    var colSpan = tdElement.attributes[COLSPAN]?.trim()?.toInt() ?: 1
+//                    table[rowIndex][columnIndex] = TableElement(
+//                        rowSpan,
+//                        colSpan,
+//                        tdElement.childElements,
+//                        tdElement.styles
+//                    )
+//                    while (rowSpan > 1) {
+//                        tableItemEnabled[rowIndex + rowSpan - 1][columnIndex] = false
+//                        --rowSpan
+//                    }
+//                    while (colSpan > 1) {
+//                        tableItemEnabled[rowIndex][columnIndex + colSpan - 1] = false
+//                        --colSpan
+//                    }
+//                }
+//                ++columnIndex
+//            }
+//            ++rowIndex
+//        }
+//        return table
+//    }
+//
+//    private fun getColumnSize(trElement: HtmlElement): Int {
+//        var rowSize = 0
+//        trElement.childElements?.forEach {
+//            ++rowSize
+//        }
+//        return rowSize
+//    }
+//
+//    private fun addStyleToChildren(element: HtmlElement, key: String, value: String) {
+//        element.styles[key] = value
+//        element.childElements?.forEach {
+//            addStyleToChildren(it, key, value)
+//        }
+//    }
+//
+//    private fun getSpannableStringBuilder(expandedText: String, styles: Map<String, String>) : SpannableStringBuilder {
+//        return SpannableStringBuilder().apply {
+//            append(getSpannableString(expandedText, styles))
+//        }
+//    }
+//
+//    private fun getSpannableString(text: String, styles: Map<String, String>) : SpannableString {
+//        val flags = Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+//        return SpannableString(text).apply {
+//            setSpan(ForegroundColorSpan(styles[COLOR].toColor()), 0, length, flags)
+//            setSpan(AbsoluteSizeSpan(styles[FONT_SIZE].toDP(requireContext()).upscale().roundToInt(), true),
+//                0, length, flags)
+//            setSpan(StyleSpan(styles[FONT_WEIGHT].toTextStyle()), 0, length, flags)
+//            setSpan(BackgroundColorSpan(styles[BACKGROUND_COLOR].toColor(isBackground = true)),
+//                0, length, flags)
+//            if(styles[TEXT_DECORATION_LINE] == UNDERLINE) {
+//                setSpan(UnderlineSpan(), 0, length, flags)
+//            }
+//            if(styles[TEXT_DECORATION_LINE] == LINE_THROUGH) {
+//                setSpan(StrikethroughSpan(), 0, length, flags)
+//            }
+//        }
+//    }
+//
+//    private fun View.setPaddings(styles: Map<String, String>) {
+//        val padding = styles[PADDING]?.toPadding() ?: Padding(0f, 0f, 0f, 0f)
+//        setPadding(
+//            padding.left.upscale().roundToInt(),
+//            padding.top.upscale().roundToInt(),
+//            padding.right.upscale().roundToInt(),
+//            padding.bottom.upscale().roundToInt()
+//        )
+//
+//        val left = styles[PADDING_LEFT] ?: padding.left.toString()
+//        val top = styles[PADDING_TOP] ?: padding.top.toString()
+//        val right = styles[PADDING_RIGHT] ?: padding.right.toString()
+//        val bottom = styles[PADDING_BOTTOM] ?: padding.bottom.toString()
+//        setPadding(
+//            left.extractPxValue().upscale().roundToInt(),
+//            top.extractPxValue().upscale().roundToInt(),
+//            right.extractPxValue().upscale().roundToInt(),
+//            bottom.extractPxValue().upscale().roundToInt()
+//        )
+//    }
+//
+//    private fun getTextView(element: HtmlElement) = TextView(requireContext()).apply {
+//        layoutParams = ViewGroup.LayoutParams(
+//            ViewGroup.LayoutParams.MATCH_PARENT,
+//            ViewGroup.LayoutParams.WRAP_CONTENT
+//        )
+//        setTextSize(Dimension.SP, 14f)
+//        gravity = element.styles[TEXT_ALIGN].toGravity()
+//        setBackgroundColor(element.styles[BACKGROUND_COLOR].toColor(true))
+//        setText("", TextView.BufferType.SPANNABLE)
+//    }
+//
+//    private fun getLinearLayout(element: HtmlElement) = LinearLayout(requireContext()).apply {
+//        layoutParams = ViewGroup.LayoutParams(
+//            ViewGroup.LayoutParams.MATCH_PARENT,
+//            ViewGroup.LayoutParams.WRAP_CONTENT
+//        )
+//        orientation = LinearLayout.VERTICAL
+//        gravity = element.styles[TEXT_ALIGN].toGravity()
+//        setPaddings(element.styles)
+//        setBackgroundColor(element.styles[BACKGROUND_COLOR].toColor(true))
+//    }
 
 
     companion object {

@@ -6,8 +6,7 @@ import android.os.Bundle
 import android.webkit.WebChromeClient
 import android.webkit.WebViewClient
 import com.thirfir.domain.BASE_URL
-import com.thirfir.domain.addQueryString
-import com.thirfir.presentation.R
+import com.thirfir.domain.util.addQueryString
 import com.thirfir.presentation.databinding.ActivityPostWebViewBinding
 import dagger.hilt.android.AndroidEntryPoint
 

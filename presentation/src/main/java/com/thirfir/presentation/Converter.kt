@@ -11,6 +11,8 @@ import com.thirfir.domain.BOLD
 import com.thirfir.domain.CENTER
 import com.thirfir.domain.CYAN
 import com.thirfir.domain.DARK_GRAY
+import com.thirfir.domain.DASHED
+import com.thirfir.domain.DOTTED
 import com.thirfir.domain.END
 import com.thirfir.domain.GRAY
 import com.thirfir.domain.GREEN
@@ -21,15 +23,17 @@ import com.thirfir.domain.LIGHT_GRAY
 import com.thirfir.domain.MAGENTA
 import com.thirfir.domain.RED
 import com.thirfir.domain.RIGHT
+import com.thirfir.domain.SOLID
 import com.thirfir.domain.START
 import com.thirfir.domain.TRANSPARENT
 import com.thirfir.domain.WHITE
 import com.thirfir.domain.YELLOW
-import com.thirfir.domain.model.Padding
+import com.thirfir.presentation.model.Border
+import com.thirfir.presentation.model.Padding
 import java.util.Locale
 import kotlin.math.roundToInt
 
-fun String?.toColor(isBackground: Boolean = false): Int {
+internal fun String?.toColor(isBackground: Boolean = false): Int {
     if (this == null)
         return if (isBackground) Color.TRANSPARENT else Color.BLACK
     if (contains("rgb", true)) {
@@ -57,7 +61,7 @@ fun String?.toColor(isBackground: Boolean = false): Int {
 }
 
 /** font-weight to textStyle */
-fun String?.toTextStyle(): Int {
+internal fun String?.toTextStyle(): Int {
     if (this == null) return Typeface.NORMAL
     return when (this.lowercase(Locale.ROOT)) {
         "400" -> Typeface.NORMAL
@@ -69,12 +73,12 @@ fun String?.toTextStyle(): Int {
     }
 }
 
-fun String?.toDP(context: Context): Float {
+internal fun String?.toDP(context: Context): Float {
     return pxToDP(context, this.extractPxValue())
 }
 
 
-fun String?.toGravity(): Int {
+internal fun String?.toGravity(): Int {
     if (this == null) return Gravity.START
     return when (this.lowercase(Locale.ROOT)) {
         LEFT, START -> Gravity.START
@@ -85,7 +89,7 @@ fun String?.toGravity(): Int {
 }
 
 // 상 우 하 좌 or 상 좌우 하 or 상하 좌우 or all
-fun String?.toPadding(context: Context): Padding {
+internal fun String?.toPadding(): Padding {
     if (this == null) return Padding(0f, 0f, 0f, 0f)
 
     val values = this.split(' ')
@@ -118,15 +122,71 @@ fun String?.toPadding(context: Context): Padding {
     }
 }
 
-fun pxToDP(context: Context, px: Float): Float {
+internal fun String?.toBorder(): Border {
+    if (this == null) return Border(SOLID, 0f, Color.BLACK)
+
+    val values = this.trim().split(' ')
+    var width = 0f
+    var style = ""
+    var color = Color.BLACK
+
+    for(value in values) {
+        if(value.contains("pt")) {
+            width = value.extractPxValue()
+        } else if(value.contains(SOLID) || value.contains(DASHED) || value.contains(DOTTED)) {
+            style = value
+        } else {
+            color = value.toColor()
+        }
+    }
+    return Border(style, width, color)
+}
+
+internal fun String?.toBorderStyle(): List<String> {
+    if (this == null) return List(4) { SOLID }
+
+    val values = this.split(' ')
+    return when(values.size) {
+        1 -> List(4) { values[0] }
+        2 -> listOf(values[0], values[1], values[0], values[1])
+        3 -> listOf(values[0], values[1], values[2], values[1])
+        else -> listOf(values[0], values[1], values[2], values[3])
+    }
+}
+
+internal fun String?.toBorderWidth(): List<Float> {
+    if (this == null) return List(4) { 0f }
+
+    val values = this.split(' ')
+    return when(values.size) {
+        1 -> List(4) { values[0].extractPxValue() }
+        2 -> listOf(values[0].extractPxValue(), values[1].extractPxValue(), values[0].extractPxValue(), values[1].extractPxValue())
+        3 -> listOf(values[0].extractPxValue(), values[1].extractPxValue(), values[2].extractPxValue(), values[1].extractPxValue())
+        else -> listOf(values[0].extractPxValue(), values[1].extractPxValue(), values[2].extractPxValue(), values[3].extractPxValue())
+    }
+}
+
+internal fun String?.toBorderColor(): List<Int> {
+    if (this == null) return List(4) { Color.BLACK }
+
+    val values = this.split(' ')
+    return when(values.size) {
+        1 -> List(4) { values[0].toColor() }
+        2 -> listOf(values[0].toColor(), values[1].toColor(), values[0].toColor(), values[1].toColor())
+        3 -> listOf(values[0].toColor(), values[1].toColor(), values[2].toColor(), values[1].toColor())
+        else -> listOf(values[0].toColor(), values[1].toColor(), values[2].toColor(), values[3].toColor())
+    }
+}
+
+internal fun pxToDP(context: Context, px: Float): Float {
     val metrics = context.resources.displayMetrics
     return px / (metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT)
 }
 
-fun dpToSP(context: Context, dp: Float): Float {
+internal fun dpToSP(context: Context, dp: Float): Float {
     return dp * context.resources.displayMetrics.density / context.resources.displayMetrics.scaledDensity
 }
-fun String?.extractPxValue(): Float {
+internal fun String?.extractPxValue(): Float {
     if (this == null) return 13f
 
     return when {
@@ -138,11 +198,12 @@ fun String?.extractPxValue(): Float {
     }
 }
 
-private const val UPSCALE_RATE = 1.75f
 
-fun Int.upscale(): Int {
+private const val UPSCALE_RATE = 1.85f
+
+internal fun Int.upscale(): Int {
     return (this * UPSCALE_RATE).roundToInt()
 }
-fun Float.upscale(): Float {
+internal fun Float.upscale(): Float {
     return this * UPSCALE_RATE
 }
