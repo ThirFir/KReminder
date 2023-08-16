@@ -23,6 +23,7 @@ import com.thirfir.domain.BORDER_TOP
 import com.thirfir.domain.BORDER_WIDTH
 import com.thirfir.domain.HEIGHT
 import com.thirfir.domain.NONE
+import com.thirfir.domain.SOLID
 import com.thirfir.domain.WIDTH
 import com.thirfir.presentation.addViewOfTag
 import com.thirfir.presentation.model.TableElement
@@ -44,6 +45,9 @@ class TableItemView(
     private val topBorderPaint = Paint()
     private val bottomBorderPaint = Paint()
 
+    var mWidth = 0
+    var mHeight = 0
+
     init {
         gravity = Gravity.CENTER
         orientation = VERTICAL
@@ -58,36 +62,47 @@ class TableItemView(
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
+        setBorderPaint()
         drawBorder(canvas)
-//        setBorderPaint()
     }
 
     private fun setSize() {
-        val width = if (tableElement.styles[WIDTH] == null)
+        mWidth = if (tableElement.styles[WIDTH] == null)
             ViewGroup.LayoutParams.WRAP_CONTENT
         else tableElement.styles[WIDTH].toDP(context).roundToInt().upscale().upscale().upscale()
-        val height = if (tableElement.styles[HEIGHT] == null)
+        mHeight = if (tableElement.styles[HEIGHT] == null)
             ViewGroup.LayoutParams.WRAP_CONTENT
         else tableElement.styles[HEIGHT].toDP(context).roundToInt().upscale().upscale().upscale()
 
-        layoutParams = LayoutParams(width, height)
-        rect.set(0, 0, width, height)
+        layoutParams = LayoutParams(mWidth, mHeight)
+        rect.set(0, 0, mWidth, mHeight)
+    }
+
+    fun setFitSize() {
+        layoutParams.width = mWidth
+        layoutParams.height = mHeight
+        rect.set(0, 0, mWidth, mHeight)
+        invalidate()
     }
 
     private fun drawBorder(canvas: Canvas?) {
-//        canvas?.drawLine(0f, 0f, 0f, rect.height().toFloat(), leftBorderPaint)
-//        canvas?.drawLine(0f, 0f, rect.width().toFloat(), 0f, topBorderPaint)
-//        canvas?.drawLine(0f, rect.height().toFloat(), rect.width().toFloat(), rect.height().toFloat(), bottomBorderPaint)
-//        canvas?.drawLine(rect.width().toFloat(), 0f, rect.width().toFloat(), rect.height().toFloat(), rightBorderPaint)
+        if(leftBorderPaint.strokeWidth > 0f)
+            canvas?.drawLine(0f, 0f, 0f, rect.height().toFloat(), leftBorderPaint)
+        if(topBorderPaint.strokeWidth > 0f)
+            canvas?.drawLine(0f, 0f, rect.width().toFloat(), 0f, topBorderPaint)
+        if(bottomBorderPaint.strokeWidth > 0f)
+            canvas?.drawLine(0f, rect.height().toFloat(), rect.width().toFloat(), rect.height().toFloat(), bottomBorderPaint)
+        if(rightBorderPaint.strokeWidth > 0f)
+            canvas?.drawLine(rect.width().toFloat(), 0f, rect.width().toFloat(), rect.height().toFloat(), rightBorderPaint)
 
-        canvas?.drawRect(0f, 0f, width.toFloat(), height.toFloat(), Paint().apply {
-            style = Paint.Style.STROKE
-            strokeWidth = 1f
-            color = Color.BLACK
-        })
     }
 
     private fun setBorderPaint() {
+        leftBorderPaint.style = Paint.Style.STROKE
+        rightBorderPaint.style = Paint.Style.STROKE
+        topBorderPaint.style = Paint.Style.STROKE
+        bottomBorderPaint.style = Paint.Style.STROKE
+
         if(tableElement.styles[BORDER] != null) {
             val border = tableElement.styles[BORDER]!!.toBorder()
             leftBorderPaint.color = border.color
@@ -125,25 +140,33 @@ class TableItemView(
             val border = tableElement.styles[BORDER_LEFT]!!.toBorder()
             leftBorderPaint.color = border.color
             leftBorderPaint.strokeWidth = border.width.upscale()
-            leftBorderPaint.style = Paint.Style.STROKE
+            leftBorderPaint.setBorderStyle(border.style)
         }
         if(tableElement.styles[BORDER_RIGHT] != null) {
             val border = tableElement.styles[BORDER_RIGHT]!!.toBorder()
             rightBorderPaint.color = border.color
             rightBorderPaint.strokeWidth = border.width.upscale()
-            rightBorderPaint.style = Paint.Style.STROKE
+            rightBorderPaint.setBorderStyle(border.style)
         }
         if (tableElement.styles[BORDER_TOP] != null) {
             val border = tableElement.styles[BORDER_TOP]!!.toBorder()
             topBorderPaint.color = border.color
             topBorderPaint.strokeWidth = border.width.upscale()
-            topBorderPaint.style = Paint.Style.STROKE
+            topBorderPaint.setBorderStyle(border.style)
         }
         if(tableElement.styles[BORDER_BOTTOM] != null) {
             val border = tableElement.styles[BORDER_BOTTOM]!!.toBorder()
             bottomBorderPaint.color = border.color
             bottomBorderPaint.strokeWidth = border.width.upscale()
-            bottomBorderPaint.style = Paint.Style.STROKE
+            bottomBorderPaint.setBorderStyle(border.style)
+        }
+    }
+
+    private fun Paint.setBorderStyle(style: String) {
+        when(style) {
+            NONE -> this.strokeWidth = 0f
+            SOLID -> this.style = Paint.Style.STROKE
+            else -> this.style = Paint.Style.STROKE
         }
     }
 }

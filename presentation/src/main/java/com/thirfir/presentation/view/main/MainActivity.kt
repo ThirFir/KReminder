@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initViews() {
         supportFragmentManager.beginTransaction()
-            .add(binding.mainFragmentContainer.id, BulletinBoardFragment.newInstance())
+            .add(binding.mainFragmentContainer.id, ContentFragment.newInstance(14, 30970))
             .commit()
     }
 

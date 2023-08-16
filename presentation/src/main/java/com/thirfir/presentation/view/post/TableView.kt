@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.view.marginBottom
 import com.thirfir.presentation.model.TableElement
 
 class TableView(
@@ -13,6 +14,7 @@ class TableView(
 ) : ConstraintLayout(context) {
 
     private val ids = Array(table.size) { Array<Int?>(table[0].size) { null } }
+    private val tableItems = Array(table.size) { Array<TableItemView?>(table[0].size) { null } }
 
     init {
         id = View.generateViewId()
@@ -24,6 +26,7 @@ class TableView(
                     continue
 
                 val tableItem = TableItemView(context, table[rowIndex][columnIndex]!!)
+                tableItems[rowIndex][columnIndex] = tableItem
                 tableItem.id = View.generateViewId()
                 for (r in 0 until table[rowIndex][columnIndex]!!.rowSpan) {
                     for (c in 0 until table[rowIndex][columnIndex]!!.colSpan) {
@@ -97,9 +100,59 @@ class TableView(
                     )
                 }
                 constraintSet.applyTo(this)
+            }
+        }
 
+        for (rowIndex in table.indices) {
+            for (columnIndex in table[rowIndex].indices) {
+                val tableElement = table[rowIndex][columnIndex] ?: continue
+                if(tableElement.rowSpan == 1 && tableElement.colSpan == 1)
+                    continue
+
+                if(tableElement.rowSpan > 1) {
+                    for(c in table[rowIndex].indices) {
+                        var nulled = false
+                        if(c == columnIndex)
+                            continue
+                        var height = 0
+                        for(r in 0 until tableElement.rowSpan) {
+                            if(tableItems[rowIndex + r][c] == null)
+                                nulled = true
+                            else {
+                                height += tableItems[rowIndex + r][c]!!.mHeight
+                            }
+                        }
+                        if(nulled)
+                            continue
+                        else {
+                            tableItems[rowIndex][columnIndex]!!.mHeight = height
+                            break
+                        }
+                    }
+                }
+
+                if(tableElement.colSpan > 1) {
+                    for(r in table.indices) {
+                        var nulled = false
+                        if(r == rowIndex)
+                            continue
+                        var width = 0
+                        for(c in 0 until tableElement.colSpan) {
+                            if(tableItems[r][columnIndex + c] == null)
+                                nulled = true
+                            else
+                                width += tableItems[r][columnIndex + c]!!.mWidth
+                        }
+                        if(nulled)
+                            continue
+                        else {
+                            tableItems[rowIndex][columnIndex]!!.mWidth = width
+                            break
+                        }
+                    }
+                }
+                tableItems[rowIndex][columnIndex]?.setFitSize()
             }
         }
     }
-
 }

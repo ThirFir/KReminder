@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.Gravity
 import com.thirfir.domain.BLACK
 import com.thirfir.domain.BLUE
@@ -21,6 +22,7 @@ import com.thirfir.domain.JUSTIFY
 import com.thirfir.domain.LEFT
 import com.thirfir.domain.LIGHT_GRAY
 import com.thirfir.domain.MAGENTA
+import com.thirfir.domain.NONE
 import com.thirfir.domain.RED
 import com.thirfir.domain.RIGHT
 import com.thirfir.domain.SOLID
@@ -124,8 +126,19 @@ internal fun String?.toPadding(): Padding {
 
 internal fun String?.toBorder(): Border {
     if (this == null) return Border(SOLID, 0f, Color.BLACK)
+    if (this == NONE) return Border(NONE, 0f, Color.BLACK)
 
-    val values = this.trim().split(' ')
+    val values = if(this.contains("rgb")) {
+        val rgbStartIndex = this.indexOf("rgb(")
+        val rgbEndIndex = this.indexOf(")", startIndex = rgbStartIndex)
+        val rgbValue = this.substring(rgbStartIndex, rgbEndIndex + 1)
+        val rest = this.replace(rgbValue, "").trim()
+        rest.split(" ").toMutableList().apply {
+            add(rgbValue)
+        }
+    } else this.trim().split(" ")
+
+
     var width = 0f
     var style = ""
     var color = Color.BLACK

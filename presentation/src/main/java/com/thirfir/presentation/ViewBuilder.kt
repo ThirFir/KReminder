@@ -266,6 +266,7 @@ private fun HtmlElement.getTextView(context: Context) = TextView(context).apply 
         ViewGroup.LayoutParams.MATCH_PARENT,
         ViewGroup.LayoutParams.WRAP_CONTENT
     )
+    setTextIsSelectable(true)
     setTextSize(Dimension.SP, 14f)
     gravity = styles[TEXT_ALIGN].toGravity()
     setBackgroundColor(styles[BACKGROUND_COLOR].toColor(true))
