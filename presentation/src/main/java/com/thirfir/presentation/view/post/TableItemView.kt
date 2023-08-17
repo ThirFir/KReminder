@@ -27,7 +27,11 @@ import com.thirfir.domain.SOLID
 import com.thirfir.domain.WIDTH
 import com.thirfir.presentation.addViewOfTag
 import com.thirfir.presentation.model.TableElement
+import com.thirfir.presentation.pxToDP
 import com.thirfir.presentation.toBorder
+import com.thirfir.presentation.toBorderColor
+import com.thirfir.presentation.toBorderStyle
+import com.thirfir.presentation.toBorderWidth
 import com.thirfir.presentation.toColor
 import com.thirfir.presentation.toDP
 import com.thirfir.presentation.upscale
@@ -51,7 +55,10 @@ class TableItemView(
     init {
         gravity = Gravity.CENTER
         orientation = VERTICAL
-        setBackgroundColor(tableElement.styles[BACKGROUND].toColor(true))
+        if(tableElement.styles[BACKGROUND_COLOR] == null)
+            setBackgroundColor(tableElement.styles[BACKGROUND].toColor(true))
+        else
+            setBackgroundColor(tableElement.styles[BACKGROUND_COLOR].toColor(true))
         setPadding(20, 10, 20, 10)
         setSize()
         tableElement.childElements?.forEach {
@@ -103,6 +110,21 @@ class TableItemView(
         rightBorderPaint.style = Paint.Style.STROKE
         topBorderPaint.style = Paint.Style.STROKE
         bottomBorderPaint.style = Paint.Style.STROKE
+        leftBorderPaint.strokeWidth = 1f
+        rightBorderPaint.strokeWidth = 1f
+        topBorderPaint.strokeWidth = 1f
+        bottomBorderPaint.strokeWidth = 1f
+        leftBorderPaint.color = Color.BLACK
+        rightBorderPaint.color = Color.BLACK
+        topBorderPaint.color = Color.BLACK
+        bottomBorderPaint.color = Color.BLACK
+
+        if(tableElement.styles[BORDER_STYLE] == NONE) {
+            leftBorderPaint.strokeWidth = 0f
+            rightBorderPaint.strokeWidth = 0f
+            topBorderPaint.strokeWidth = 0f
+            bottomBorderPaint.strokeWidth = 0f
+        }
 
         if(tableElement.styles[BORDER] != null) {
             val border = tableElement.styles[BORDER]!!.toBorder()
@@ -119,24 +141,26 @@ class TableItemView(
             bottomBorderPaint.strokeWidth = border.width.upscale()
             bottomBorderPaint.setBorderStyle(border.style)
         }
-        if(tableElement.styles[BORDER_STYLE] == NONE) {
-            leftBorderPaint.strokeWidth = 0f
-            rightBorderPaint.strokeWidth = 0f
-            topBorderPaint.strokeWidth = 0f
-            bottomBorderPaint.strokeWidth = 0f
-        }
-        if(tableElement.styles[BORDER_COLOR] != null) {
-            leftBorderPaint.color = tableElement.styles[BORDER_COLOR].toColor()
-            rightBorderPaint.color = tableElement.styles[BORDER_COLOR].toColor()
-            topBorderPaint.color = tableElement.styles[BORDER_COLOR].toColor()
-            bottomBorderPaint.color = tableElement.styles[BORDER_COLOR].toColor()
-        }
-        if(tableElement.styles[BORDER_WIDTH] != null) {
-            leftBorderPaint.strokeWidth = tableElement.styles[BORDER_WIDTH].toDP(context).upscale()
-            rightBorderPaint.strokeWidth = tableElement.styles[BORDER_WIDTH].toDP(context).upscale()
-            topBorderPaint.strokeWidth = tableElement.styles[BORDER_WIDTH].toDP(context).upscale()
-            bottomBorderPaint.strokeWidth = tableElement.styles[BORDER_WIDTH].toDP(context).upscale()
-        }
+//        if(tableElement.styles[BORDER_STYLE] == NONE) {
+//            leftBorderPaint.strokeWidth = 0f
+//            rightBorderPaint.strokeWidth = 0f
+//            topBorderPaint.strokeWidth = 0f
+//            bottomBorderPaint.strokeWidth = 0f
+//        }
+//        if(tableElement.styles[BORDER_COLOR] != null) {
+//            //val borderColors = tableElement.styles[BORDER_COLOR].toBorderColor()
+//            leftBorderPaint.color = tableElement.styles[BORDER_COLOR].toColor()
+//            rightBorderPaint.color = tableElement.styles[BORDER_COLOR].toColor()
+//            topBorderPaint.color = tableElement.styles[BORDER_COLOR].toColor()
+//            bottomBorderPaint.color = tableElement.styles[BORDER_COLOR].toColor()
+//        }
+//        if(tableElement.styles[BORDER_WIDTH] != null) {
+//            val borderWidths = tableElement.styles[BORDER_WIDTH].toBorderWidth()
+//            leftBorderPaint.strokeWidth = pxToDP(context, borderWidths[3]).upscale()
+//            rightBorderPaint.strokeWidth = pxToDP(context, borderWidths[1]).upscale()
+//            topBorderPaint.strokeWidth = pxToDP(context, borderWidths[0]).upscale()
+//            bottomBorderPaint.strokeWidth = pxToDP(context, borderWidths[2]).upscale()
+//        }
         if(tableElement.styles[BORDER_LEFT] != null) {
             val border = tableElement.styles[BORDER_LEFT]!!.toBorder()
             leftBorderPaint.color = border.color
