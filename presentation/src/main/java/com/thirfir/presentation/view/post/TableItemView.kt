@@ -9,6 +9,7 @@ import android.graphics.Rect
 import android.util.Log
 import android.view.Gravity
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import android.widget.LinearLayout
 import androidx.core.view.setPadding
 import com.thirfir.domain.BACKGROUND
@@ -52,6 +53,11 @@ class TableItemView(
     var mWidth = 0
     var mHeight = 0
 
+    companion object {
+        private const val PADDING_V = 15
+        private const val PADDING_H = 20
+    }
+
     init {
         gravity = Gravity.CENTER
         orientation = VERTICAL
@@ -59,12 +65,21 @@ class TableItemView(
             setBackgroundColor(tableElement.styles[BACKGROUND].toColor(true))
         else
             setBackgroundColor(tableElement.styles[BACKGROUND_COLOR].toColor(true))
-        setPadding(20, 10, 20, 10)
+        setPadding(PADDING_H, PADDING_V, PADDING_H, PADDING_V)
         setSize()
-        tableElement.childElements?.forEach {
+        tableElement.childElements?.forEach {   // td의 children
             it.addViewOfTag(this, null, context)
         }
         setWillNotDraw(false)
+        viewTreeObserver.addOnGlobalLayoutListener(object: ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                mWidth = width
+                mHeight = height
+
+                viewTreeObserver.removeOnGlobalLayoutListener(this)
+            }
+
+        })
     }
 
     override fun onDraw(canvas: Canvas?) {
@@ -74,13 +89,8 @@ class TableItemView(
     }
 
     private fun setSize() {
-        mWidth = if (tableElement.styles[WIDTH] == null)
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        else tableElement.styles[WIDTH].toDP(context).roundToInt().upscale().upscale().upscale()
-        mHeight = if (tableElement.styles[HEIGHT] == null)
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        else tableElement.styles[HEIGHT].toDP(context).roundToInt().upscale().upscale().upscale()
-
+        mWidth = ViewGroup.LayoutParams.WRAP_CONTENT
+        mHeight = ViewGroup.LayoutParams.WRAP_CONTENT
         layoutParams = LayoutParams(mWidth, mHeight)
         rect.set(0, 0, mWidth, mHeight)
     }
@@ -89,7 +99,11 @@ class TableItemView(
         layoutParams.width = mWidth
         layoutParams.height = mHeight
         rect.set(0, 0, mWidth, mHeight)
-        setBackgroundColor(tableElement.styles[BACKGROUND].toColor(true))
+        if(tableElement.styles[BACKGROUND_COLOR] == null)
+            setBackgroundColor(tableElement.styles[BACKGROUND].toColor(true))
+        else
+            setBackgroundColor(tableElement.styles[BACKGROUND_COLOR].toColor(true))
+        requestLayout()
         invalidate()
     }
 
@@ -141,26 +155,6 @@ class TableItemView(
             bottomBorderPaint.strokeWidth = border.width.upscale()
             bottomBorderPaint.setBorderStyle(border.style)
         }
-//        if(tableElement.styles[BORDER_STYLE] == NONE) {
-//            leftBorderPaint.strokeWidth = 0f
-//            rightBorderPaint.strokeWidth = 0f
-//            topBorderPaint.strokeWidth = 0f
-//            bottomBorderPaint.strokeWidth = 0f
-//        }
-//        if(tableElement.styles[BORDER_COLOR] != null) {
-//            //val borderColors = tableElement.styles[BORDER_COLOR].toBorderColor()
-//            leftBorderPaint.color = tableElement.styles[BORDER_COLOR].toColor()
-//            rightBorderPaint.color = tableElement.styles[BORDER_COLOR].toColor()
-//            topBorderPaint.color = tableElement.styles[BORDER_COLOR].toColor()
-//            bottomBorderPaint.color = tableElement.styles[BORDER_COLOR].toColor()
-//        }
-//        if(tableElement.styles[BORDER_WIDTH] != null) {
-//            val borderWidths = tableElement.styles[BORDER_WIDTH].toBorderWidth()
-//            leftBorderPaint.strokeWidth = pxToDP(context, borderWidths[3]).upscale()
-//            rightBorderPaint.strokeWidth = pxToDP(context, borderWidths[1]).upscale()
-//            topBorderPaint.strokeWidth = pxToDP(context, borderWidths[0]).upscale()
-//            bottomBorderPaint.strokeWidth = pxToDP(context, borderWidths[2]).upscale()
-//        }
         if(tableElement.styles[BORDER_LEFT] != null) {
             val border = tableElement.styles[BORDER_LEFT]!!.toBorder()
             leftBorderPaint.color = border.color

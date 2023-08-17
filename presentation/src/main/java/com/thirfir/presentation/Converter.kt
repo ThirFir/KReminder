@@ -83,8 +83,8 @@ internal fun String?.toDP(context: Context): Float {
 internal fun String?.toGravity(): Int {
     if (this == null) return Gravity.START
     return when (this.lowercase(Locale.ROOT)) {
-        LEFT, START -> Gravity.START
-        CENTER, JUSTIFY -> Gravity.CENTER
+        LEFT, START, JUSTIFY -> Gravity.START
+        CENTER -> Gravity.CENTER
         RIGHT, END -> Gravity.END
         else -> Gravity.START
     }

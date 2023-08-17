@@ -35,7 +35,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun initViews() {
         supportFragmentManager.beginTransaction()
-            .add(binding.mainFragmentContainer.id, ContentFragment.newInstance(14, 30983))
+            .add(binding.mainFragmentContainer.id, ContentFragment.newInstance(15, 1826))
+            //.add(binding.mainFragmentContainer.id, ContentFragment.newInstance(14, 30975))
             .commit()
     }
 

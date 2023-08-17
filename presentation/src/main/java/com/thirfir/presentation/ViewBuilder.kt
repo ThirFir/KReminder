@@ -11,9 +11,9 @@ import android.text.style.ForegroundColorSpan
 import android.text.style.StrikethroughSpan
 import android.text.style.StyleSpan
 import android.text.style.UnderlineSpan
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import android.widget.HorizontalScrollView
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -155,7 +155,6 @@ internal fun HtmlElement.addViewOfTag(parentLayout: ViewGroup, textView: TextVie
             }
         }
         TABLE -> {
-            // TODO : Make Table
             childElements?.forEach {
                 parentLayout.addView(HorizontalScrollView(context).apply {
                     this.addView(TableView(context, it.makeTable()))
@@ -164,6 +163,15 @@ internal fun HtmlElement.addViewOfTag(parentLayout: ViewGroup, textView: TextVie
         }
         null -> {
             textView?.append(getSpannableStringBuilder(context))
+        }
+        else -> {
+            val tv = getTextView(context)
+            parentLayout.addView(tv)
+            childElements?.forEach {
+                it.addViewOfTag(parentLayout, tv, context)
+            }
+            if(tv.text.isEmpty())
+                parentLayout.removeView(tv)
         }
     }
 }
@@ -211,11 +219,13 @@ private fun HtmlElement.makeTable(): Array<Array<TableElement?>> {
 }
 
 private fun HtmlElement.getColumnSize(): Int {
-    var rowSize = 0
-    childElements?.forEach { _ ->
-        ++rowSize
+    var colSize = 0
+    childElements?.forEach {
+        it.attributes[COLSPAN]?.trim()?.toInt()?.let { colSpan ->
+            colSize += colSpan
+        } ?: ++colSize
     }
-    return rowSize
+    return colSize
 }
 
 private fun HtmlElement.addStyleToChildren(key: String, value: String) {
@@ -278,6 +288,9 @@ private fun HtmlElement.getTextView(context: Context) = TextView(context).apply 
         ViewGroup.LayoutParams.MATCH_PARENT,
         ViewGroup.LayoutParams.WRAP_CONTENT
     )
+    maxLines = 1000
+    ellipsize = null
+    maxEms = 18
     setTextIsSelectable(true)
     setTextSize(Dimension.SP, 14f)
     gravity = styles[TEXT_ALIGN].toGravity()
