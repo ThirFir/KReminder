@@ -97,7 +97,7 @@ class ContentFragment: Fragment() {
         binding = FragmentContentBinding.inflate(layoutInflater, container, false)
         postViewModel.fetchPost(bulletin, pid) { post ->
             post.htmlElements.forEach {
-                it.addViewOfTag(binding.test, null, requireContext())
+                it.addViewOfTag(binding.root, null, requireContext())
             }
         }
 

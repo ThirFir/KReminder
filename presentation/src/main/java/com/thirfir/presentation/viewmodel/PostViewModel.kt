@@ -23,13 +23,11 @@ class PostViewModel @Inject constructor(
      */
     fun fetchPost(bulletin: Int, pid: Int, onResponseCallback: (Post) -> Unit) {
         viewModelScope.launch {
-//            try {
-//                onResponseCallback(getPostUseCase(bulletin, pid))
-//            } catch (e: Exception) {
-//                Log.e("onResponseCallback", e.toString())
-//                exceptionCallback?.onException(e)
-//            }
-            onResponseCallback(getPostUseCase(bulletin, pid))
+            try {
+                onResponseCallback(getPostUseCase(bulletin, pid))
+            } catch (e: Exception) {
+                exceptionCallback?.onException(e)
+            }
         }
     }
 
