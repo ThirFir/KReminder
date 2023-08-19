@@ -21,6 +21,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.Dimension
 import androidx.core.view.isEmpty
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.thirfir.domain.A
@@ -28,6 +29,7 @@ import com.thirfir.domain.B
 import com.thirfir.domain.BACKGROUND_COLOR
 import com.thirfir.domain.BOLD
 import com.thirfir.domain.BR
+import com.thirfir.domain.BULLETIN_QUERY
 import com.thirfir.domain.COLOR
 import com.thirfir.domain.COLSPAN
 import com.thirfir.domain.DEL
@@ -47,6 +49,7 @@ import com.thirfir.domain.PADDING_BOTTOM
 import com.thirfir.domain.PADDING_LEFT
 import com.thirfir.domain.PADDING_RIGHT
 import com.thirfir.domain.PADDING_TOP
+import com.thirfir.domain.PID
 import com.thirfir.domain.ROWSPAN
 import com.thirfir.domain.SPAN
 import com.thirfir.domain.SRC
@@ -76,9 +79,9 @@ import kotlin.math.roundToInt
 @AndroidEntryPoint
 class ContentFragment: Fragment() {
     private lateinit var binding: FragmentContentBinding
-    private val postViewModel: PostViewModel by viewModels()
+    private val postViewModel: PostViewModel by activityViewModels()
 
-    private val bulletin: Int by lazy { arguments?.getInt(BULLETIN) ?: 0 }
+    private val bulletin: Int by lazy { arguments?.getInt(BULLETIN_QUERY) ?: 0 }
     private val pid: Int by lazy { arguments?.getInt(PID) ?: 0 }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -106,13 +109,11 @@ class ContentFragment: Fragment() {
 
 
     companion object {
-        private const val BULLETIN = "bulletin"
-        private const val PID = "pid"
         @JvmStatic
         fun newInstance(bulletin: Int, pid: Int) =
             ContentFragment().apply {
                 arguments = Bundle().apply {
-                    putInt(BULLETIN, bulletin)
+                    putInt(BULLETIN_QUERY, bulletin)
                     putInt(PID, pid)
                 }
             }
@@ -120,7 +121,7 @@ class ContentFragment: Fragment() {
 
     private fun startWebView() {
         val intent = Intent(requireActivity(), PostWebViewActivity::class.java)
-        intent.putExtra(BULLETIN, bulletin)
+        intent.putExtra(BULLETIN_QUERY, bulletin)
         intent.putExtra(PID, pid)
         startActivity(intent)
 

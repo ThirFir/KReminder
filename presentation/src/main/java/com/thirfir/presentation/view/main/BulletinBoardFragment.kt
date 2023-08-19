@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.thirfir.domain.B
 import com.thirfir.domain.BASE_URL
+import com.thirfir.domain.BULLETIN_QUERY
 import com.thirfir.domain.util.addQueryString
 import com.thirfir.presentation.R
 import com.thirfir.presentation.adapter.BulletinBoardsAdapter
@@ -60,7 +61,7 @@ class BulletinBoardFragment: Fragment() {
     private fun initClickListeners() {
         onBulletinBoardClickListener = {
             val intent = Intent(requireContext(), PostListActivity::class.java).apply {
-                putExtra("b", it.bulletin)
+                putExtra(BULLETIN_QUERY, it.bulletin)
             }
             startActivity(intent)
         }

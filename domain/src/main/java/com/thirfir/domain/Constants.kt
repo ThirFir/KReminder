@@ -3,6 +3,9 @@ package com.thirfir.domain
 const val BASE_URL = "https://portal.koreatech.ac.kr/ctt/bb/bulletin"
 const val KOREATECH_PORTAL_URL = "https://portal.koreatech.ac.kr"
 
+const val BULLETIN_QUERY = "b"
+const val PID = "pid"
+
 
 // ----------- HTML 태그 -----------
 const val U = "u"

@@ -18,10 +18,6 @@ class PostHeadersViewModel @Inject constructor(
     private val _postHeaders: MutableStateFlow<List<PostHeader>> = MutableStateFlow(emptyList())
     val postHeaders: StateFlow<List<PostHeader>> get() = _postHeaders.asStateFlow()
 
-    init {
-        fetchPostHeaders(14, 1) // TODO : bulletin번호 -> AssistedInject ?
-    }
-
     fun fetchPostHeaders(bulletin: Int, page: Int) {
         viewModelScope.launch {
             getPostHeadersUseCase(bulletin, page).collect {

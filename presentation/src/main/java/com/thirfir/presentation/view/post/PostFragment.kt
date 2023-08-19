@@ -1,47 +1,69 @@
 package com.thirfir.presentation.view.post
 
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
+import com.thirfir.domain.BULLETIN_QUERY
+import com.thirfir.domain.PID
+import com.thirfir.domain.model.PostHeader
 import com.thirfir.presentation.databinding.FragmentPostBinding
+import com.thirfir.presentation.viewmodel.PostViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import java.lang.NullPointerException
 
 
 @AndroidEntryPoint
 class PostFragment : Fragment() {
     private lateinit var binding: FragmentPostBinding
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    private val bulletin: Int by lazy {
+        arguments?.getInt(BULLETIN_QUERY) ?: 0
     }
+    private val pid: Int by lazy {
+        arguments?.getInt(PID) ?: 0
+    }
+    private val postHeader: PostHeader by lazy {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            arguments?.getParcelable("header", PostHeader::class.java) ?: throw NullPointerException("PostHeader is null")
+        } else {
+            arguments?.getParcelable("header") ?: throw NullPointerException("PostHeader is null")
+        }
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentPostBinding.inflate(layoutInflater, container, false)
-        val url = arguments?.getString(ARG_URL) ?: ""// 일단 url 받아오긴했는데..
 
-        binding.postTitle.text="크롤링"// 게시글 제목 설정
-        binding.postDetail.text="[크롤링]"
-        binding.postWriter.text="작성자 |" + "크롤링"
-        binding.postDate.text="날짜 |" + "크롤링"
-        //    binding.postContent.text= "크롤링"
+        binding.run {
+            postTitle.text = postHeader.title
+            binding.postDetail.text = "수정해야댐"
+            binding.postWriter.text = postHeader.author
+            binding.postDate.text = postHeader.date // TODO : Date Format
+        }
+
+
         parentFragmentManager.beginTransaction()
-            .add(binding.postContent.id, ContentFragment.newInstance(14, 30976))
+            .add(binding.postContent.id, ContentFragment.newInstance(bulletin, pid))
             .commit()
+
         return binding.root
     }
 
     companion object {
-        private const val ARG_URL = "arg_url"
 
         @JvmStatic
-        fun newInstance(url: String) =
+        fun newInstance(bulletin: Int, pid: Int, postHeader: PostHeader) =
             PostFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_URL, url)
+                    putInt(BULLETIN_QUERY, bulletin)
+                    putInt(PID, pid)
+                    putParcelable("header", postHeader)
                 }
             }
     }
