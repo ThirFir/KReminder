@@ -1,7 +1,7 @@
 package com.thirfir.presentation.view.post
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -30,43 +30,36 @@ class PostListFragment : Fragment() {
         else "$this?$query=$number&ls=20&ln=1&dm=r&p=$postnum"
     }
 
-    private val postItems = mutableListOf<PostItem>() // 빈 목록 생성
+
+    private val postListItems = mutableListOf<PostItem>() // 빈 목록 생성
+  //  private val viewModel: PostListViewModel by viewModels() //? = null// activityViewModels 사용
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentPostListBinding.inflate(inflater, container, false)
+
         initClickListeners()
         initRecyclerView()
         initPaginationButtons()
         slideMenu()
-        Log.d("PostListFragment", "onCreateView")
+        //   viewModel = ViewModelProvider(this).get(PostListViewModel::class.java)
         // 추가 데이터 아이템들...
-        postItems.add(PostItem(1, "hi", BASE_URL.addQueryString("b", 14, 30976)))
-        postItems.add(PostItem(30978, "hi", BASE_URL.addQueryString("b", 14, 30978)))
-        postItems.add(PostItem(30976, "일반공지", BASE_URL.addQueryString("b", 14, 30976)))
-        postItems.add(PostItem(30978, "장학공지", BASE_URL.addQueryString("b", 14, 30978)))
-        postItems.add(PostItem(30976, "일반공지", BASE_URL.addQueryString("b", 14, 30976)))
-        postItems.add(PostItem(2, "hi", BASE_URL.addQueryString("b", 14, 30976)))
-        postItems.add(PostItem(30978, "hi", BASE_URL.addQueryString("b", 14, 30978)))
-        postItems.add(PostItem(30976, "일반공지", BASE_URL.addQueryString("b", 14, 30976)))
-        postItems.add(PostItem(30978, "장학공지", BASE_URL.addQueryString("b", 14, 30978)))
-        postItems.add(PostItem(30976, "일반공지", BASE_URL.addQueryString("b", 14, 30976)))
-        postItems.add(PostItem(3, "hi", BASE_URL.addQueryString("b", 14, 30976)))
-        postItems.add(PostItem(30978, "hi", BASE_URL.addQueryString("b", 14, 30978)))
-        postItems.add(PostItem(30976, "일반공지", BASE_URL.addQueryString("b", 14, 30976)))
-        postItems.add(PostItem(30978, "장학공지", BASE_URL.addQueryString("b", 14, 30978)))
-        postItems.add(PostItem(30976, "일반공지", BASE_URL.addQueryString("b", 14, 30976)))
+        postListItems.add(PostItem(30978, "hi", BASE_URL.addQueryString("b", 14, 30978)))
+        postListItems.add(PostItem(30976, "일반공지", BASE_URL.addQueryString("b", 14, 30976)))
 
-
-
-
-        // 초기에 첫 페이지의 데이터를 표시합니다.
+        // 초기에 첫 페이지의 데이터를 표시
         updateRecyclerViewData()
+        //    updateViewModelValue()
 
         return binding.root
     }
+
+//    private fun updateViewModelValue() {
+//        viewModel.deleteAll() // ViewModel에서 값을 변경하는 메서드 호출
+//    }
+
 
     private fun slideMenu(){
         val drawerLayout = binding.drawerLayout
@@ -76,13 +69,28 @@ class PostListFragment : Fragment() {
         navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.menu_item1 -> {
-                    // 메뉴 아이템 1 클릭 시 처리
-
+                    //아이템 각 게시판에 맞게 생성해놓고 버튼 클릭할 때마다 리스트에 적용하면 될듯
                     true
                 }
                 R.id.menu_item2 -> {
-                    // 메뉴 아이템 2 클릭 시 처리
-
+                    true
+                }
+                R.id.menu_item3 -> {
+                    true
+                }
+                R.id.menu_item4 -> {
+                    true
+                }
+                R.id.menu_item5 -> {
+                    true
+                }
+                R.id.menu_item6 -> {
+                    true
+                }
+                R.id.menu_item7 -> {
+                    true
+                }
+                R.id.menu_item8 -> {
                     true
                 }
                 // 다른 메뉴 아이템들에 대한 처리도 추가 가능
@@ -103,33 +111,33 @@ class PostListFragment : Fragment() {
     }
 
 
+    // ... (이전 코드 생략)
+
     private fun initClickListeners() {
         postAdapter = PostAdapter { postItem ->
-            val postFragment = PostFragment.newInstance(postItem.url)
-            requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.post_fragment_container, postFragment)
-                .addToBackStack(null)
-                .commit()
+            val intent = Intent(requireContext(), PostListActivity::class.java)
+            intent.putExtra("url", postItem.url)
+            startActivity(intent)
         }
         binding.searchButton.setOnClickListener {
             val searchText = binding.searchEditText.text.toString()
-            val filteredItems = postItems.filter { it.title.contains(searchText, ignoreCase = true) }
+            val filteredItems = postListItems.filter { it.title.contains(searchText, ignoreCase = true) }
             updateRecyclerViewData(filteredItems)
         }
     }
 
     private fun initRecyclerView() {
         binding.recyclerViewPost.layoutManager = LinearLayoutManager(requireContext())
-        postAdapter = PostAdapter { postItem ->
-            val postFragment = PostFragment.newInstance(postItem.url)
-            requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.post_fragment_container, postFragment)
-                .addToBackStack(null)
-                .commit()
+        postAdapter = PostAdapter { postListItem ->
+            val intent = Intent(requireContext(), PostListActivity::class.java)
+            intent.putExtra("url", postListItem.url)
+            startActivity(intent)
         }
         binding.recyclerViewPost.adapter = postAdapter
-    }
 
+
+
+    }
 
     private fun initPaginationButtons() {
         // 버튼 초기 상태 업데이트
@@ -143,7 +151,7 @@ class PostListFragment : Fragment() {
         }
 
         binding.nextButton.setOnClickListener {
-            val totalPage = (postItems.size + postsPerPage - 1) / postsPerPage
+            val totalPage = (postListItems.size + postsPerPage - 1) / postsPerPage
             if (currentPage < totalPage) {
                 currentPage++
                 updateRecyclerViewData()
@@ -180,27 +188,31 @@ class PostListFragment : Fragment() {
 
     private fun updateRecyclerViewData() {
         val start = (currentPage - 1) * postsPerPage
-        val end = minOf(start + postsPerPage, postItems.size)
+        val end = minOf(start + postsPerPage, postListItems.size)
 
         if (start < end) { // Check if start is less than end before creating the sublist
-            val sublist = postItems.subList(start, end)
+            val sublist = postListItems.subList(start, end)
             postAdapter.submitList(sublist)
         } else {
             postAdapter.submitList(emptyList()) // Submit an empty list if start >= end
         }
 
+
         updateButtonState()
     }
-    private fun updateRecyclerViewData(newList: List<PostItem>) {
+    private fun updateRecyclerViewData(newList: List<PostItem>) {//특정 단어를 포함하는 아이템 목록으로 업데이트
         val start = (currentPage - 1) * postsPerPage
         val end = minOf(start + postsPerPage, newList.size)
         val sublist = newList.subList(start, end)
         postAdapter.submitList(sublist)
+        /*viewModel.allPostList.observe(viewLifecycleOwner) { postList ->
+             postListAdapter.updateData(postListItems)
+         }*/
         updateButtonState()
     }
 
     private fun updateButtonState() {
-        val totalPage = (postItems.size + postsPerPage - 1) / postsPerPage
+        val totalPage = (postListItems.size + postsPerPage - 1) / postsPerPage
         binding.page1Button.isEnabled = currentPage != 1
         binding.page2Button.isEnabled = currentPage != 2
         binding.page3Button.isEnabled = currentPage != 3
