@@ -60,7 +60,7 @@ class BulletinBoardFragment: Fragment() {
     private fun initClickListeners() {
         onBulletinBoardClickListener = {
             val intent = Intent(requireContext(), PostListActivity::class.java).apply {
-                putExtra(B, it.bulletin)
+                putExtra("b", it.bulletin)
             }
             startActivity(intent)
         }
