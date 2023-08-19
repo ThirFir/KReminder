@@ -7,6 +7,23 @@
         <item
             android:id="@+id/menu_item2"
             android:title="Menu Item 2"/>
-        <!-- Add more items as needed -->
+        <item
+            android:id="@+id/menu_item3"
+            android:title="Menu Item 3"/>
+        <item
+            android:id="@+id/menu_item4"
+            android:title="Menu Item 5"/>
+        <item
+            android:id="@+id/menu_item5"
+            android:title="Menu Item 5"/>
+        <item
+            android:id="@+id/menu_item6"
+            android:title="Menu Item 6"/>
+        <item
+            android:id="@+id/menu_item7"
+            android:title="Menu Item 7"/>
+        <item
+            android:id="@+id/menu_item8"
+            android:title="Menu Item 8"/>
     </group>
 </menu>
