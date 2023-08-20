@@ -25,6 +25,7 @@ class PostListFragment : Fragment() {
     private lateinit var binding: FragmentPostListBinding
     private lateinit var postAdapter: PostAdapter
     private var currentPage = 1
+    private var pageNum=0;
 
     private val ioDispatcher = Dispatchers.IO
     private val ioScope = CoroutineScope(ioDispatcher)
@@ -65,7 +66,7 @@ class PostListFragment : Fragment() {
         navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.menu_item1 -> {
-                    //아이템 각 게시판에 맞게 생성해놓고 버튼 클릭할 때마다 리스트에 적용하면 될듯
+
                     true
                 }
                 R.id.menu_item2 -> {
@@ -142,51 +143,63 @@ class PostListFragment : Fragment() {
 
         binding.prevButton.setOnClickListener {
             // TODO :
-            if (currentPage > 1) {
-                currentPage--
+            if (currentPage > 5) {
+                currentPage-=5
+                binding.page1Button.text=(binding.page1Button.text.toString().toInt()-5).toString()
+                binding.page2Button.text=(binding.page2Button.text.toString().toInt()-5).toString()
+                binding.page3Button.text=(binding.page3Button.text.toString().toInt()-5).toString()
+                binding.page4Button.text=(binding.page4Button.text.toString().toInt()-5).toString()
+                binding.page5Button.text=(binding.page5Button.text.toString().toInt()-5).toString()
+
                 postHeadersViewModel.fetchPostHeaders(bulletin, currentPage)
             }
         }
 
         binding.nextButton.setOnClickListener {
             // TODO : 마지막 게시물
-            currentPage++
+            if()
+            currentPage+=5// 5페이지씩 이동
+            binding.page1Button.text=(5 + binding.page1Button.text.toString().toInt()).toString()
+            binding.page2Button.text=(5 + binding.page2Button.text.toString().toInt()).toString()
+            binding.page3Button.text=(5 + binding.page3Button.text.toString().toInt()).toString()
+            binding.page4Button.text=(5 + binding.page4Button.text.toString().toInt()).toString()
+            binding.page5Button.text=(5 + binding.page1Button.text.toString().toInt()).toString()
             postHeadersViewModel.fetchPostHeaders(bulletin, currentPage)
         }
 
         // 각 페이지 버튼에 대한 클릭 리스너 설정
         binding.page1Button.setOnClickListener {
-            if(currentPage == 1)
+            if(currentPage == pageNum*5+1)
                 return@setOnClickListener
-            currentPage = 1
+            currentPage = pageNum*5+1
             postHeadersViewModel.fetchPostHeaders(bulletin, currentPage)
         }
 
         binding.page2Button.setOnClickListener {
-            if(currentPage == 2)
+            if(currentPage == pageNum*5+2)
                 return@setOnClickListener
-            currentPage = 2
+            currentPage = pageNum*5+2
             postHeadersViewModel.fetchPostHeaders(bulletin, currentPage)
         }
 
         binding.page3Button.setOnClickListener {
-            if(currentPage == 3)
+            if(currentPage == pageNum*5+3)
                 return@setOnClickListener
-            currentPage = 3
+            currentPage = pageNum*5+3
             postHeadersViewModel.fetchPostHeaders(bulletin, currentPage)
         }
 
         binding.page4Button.setOnClickListener {
-            if(currentPage == 4)
+            if(currentPage == pageNum*5+4)
                 return@setOnClickListener
-            currentPage = 4
+            currentPage = pageNum*5+4
             postHeadersViewModel.fetchPostHeaders(bulletin, currentPage)
         }
 
         binding.page5Button.setOnClickListener {
-            if(currentPage == 5)
+            if(currentPage == pageNum*5+5)
                 return@setOnClickListener
-            currentPage = 5
+            currentPage = pageNum*5+5
             postHeadersViewModel.fetchPostHeaders(bulletin, currentPage)
         }
     }
