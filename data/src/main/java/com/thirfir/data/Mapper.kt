@@ -4,7 +4,7 @@ import com.thirfir.data.datasource.remote.dto.PostDTO
 import com.thirfir.data.datasource.remote.dto.PostHeaderDTO
 import com.thirfir.domain.model.Post
 import com.thirfir.domain.model.PostHeader
-import com.thirfir.data.datasource.local.entitiy.KeywordEntity
+import com.thirfir.data.datasource.local.keyword.entitiy.KeywordEntity
 import com.thirfir.domain.model.Keyword
 import com.thirfir.data.datasource.remote.dto.HtmlElementDTO
 import com.thirfir.domain.BACKGROUND_COLOR
@@ -20,6 +20,12 @@ import com.thirfir.domain.STYLE
 import com.thirfir.domain.TEXT_ALIGN
 import com.thirfir.domain.TRANSPARENT
 import com.thirfir.domain.model.HtmlElement
+import com.thirfir.domain.model.Settings
+
+fun SettingsProto.toSettings(): Settings =
+    Settings(
+        allowNotification = allowNotification
+    )
 
 fun PostHeaderDTO.toPostHeader(): PostHeader =
     PostHeader(

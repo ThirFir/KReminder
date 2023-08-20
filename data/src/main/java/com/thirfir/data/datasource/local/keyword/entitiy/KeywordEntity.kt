@@ -1,4 +1,4 @@
-package com.thirfir.data.datasource.local.entitiy
+package com.thirfir.data.datasource.local.keyword.entitiy
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

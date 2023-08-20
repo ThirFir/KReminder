@@ -4,15 +4,16 @@ import com.thirfir.domain.IoDispatcher
 import com.thirfir.domain.repository.KeywordRepository
 import com.thirfir.domain.repository.PostHeaderRepository
 import com.thirfir.domain.repository.PostRepository
+import com.thirfir.domain.repository.SettingsRepository
 import com.thirfir.domain.usecase.KeywordUseCase
 import com.thirfir.domain.usecase.GetPostHeaderUseCase
 import com.thirfir.domain.usecase.GetPostUseCase
+import com.thirfir.domain.usecase.SettingsUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineScope
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -39,5 +40,12 @@ object UseCaseModule {
         @IoDispatcher ioDispatcher: CoroutineDispatcher,
     ) : KeywordUseCase {
         return KeywordUseCase(keywordRepository, ioDispatcher)
+    }
+
+    @Provides
+    fun provideSettingsUseCase(
+        settingsRepository: SettingsRepository
+    ): SettingsUseCase {
+        return SettingsUseCase(settingsRepository)
     }
 }

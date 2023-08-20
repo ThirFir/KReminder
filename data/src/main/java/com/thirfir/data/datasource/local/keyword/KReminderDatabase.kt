@@ -1,11 +1,11 @@
-package com.thirfir.data.datasource.local
+package com.thirfir.data.datasource.local.keyword
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.thirfir.data.datasource.local.dao.KeywordDao
-import com.thirfir.data.datasource.local.entitiy.KeywordEntity
+import com.thirfir.data.datasource.local.keyword.dao.KeywordDao
+import com.thirfir.data.datasource.local.keyword.entitiy.KeywordEntity
 
 @Database(entities = [KeywordEntity::class], version = 1)
 abstract class KReminderDatabase: RoomDatabase() {
