@@ -2,17 +2,23 @@ package com.thirfir.presentation.view.post
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.FrameMetricsAggregator.DELAY_DURATION
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.thirfir.domain.BULLETIN_QUERY
 import com.thirfir.domain.PID
+import com.thirfir.domain.model.PostHeader
 import com.thirfir.presentation.R
+import com.thirfir.presentation.adapter.BulletinBoardsAdapter
 import com.thirfir.presentation.adapter.PostAdapter
 import com.thirfir.presentation.databinding.FragmentPostListBinding
+import com.thirfir.presentation.model.BulletinBoardItem
 import com.thirfir.presentation.viewmodel.PostHeadersViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -26,6 +32,8 @@ class PostListFragment : Fragment() {
     private lateinit var postAdapter: PostAdapter
     private var currentPage = 1
     private var pageNum=0;
+
+    private lateinit var onBulletinBoardClickListener: (BulletinBoardItem) -> Unit
 
     private val ioDispatcher = Dispatchers.IO
     private val ioScope = CoroutineScope(ioDispatcher)
@@ -58,52 +66,35 @@ class PostListFragment : Fragment() {
 
 
     private fun slideMenu(){
-        val drawerLayout = binding.drawerLayout
-        val navigationView = binding.navigationView
-
-        // NavigationView의 메뉴 아이템 클릭 리스너 설정
-        // TODO : 리사이클러뷰
-        navigationView.setNavigationItemSelectedListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.menu_item1 -> {
-
-                    true
-                }
-                R.id.menu_item2 -> {
-                    true
-                }
-                R.id.menu_item3 -> {
-                    true
-                }
-                R.id.menu_item4 -> {
-                    true
-                }
-                R.id.menu_item5 -> {
-                    true
-                }
-                R.id.menu_item6 -> {
-                    true
-                }
-                R.id.menu_item7 -> {
-                    true
-                }
-                R.id.menu_item8 -> {
-                    true
-                }
-                // 다른 메뉴 아이템들에 대한 처리도 추가 가능
-                else -> false
+        // 초기화
+        binding.recyclerViewMenu.layoutManager = object : LinearLayoutManager(requireContext()) {
+            override fun canScrollVertically(): Boolean {
+                return false
             }
         }
+        val MenuItems = listOf(
+            BulletinBoardItem("일반공지", 14),
+            BulletinBoardItem("장학공지", 15),
+            BulletinBoardItem("학사공지", 16),
+            BulletinBoardItem("학생생활", 21),
+            BulletinBoardItem("채용공지", 150),
+            BulletinBoardItem("현장실습공지", 151),
+            BulletinBoardItem("사회봉사공지", 191),
+            BulletinBoardItem("자유게시판", 22),
+        )
 
-        // post_menu 버튼 클릭 시 NavigationView를 열기/닫기
+        onBulletinBoardClickListener = {
+            val intent = Intent(requireContext(), PostListActivity::class.java).apply {
+                putExtra(BULLETIN_QUERY, it.bulletin)
+            }
+            startActivity(intent)
+        }
+        binding.recyclerViewMenu.adapter=BulletinBoardsAdapter(MenuItems,onBulletinBoardClickListener)
+
+        //아이콘 클릭시 메뉴 열기
         binding.postMenu.setOnClickListener {
-            if (drawerLayout.isDrawerOpen(navigationView)) {
-                drawerLayout.closeDrawer(navigationView)
-            } else {
-                drawerLayout.openDrawer(navigationView)
-            }
+            binding.drawerLayout.openDrawer(binding.recyclerViewMenu)
         }
-
 
     }
 
@@ -156,8 +147,6 @@ class PostListFragment : Fragment() {
         }
 
         binding.nextButton.setOnClickListener {
-            // TODO : 마지막 게시물
-            if()
             currentPage+=5// 5페이지씩 이동
             binding.page1Button.text=(5 + binding.page1Button.text.toString().toInt()).toString()
             binding.page2Button.text=(5 + binding.page2Button.text.toString().toInt()).toString()

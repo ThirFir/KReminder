@@ -42,7 +42,7 @@ class PostFragment : Fragment() {
 
         binding.run {
             postTitle.text = postHeader.title
-            binding.postDetail.text = "수정해야댐"
+            binding.postDetail.text = ""
             binding.postWriter.text = postHeader.author
             binding.postDate.text = postHeader.date // TODO : Date Format
         }

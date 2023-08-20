@@ -4,6 +4,7 @@
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -89,7 +90,6 @@
 
 
 
-        <!-- 페이지 넘기는 버튼들을 가로로 배치합니다. -->
         <LinearLayout
             android:id="@+id/page_buttons_layout"
             android:layout_width="0dp"
@@ -143,7 +143,6 @@
                 android:background="@android:color/transparent"
                 android:text="5" />
 
-            <!-- 나머지 버튼들도 같은 방식으로 추가합니다. -->
 
             <ImageButton
                 android:id="@+id/next_button"
@@ -156,11 +155,10 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/navigationView"
-        android:layout_width="wrap_content"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewMenu"
+        android:layout_width="240dp"
         android:layout_height="match_parent"
-        android:layout_gravity="start"
-        app:menu="@menu/slide_menu_items" />
+        android:layout_gravity="start" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

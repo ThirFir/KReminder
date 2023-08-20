@@ -5,21 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Main content -->
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <!-- Your main content layout here -->
-
-    </RelativeLayout>
-
-    <!-- Navigation Drawer -->
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/navigationView"
-        android:layout_width="wrap_content"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/menu_recyclerView"
+        android:layout_width="240dp"
         android:layout_height="match_parent"
-        android:layout_gravity="start"
-        app:menu="@menu/slide_menu_items"/>
+        android:layout_gravity="start"/>
 
 </androidx.drawerlayout.widget.DrawerLayout>
