@@ -6,17 +6,17 @@ import android.os.Bundle
 import android.webkit.WebChromeClient
 import android.webkit.WebViewClient
 import com.thirfir.domain.BASE_URL
+import com.thirfir.domain.BULLETIN_QUERY
 import com.thirfir.domain.util.addQueryString
-import com.thirfir.presentation.databinding.ActivityPostWebViewBinding
+import com.thirfir.presentation.databinding.ActivityWebViewBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class PostWebViewActivity : AppCompatActivity() {
-    private val binding: ActivityPostWebViewBinding by lazy {
-        ActivityPostWebViewBinding.inflate(layoutInflater)
+class WebViewActivity : AppCompatActivity() {
+    private val binding: ActivityWebViewBinding by lazy {
+        ActivityWebViewBinding.inflate(layoutInflater)
     }
-    private val bulletin : Int by lazy { intent.getIntExtra(BULLETIN, 0) }
-    private val pid : Int by lazy { intent.getIntExtra(PID, 0) }
+    private val connectUrl : String by lazy { intent.getStringExtra("url") ?: "" }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -27,7 +27,7 @@ class PostWebViewActivity : AppCompatActivity() {
             webChromeClient = WebChromeClient()
             setDownloadListener(null) // TODO 첨부파일 다운로드
 
-            loadUrl(BASE_URL.addQueryString("b", bulletin).addQueryString("p", pid))
+            loadUrl(connectUrl)
         }
     }
 
@@ -38,9 +38,5 @@ class PostWebViewActivity : AppCompatActivity() {
             javaScriptEnabled = true
             // TODO 설정 추가
         }
-    }
-    companion object {
-        private const val BULLETIN = "bulletin"
-        private const val PID = "pid"
     }
 }

@@ -157,7 +157,6 @@ class PostListFragment : Fragment() {
 
         binding.nextButton.setOnClickListener {
             // TODO : 마지막 게시물
-            if()
             currentPage+=5// 5페이지씩 이동
             binding.page1Button.text=(5 + binding.page1Button.text.toString().toInt()).toString()
             binding.page2Button.text=(5 + binding.page2Button.text.toString().toInt()).toString()

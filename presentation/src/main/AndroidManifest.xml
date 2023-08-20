@@ -9,7 +9,7 @@
             android:name=".view.post.ImageActivity"
             android:exported="false" />
         <activity
-            android:name=".view.post.PostWebViewActivity"
+            android:name=".view.post.WebViewActivity"
             android:exported="false" />
         <activity
             android:name=".view.keyword.KeywordActivity"
