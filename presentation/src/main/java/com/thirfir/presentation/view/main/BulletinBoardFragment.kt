@@ -11,7 +11,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.thirfir.domain.B
 import com.thirfir.domain.BASE_URL
+import com.thirfir.domain.BULLETIN_QUERY
 import com.thirfir.domain.util.addQueryString
 import com.thirfir.presentation.R
 import com.thirfir.presentation.adapter.BulletinBoardsAdapter
@@ -27,14 +29,14 @@ class BulletinBoardFragment: Fragment() {
     private lateinit var onBulletinBoardClickListener: (BulletinBoardItem) -> Unit
 
     private val bulletinBoardItems = listOf(
-        BulletinBoardItem("일반공지", BASE_URL.addQueryString("b", 14)),
-        BulletinBoardItem("장학공지", BASE_URL.addQueryString("b", 15)),
-        BulletinBoardItem("학사공지", BASE_URL.addQueryString("b", 16)),
-        BulletinBoardItem("학생생활", BASE_URL.addQueryString("b", 21)),
-        BulletinBoardItem("채용공지", BASE_URL.addQueryString("b", 150)),
-        BulletinBoardItem("현장실습공지", BASE_URL.addQueryString("b", 151)),
-        BulletinBoardItem("사회봉사공지", BASE_URL.addQueryString("b", 191)),
-        BulletinBoardItem("자유게시판", BASE_URL.addQueryString("b", 22)),
+        BulletinBoardItem("일반공지", 14),
+        BulletinBoardItem("장학공지", 15),
+        BulletinBoardItem("학사공지", 16),
+        BulletinBoardItem("학생생활", 21),
+        BulletinBoardItem("채용공지", 150),
+        BulletinBoardItem("현장실습공지", 151),
+        BulletinBoardItem("사회봉사공지", 191),
+        BulletinBoardItem("자유게시판", 22),
     )
 
     private val modalBottomSheet : BottomSheetDialogFragment by lazy {
@@ -58,7 +60,9 @@ class BulletinBoardFragment: Fragment() {
 
     private fun initClickListeners() {
         onBulletinBoardClickListener = {
-            val intent = Intent(requireContext(), PostListActivity::class.java)
+            val intent = Intent(requireContext(), PostListActivity::class.java).apply {
+                putExtra(BULLETIN_QUERY, it.bulletin)
+            }
             startActivity(intent)
         }
         binding.topAppBar.setOnMenuItemClickListener {

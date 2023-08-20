@@ -3,6 +3,9 @@ package com.thirfir.domain
 const val BASE_URL = "https://portal.koreatech.ac.kr/ctt/bb/bulletin"
 const val KOREATECH_PORTAL_URL = "https://portal.koreatech.ac.kr"
 
+const val BULLETIN_QUERY = "b"
+const val PID = "pid"
+
 
 // ----------- HTML 태그 -----------
 const val U = "u"
@@ -32,7 +35,14 @@ const val BACKGROUND = "background"
 const val BACKGROUND_COLOR = "background-color"     // Text의 배경색
 const val FONT_SIZE = "font-size"       // 뒤에 pt or px가 붙음 , pt = px * 0.75 <- 12pt = 16px <- 약 14dp로 치환? 대충 dp = pt * 1.15
 const val FONT_WEIGHT = "font-weight"   // bold or 700???
+const val BORDER = "border"
+const val BORDER_LEFT = "border-left"
+const val BORDER_RIGHT = "border-right"
+const val BORDER_TOP = "border-top"
+const val BORDER_BOTTOM = "border-bottom"
+const val BORDER_COLOR = "border-color"
 const val BORDER_STYLE = "border-style"
+const val BORDER_WIDTH = "border-width"
 const val TEXT_ALIGN = "text-align"
 const val TEXT_DECORATION_LINE = "text-decoration-line"
 const val ROWSPAN = "rowspan"
@@ -44,6 +54,9 @@ const val PADDING_RIGHT = "padding-right"
 const val PADDING_TOP = "padding-top"
 const val PADDING_BOTTOM = "padding-bottom"
 const val SRC = "src"
+const val HREF = "href"
+const val WIDTH = "width"
+const val HEIGHT = "height"
 
 const val START = "start"
 const val END = "end"
@@ -57,6 +70,8 @@ const val NONE = "none"
 const val BOLD = "bold"
 const val ITALIC = "italic"
 const val SOLID = "solid"
+const val DASHED = "dashed"
+const val DOTTED = "dotted"
 const val NORMAL = "normal"
 
 const val BLACK = "black"

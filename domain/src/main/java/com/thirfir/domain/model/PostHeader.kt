@@ -1,5 +1,8 @@
 package com.thirfir.domain.model
 
+import android.os.Parcel
+import android.os.Parcelable
+
 
 data class PostHeader(
     val pid: Int,
@@ -8,4 +11,36 @@ data class PostHeader(
     val date: String,
     val isTopFixed: Boolean,
     // TODO : 데이터 정의
-)
+) : Parcelable {
+    constructor(parcel: Parcel) : this(
+        parcel.readInt(),
+        parcel.readString()!!,
+        parcel.readString()!!,
+        parcel.readString()!!,
+        parcel.readByte() != 0.toByte()
+    ) {
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeInt(pid)
+        parcel.writeString(title)
+        parcel.writeString(author)
+        parcel.writeString(date)
+        parcel.writeByte(if (isTopFixed) 1 else 0)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<PostHeader> {
+        override fun createFromParcel(parcel: Parcel): PostHeader {
+            return PostHeader(parcel)
+        }
+
+        override fun newArray(size: Int): Array<PostHeader?> {
+            return arrayOfNulls(size)
+        }
+    }
+
+}

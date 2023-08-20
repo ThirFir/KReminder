@@ -5,17 +5,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.thirfir.domain.model.PostHeader
 import com.thirfir.presentation.databinding.ItemPostBinding
-import com.thirfir.presentation.model.PostItem
 
-data class PostItem (
-    val num:Int,
-    val title: String,
-    val url: String
-)
 class PostAdapter(
-    private val onClick: (PostItem) -> Unit
-) : ListAdapter<PostItem, PostAdapter.PostViewHolder>(PostItemDiffCallback()) {
+    private val postHeaders: List<PostHeader>,
+    private val onClick: (PostHeader) -> Unit
+) : ListAdapter<PostHeader, PostAdapter.PostViewHolder>(PostItemDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder =
         PostViewHolder(
@@ -33,8 +29,8 @@ class PostAdapter(
     inner class PostViewHolder(private val binding: ItemPostBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: PostItem) {
-            binding.textViewSettingNum.text = item.num.toString()
+        fun bind(item: PostHeader) {
+            binding.textViewSettingNum.text = item.pid.toString()
             binding.textViewSettingTitle.text = item.title
             binding.root.setOnClickListener {
                 onClick(item) // 클릭 이벤트 처리를 PostFragment로 전달
@@ -43,16 +39,16 @@ class PostAdapter(
         }
     }
 
-    fun updateData(newData: List<PostItem>) {
+    fun updateData(newData: List<PostHeader>) {
         submitList(newData)
     }
 
-    private class PostItemDiffCallback : DiffUtil.ItemCallback<PostItem>() {
-        override fun areItemsTheSame(oldItem: PostItem, newItem: PostItem): Boolean {
-            return oldItem.num == newItem.num
+    private class PostItemDiffCallback : DiffUtil.ItemCallback<PostHeader>() {
+        override fun areItemsTheSame(oldItem: PostHeader, newItem: PostHeader): Boolean {
+            return oldItem.pid == newItem.pid
         }
 
-        override fun areContentsTheSame(oldItem: PostItem, newItem: PostItem): Boolean {
+        override fun areContentsTheSame(oldItem: PostHeader, newItem: PostHeader): Boolean {
             return oldItem == newItem
         }
     }
