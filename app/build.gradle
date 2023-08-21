@@ -41,6 +41,13 @@ android {
     viewBinding {
         enabled = true
     }
+    dataBinding {
+        enabled = true
+    }
+    buildFeatures {
+        viewBinding true
+        dataBinding true
+    }
 }
 
 
@@ -60,4 +67,7 @@ dependencies {
 
     implementation "com.google.dagger:hilt-android:$dagger_version"
     kapt "com.google.dagger:hilt-compiler:$dagger_version"
+
+    implementation "androidx.datastore:datastore:1.0.0"
+    implementation "com.google.protobuf:protobuf-javalite:3.21.12"
 }

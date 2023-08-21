@@ -4,22 +4,23 @@ import com.thirfir.data.datasource.remote.dto.PostDTO
 import com.thirfir.data.datasource.remote.dto.PostHeaderDTO
 import com.thirfir.domain.model.Post
 import com.thirfir.domain.model.PostHeader
-import com.thirfir.data.datasource.local.entitiy.KeywordEntity
+import com.thirfir.data.datasource.remote.dto.AttachedFileDTO
+import com.thirfir.data.datasource.local.keyword.entitiy.KeywordEntity
 import com.thirfir.domain.model.Keyword
 import com.thirfir.data.datasource.remote.dto.HtmlElementDTO
-import com.thirfir.domain.BACKGROUND_COLOR
-import com.thirfir.domain.BLACK
-import com.thirfir.domain.COLOR
 import com.thirfir.domain.FONT_SIZE
-import com.thirfir.domain.FONT_WEIGHT
+import com.thirfir.domain.KOREATECH_PORTAL_URL
 import com.thirfir.domain.MARGIN
-import com.thirfir.domain.NORMAL
 import com.thirfir.domain.PADDING
-import com.thirfir.domain.START
 import com.thirfir.domain.STYLE
-import com.thirfir.domain.TEXT_ALIGN
-import com.thirfir.domain.TRANSPARENT
+import com.thirfir.domain.model.AttachedFile
 import com.thirfir.domain.model.HtmlElement
+import com.thirfir.domain.model.Settings
+
+fun SettingsProto.toSettings(): Settings =
+    Settings(
+        allowNotification = allowNotification
+    )
 
 fun PostHeaderDTO.toPostHeader(): PostHeader =
     PostHeader(
@@ -38,8 +39,13 @@ fun PostDTO.toPost(): Post =
                 MARGIN to "0px"
                 )
         ) },
+        attachedFiles = attachedFileDTOs.map { it.toAttachedFile() }
     )
 
+fun AttachedFileDTO.toAttachedFile() = AttachedFile(
+    name = name ?: "Unknown",
+    url = KOREATECH_PORTAL_URL + href
+)
 fun KeywordEntity.toKeyword() = Keyword(
     name = name,
     createdAt = createdAt,

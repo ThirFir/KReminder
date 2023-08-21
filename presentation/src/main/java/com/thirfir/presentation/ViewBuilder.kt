@@ -34,6 +34,7 @@ import com.thirfir.domain.EM
 import com.thirfir.domain.FONT_SIZE
 import com.thirfir.domain.FONT_WEIGHT
 import com.thirfir.domain.H3
+import com.thirfir.domain.HREF
 import com.thirfir.domain.I
 import com.thirfir.domain.IMG
 import com.thirfir.domain.INS
@@ -61,6 +62,7 @@ import com.thirfir.presentation.model.Padding
 import com.thirfir.presentation.model.TableElement
 import com.thirfir.presentation.view.post.ImageActivity
 import com.thirfir.presentation.view.post.TableView
+import com.thirfir.presentation.view.post.WebViewActivity
 import kotlin.math.roundToInt
 
 internal fun HtmlElement.addViewOfTag(parentLayout: ViewGroup, textView: TextView?, context: Context) {
@@ -134,7 +136,15 @@ internal fun HtmlElement.addViewOfTag(parentLayout: ViewGroup, textView: TextVie
                 textView?.append("\n")
         }
         A -> {
-            // TODO : 링크
+            childElements?.forEach {
+                it.addViewOfTag(parentLayout, textView.apply {
+                    this?.setOnClickListener {
+                        val intent = Intent(context, WebViewActivity::class.java).apply {
+                            putExtra("url", attributes[HREF])
+                        }
+                    }
+                }, context)
+            }
         }
         IMG -> {
             val intent = Intent(context, ImageActivity::class.java).apply {

@@ -4,6 +4,8 @@ const val BASE_URL = "https://portal.koreatech.ac.kr/ctt/bb/bulletin"
 const val KOREATECH_PORTAL_URL = "https://portal.koreatech.ac.kr"
 
 const val BULLETIN_QUERY = "b"
+const val BULLETIN = "bulletin"
+const val PID_QUERY = "p"
 const val PID = "pid"
 
 

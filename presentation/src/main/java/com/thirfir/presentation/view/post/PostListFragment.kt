@@ -2,19 +2,16 @@ package com.thirfir.presentation.view.post
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.app.FrameMetricsAggregator.DELAY_DURATION
+import android.view.ViewTreeObserver.OnScrollChangedListener
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.thirfir.domain.BULLETIN_QUERY
 import com.thirfir.domain.PID
-import com.thirfir.domain.model.PostHeader
-import com.thirfir.presentation.R
 import com.thirfir.presentation.adapter.BulletinBoardsAdapter
 import com.thirfir.presentation.adapter.PostAdapter
 import com.thirfir.presentation.databinding.FragmentPostListBinding
@@ -24,6 +21,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+
 
 @AndroidEntryPoint
 class PostListFragment : Fragment() {
@@ -49,6 +47,7 @@ class PostListFragment : Fragment() {
         postHeadersViewModel.fetchPostHeaders(bulletin, currentPage)
 
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -121,6 +120,18 @@ class PostListFragment : Fragment() {
         }
         binding.recyclerViewPost.adapter = postAdapter
 
+        binding.recyclerViewPost.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+
+                // 스크롤 상태가 변할 때 호출됨
+                if (!recyclerView.canScrollVertically(1)) {
+                    binding.pageButtonsLayout.visibility = View.VISIBLE
+                } else {
+                    binding.pageButtonsLayout.visibility = View.GONE
+                }
+            }
+        })
         ioScope.launch {
             postHeadersViewModel.postHeaders.collect(
                 collector = { postHeaders ->

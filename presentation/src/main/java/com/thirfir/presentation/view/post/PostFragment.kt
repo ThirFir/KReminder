@@ -55,6 +55,14 @@ class PostFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.postBack.setOnClickListener {
+            activity?.finish()// requireActivity().onBackPressed()
+        }
+    }
+
     companion object {
 
         @JvmStatic
