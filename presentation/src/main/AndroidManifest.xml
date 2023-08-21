@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <application>
+        <activity
+            android:name=".view.post.PostActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.post.ImageActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.post.WebViewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.keyword.KeywordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.setting.SettingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.main.MainActivity"
+            android:exported="true" />
+        <activity
+            android:name=".view.post.PostListActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="NOTIFICATION_CLICK" />
+            </intent-filter>
+        </activity>
+
+        <service
+            android:name=".service.MyFirebaseMessagingService"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/firebase_notification_channel_id" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_settings_36" />
+    </application>
+
+</manifest>
