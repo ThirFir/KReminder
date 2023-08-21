@@ -1,9 +1,9 @@
-package com.thirfir.data.datasource.local.dao
+package com.thirfir.data.datasource.local.keyword.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import com.thirfir.data.datasource.local.entitiy.KeywordEntity
+import com.thirfir.data.datasource.local.keyword.entitiy.KeywordEntity
 
 @Dao
 interface KeywordDao {

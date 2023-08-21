@@ -9,19 +9,41 @@ import android.media.RingtoneManager
 import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import com.thirfir.domain.usecase.SettingsUseCase
 import com.thirfir.presentation.view.post.PostListActivity
 import com.thirfir.presentation.R
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.runBlocking
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MyFirebaseMessagingService : FirebaseMessagingService() {
 
+    @Inject
+    lateinit var useCase: SettingsUseCase
+
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
+        runBlocking {
+            val settings = useCase.getSettings()
+                .stateIn(
+                    scope = CoroutineScope(Dispatchers.IO)
+                ).value
+
+            if ( settings.allowNotification ) {
+                check(remoteMessage)
+            }
+        }
+    }
+
+    private fun check(remoteMessage: RemoteMessage) {
         val currentPostID = remoteMessage.data["post_id"]
         val prefNotice = this.getSharedPreferences("lastPostID", Context.MODE_PRIVATE)
         val lastPostID = prefNotice.getString("lastPostID", "null")
 
-        // 같은 이름의 공지 한번만 알림
-        // TODO 이전 정보와 같을때만 필터링 됨, 앱이 killed 상태일땐 작동 안함
-        if(lastPostID != currentPostID) {
+        if(lastPostID != currentPostID ) {
             if(remoteMessage.data.isNotEmpty()){
                 sendNotification(remoteMessage)
             }
