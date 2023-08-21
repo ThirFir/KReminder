@@ -10,8 +10,8 @@ import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.thirfir.domain.usecase.SettingsUseCase
-import com.thirfir.presentation.view.post.PostListActivity
 import com.thirfir.presentation.R
+import com.thirfir.presentation.view.post.PostActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -56,7 +56,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     private fun sendNotification(remoteMessage: RemoteMessage) {
         val uniId: Int = (System.currentTimeMillis() / 7).toInt()
-        val intent = Intent(this, PostListActivity::class.java)
+        val intent = Intent(this, PostActivity::class.java)
         intent.apply {
             putExtra("bulletin", remoteMessage.data["bulletin"]) // 게시판 번호 intent로 전달 String
             putExtra("post_id", remoteMessage.data["post_id"]) // 포스트 고유번호 intent로 전달 String
@@ -83,5 +83,10 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         }
 
         notificationManager.notify(uniId, notificationBuilder.build())
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
     }
 }
