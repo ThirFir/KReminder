@@ -2,10 +2,12 @@ package com.thirfir.presentation.view.post
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.activityViewModels
 import com.thirfir.domain.BASE_URL
 import com.thirfir.domain.BULLETIN
@@ -42,7 +44,19 @@ class ContentFragment: Fragment() {
         binding = FragmentContentBinding.inflate(layoutInflater, container, false)
         postViewModel.fetchPost(bulletin, pid) { post ->
             post.htmlElements.forEach {
-                it.addViewOfTag(binding.root, null, requireContext())
+                it.addViewOfTag(binding.contentContainer, null, requireContext())
+            }
+            post.attachedFiles.forEach {
+                binding.attachedFileContainer.addView(
+                    TextView(requireContext()).apply {
+                        text = it.name
+                        setOnClickListener { _ ->
+                            val intent = Intent(requireActivity(), WebViewActivity::class.java)
+                            intent.putExtra("url", it.url)
+                            startActivity(intent)
+                        }
+                    }
+                )
             }
         }
 
