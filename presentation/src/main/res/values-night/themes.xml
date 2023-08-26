@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base application theme. -->
+    <style name="Base.Theme.KReminder" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Status Bar 배경색 -->
+        <item name="android:statusBarColor">@color/black</item>
+
+        <!-- Status Bar 글자색 -->
+        <item name="android:windowLightStatusBar">false</item>
+
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.KReminder" parent="Base.Theme.KReminder" />
+
+</resources>
