@@ -6,7 +6,7 @@ import com.thirfir.domain.repository.KeywordRepository
 import com.thirfir.domain.repository.PostHeaderRepository
 import com.thirfir.domain.repository.PostRepository
 import com.thirfir.domain.repository.SettingsRepository
-import com.thirfir.domain.usecase.GetBookmarkUseCase
+import com.thirfir.domain.usecase.BookmarkUseCase
 import com.thirfir.domain.usecase.KeywordUseCase
 import com.thirfir.domain.usecase.GetPostHeaderUseCase
 import com.thirfir.domain.usecase.GetPostUseCase
@@ -55,8 +55,8 @@ object UseCaseModule {
     fun provideBookmarkUseCase(
         bookmarkRepository: BookmarkRepository,
         @IoDispatcher ioDispatcher: CoroutineDispatcher,
-    ) : GetBookmarkUseCase {
-        return GetBookmarkUseCase(bookmarkRepository, ioDispatcher)
+    ) : BookmarkUseCase {
+        return BookmarkUseCase(bookmarkRepository, ioDispatcher)
     }
 
 }

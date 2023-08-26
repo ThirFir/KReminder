@@ -5,34 +5,52 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.thirfir.domain.model.Bookmark
-import com.thirfir.domain.usecase.GetBookmarkUseCase
+import com.thirfir.domain.usecase.BookmarkUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class BookmarksViewModel @Inject constructor(
-    private val getBookmarkUseCase: GetBookmarkUseCase
+    private val bookmarkUseCase: BookmarkUseCase
 ) : ViewModel() {
 
     private val _bookmarks : MutableLiveData<List<Bookmark>> = MutableLiveData()
     val bookmarks : LiveData<List<Bookmark>> get() = _bookmarks
 
-    private fun getBookmarks() {
+    init {
+        getBookmarks()
+    }
+
+    fun getBookmarks() {
         viewModelScope.launch {
-            _bookmarks.value = getBookmarkUseCase.getBookmarks()
+            _bookmarks.value = bookmarkUseCase.getBookmarks()
         }
     }
 
-    private fun insertBookmark(bookmark: Bookmark) {
-        getBookmarkUseCase.insertBookmark(bookmark) {
+    fun insertBookmark(bookmark: Bookmark) {
+        bookmarkUseCase.insertBookmark(bookmark) {
             _bookmarks.postValue(_bookmarks.value?.plus(it))
         }
     }
 
-    private fun deleteBookmark(pid: Int) {
-        getBookmarkUseCase.deleteBookmark(pid) {
+    fun deleteBookmark(pid: Int) {
+        bookmarkUseCase.deleteBookmark(pid) {
             _bookmarks.postValue(_bookmarks.value?.filter { it.pid != pid })
         }
+    }
+
+    fun toggleBookmark(bookmark: Bookmark, onComplete: (Boolean) -> Unit) {
+        if(isBookmarked(bookmark.pid)) {
+            deleteBookmark(bookmark.pid)
+            onComplete(false)
+        } else {
+            insertBookmark(bookmark)
+            onComplete(true)
+        }
+    }
+
+    fun isBookmarked(pid: Int) : Boolean {
+        return _bookmarks.value?.any { it.pid == pid } ?: false
     }
 }

@@ -10,6 +10,7 @@ data class PostHeader(
     val author: String,
     val date: String,
     val isTopFixed: Boolean,
+    val category: String,
     // TODO : 데이터 정의
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
@@ -17,7 +18,8 @@ data class PostHeader(
         parcel.readString()!!,
         parcel.readString()!!,
         parcel.readString()!!,
-        parcel.readByte() != 0.toByte()
+        parcel.readByte() != 0.toByte(),
+        parcel.readString()!!
     ) {
     }
 

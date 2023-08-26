@@ -48,7 +48,8 @@ fun PostHeaderDTO.toPostHeader(): PostHeader =
         title = title,
         author = author,
         date = date,
-        isTopFixed = isTopFixed
+        isTopFixed = isTopFixed,
+        category = category,
     )
 
 fun PostDTO.toPost(): Post =

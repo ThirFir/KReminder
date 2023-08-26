@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class GetBookmarkUseCase @Inject constructor(
+class BookmarkUseCase @Inject constructor(
     private val bookmarkRepository: BookmarkRepository,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
     private val ioScope: CoroutineScope = CoroutineScope(ioDispatcher)
