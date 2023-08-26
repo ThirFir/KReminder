@@ -1,6 +1,5 @@
 package com.thirfir.presentation.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -15,9 +14,14 @@ class BulletinBoardsAdapter(
     inner class BulletinBoardViewHolder(private val binding: ItemBulletinBoardBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(board: BulletinBoardItem) {
-            binding.textViewBulletinBoardTitle.text = board.title
-            binding.itemBulletinBoard.setOnClickListener {
-                onClick(board)
+            with (binding) {
+                textViewBulletinBoardTitle.text = board.title
+                textViewBulletinBoardTitle.setOnClickListener {
+                    onClick(board)
+                }
+                imageViewNext.setOnClickListener {
+                    onClick(board)
+                }
             }
         }
     }
