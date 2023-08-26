@@ -41,4 +41,16 @@ class PostActivity : AppCompatActivity() {
             .add(R.id.post_container, PostFragment.newInstance(bulletin, pid, postHeader))
             .commit()
     }
+
+    private fun initClickListeners() {
+        binding.topAppBar.setOnMenuItemClickListener {
+            when(it.itemId) {
+                R.id.register_bookmark -> {
+
+                    true
+                }
+                else -> false
+            }
+        }
+    }
 }

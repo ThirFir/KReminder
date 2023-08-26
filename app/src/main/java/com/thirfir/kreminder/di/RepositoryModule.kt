@@ -1,13 +1,16 @@
 package com.thirfir.kreminder.di
 
-import com.thirfir.data.datasource.local.keyword.KeywordLocalDataSource
+import com.thirfir.data.datasource.local.BookmarkLocalDataSource
+import com.thirfir.data.datasource.local.KeywordLocalDataSource
 import com.thirfir.data.datasource.local.settings.SettingsLocalDataSource
 import com.thirfir.data.datasource.remote.PostHeaderRemoteDataSource
 import com.thirfir.data.datasource.remote.PostRemoteDataSource
+import com.thirfir.data.repository.BookmarkRepositoryImpl
 import com.thirfir.data.repository.KeywordRepositoryImpl
 import com.thirfir.data.repository.PostHeaderRepositoryImpl
 import com.thirfir.data.repository.PostRepositoryImpl
 import com.thirfir.data.repository.SettingsRepositoryImpl
+import com.thirfir.domain.repository.BookmarkRepository
 import com.thirfir.domain.repository.KeywordRepository
 import com.thirfir.domain.repository.PostHeaderRepository
 import com.thirfir.domain.repository.PostRepository
@@ -47,5 +50,12 @@ object RepositoryModule {
         settingsLocalDataSource: SettingsLocalDataSource
     ): SettingsRepository {
         return SettingsRepositoryImpl(settingsLocalDataSource)
+    }
+
+    @Provides
+    fun provideBookmarkRepository(
+        bookmarkLocalDataSource: BookmarkLocalDataSource
+    ): BookmarkRepository {
+        return BookmarkRepositoryImpl(bookmarkLocalDataSource)
     }
 }

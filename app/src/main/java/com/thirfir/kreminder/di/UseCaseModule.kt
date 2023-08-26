@@ -1,10 +1,12 @@
 package com.thirfir.kreminder.di
 
 import com.thirfir.domain.IoDispatcher
+import com.thirfir.domain.repository.BookmarkRepository
 import com.thirfir.domain.repository.KeywordRepository
 import com.thirfir.domain.repository.PostHeaderRepository
 import com.thirfir.domain.repository.PostRepository
 import com.thirfir.domain.repository.SettingsRepository
+import com.thirfir.domain.usecase.GetBookmarkUseCase
 import com.thirfir.domain.usecase.KeywordUseCase
 import com.thirfir.domain.usecase.GetPostHeaderUseCase
 import com.thirfir.domain.usecase.GetPostUseCase
@@ -48,4 +50,13 @@ object UseCaseModule {
     ): SettingsUseCase {
         return SettingsUseCase(settingsRepository)
     }
+
+    @Provides
+    fun provideBookmarkUseCase(
+        bookmarkRepository: BookmarkRepository,
+        @IoDispatcher ioDispatcher: CoroutineDispatcher,
+    ) : GetBookmarkUseCase {
+        return GetBookmarkUseCase(bookmarkRepository, ioDispatcher)
+    }
+
 }

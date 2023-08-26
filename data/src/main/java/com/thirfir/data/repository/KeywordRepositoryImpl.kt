@@ -1,7 +1,7 @@
 package com.thirfir.data.repository
 
 
-import com.thirfir.data.datasource.local.keyword.KeywordLocalDataSource
+import com.thirfir.data.datasource.local.KeywordLocalDataSource
 import com.thirfir.data.toKeyword
 import com.thirfir.data.toKeywordEntity
 import com.thirfir.domain.model.Keyword

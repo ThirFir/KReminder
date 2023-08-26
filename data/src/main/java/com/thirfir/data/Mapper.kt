@@ -1,11 +1,12 @@
 package com.thirfir.data
 
+import com.thirfir.data.datasource.local.entity.BookmarkEntity
 import com.thirfir.data.datasource.remote.dto.PostDTO
 import com.thirfir.data.datasource.remote.dto.PostHeaderDTO
 import com.thirfir.domain.model.Post
 import com.thirfir.domain.model.PostHeader
 import com.thirfir.data.datasource.remote.dto.AttachedFileDTO
-import com.thirfir.data.datasource.local.keyword.entitiy.KeywordEntity
+import com.thirfir.data.datasource.local.entity.KeywordEntity
 import com.thirfir.domain.model.Keyword
 import com.thirfir.data.datasource.remote.dto.HtmlElementDTO
 import com.thirfir.domain.FONT_SIZE
@@ -14,12 +15,31 @@ import com.thirfir.domain.MARGIN
 import com.thirfir.domain.PADDING
 import com.thirfir.domain.STYLE
 import com.thirfir.domain.model.AttachedFile
+import com.thirfir.domain.model.Bookmark
 import com.thirfir.domain.model.HtmlElement
 import com.thirfir.domain.model.Settings
 
 fun SettingsProto.toSettings(): Settings =
     Settings(
         allowNotification = allowNotification
+    )
+
+fun BookmarkEntity.toBookmark(): Bookmark =
+    Bookmark(
+        bulletin = bulletin,
+        pid = pid,
+        title = title,
+        category = category,
+        timestamp = timestamp,
+    )
+
+fun Bookmark.toBookmarkEntity(): BookmarkEntity =
+    BookmarkEntity(
+        bulletin = bulletin,
+        pid = pid,
+        title = title,
+        category = category,
+        timestamp = timestamp,
     )
 
 fun PostHeaderDTO.toPostHeader(): PostHeader =

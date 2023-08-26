@@ -3,10 +3,13 @@ package com.thirfir.kreminder.di
 import android.content.Context
 import androidx.datastore.core.DataStore
 import com.thirfir.data.SettingsProto
-import com.thirfir.data.datasource.local.keyword.KReminderDatabase
-import com.thirfir.data.datasource.local.keyword.KeywordLocalDataSource
-import com.thirfir.data.datasource.local.keyword.dao.KeywordDao
-import com.thirfir.data.datasource.local.keyword.impl.KeywordLocalDataSourceImpl
+import com.thirfir.data.datasource.local.BookmarkLocalDataSource
+import com.thirfir.data.datasource.local.KReminderDatabase
+import com.thirfir.data.datasource.local.KeywordLocalDataSource
+import com.thirfir.data.datasource.local.dao.BookmarkDao
+import com.thirfir.data.datasource.local.dao.KeywordDao
+import com.thirfir.data.datasource.local.impl.BookmarkLocalDataSourceImpl
+import com.thirfir.data.datasource.local.impl.KeywordLocalDataSourceImpl
 import com.thirfir.data.datasource.local.settings.SettingsLocalDataSource
 import com.thirfir.data.datasource.local.settings.impl.SettingsLocalDataSourceImpl
 import com.thirfir.domain.IoDispatcher
@@ -42,4 +45,19 @@ object LocalDataSourceModule {
     ) : SettingsLocalDataSource {
         return SettingsLocalDataSourceImpl(settingsDataStore, ioDispatcher)
     }
+
+    @Provides
+    fun provideBookmarkLocalDataSource(
+        bookmarkDao: BookmarkDao?
+    ): BookmarkLocalDataSource {
+        return BookmarkLocalDataSourceImpl(bookmarkDao)
+    }
+
+    @Provides
+    fun provideBookmarkDao(
+        @ApplicationContext context: Context
+    ) : BookmarkDao {
+        return KReminderDatabase.getInstance(context).bookmarkDao()
+    }
+
 }

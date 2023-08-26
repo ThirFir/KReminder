@@ -1,6 +1,6 @@
-package com.thirfir.data.datasource.local.keyword
+package com.thirfir.data.datasource.local
 
-import com.thirfir.data.datasource.local.keyword.entitiy.KeywordEntity
+import com.thirfir.data.datasource.local.entity.KeywordEntity
 
 interface KeywordLocalDataSource {
     suspend fun getKeywords() : List<KeywordEntity>

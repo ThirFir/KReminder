@@ -29,7 +29,7 @@ class OverflowMenuModalBottomSheet : BottomSheetDialogFragment() {
             },
             MenuItem(
                 icon = R.drawable.ic_star_36,
-                title = requireContext().getString(R.string.watchlist)) {
+                title = requireContext().getString(R.string.bookmark)) {
                 // TODO : Navigate to WatchlistActivity(or Fragment)
                 dismiss()
             },

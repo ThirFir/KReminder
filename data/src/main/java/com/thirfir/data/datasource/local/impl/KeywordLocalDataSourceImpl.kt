@@ -1,8 +1,8 @@
-package com.thirfir.data.datasource.local.keyword.impl
+package com.thirfir.data.datasource.local.impl
 
-import com.thirfir.data.datasource.local.keyword.KeywordLocalDataSource
-import com.thirfir.data.datasource.local.keyword.dao.KeywordDao
-import com.thirfir.data.datasource.local.keyword.entitiy.KeywordEntity
+import com.thirfir.data.datasource.local.KeywordLocalDataSource
+import com.thirfir.data.datasource.local.dao.KeywordDao
+import com.thirfir.data.datasource.local.entity.KeywordEntity
 import javax.inject.Inject
 
 class KeywordLocalDataSourceImpl @Inject constructor(
