@@ -16,7 +16,9 @@ import com.thirfir.domain.BULLETIN
 import com.thirfir.domain.BULLETIN_QUERY
 import com.thirfir.domain.PID
 import com.thirfir.domain.PID_QUERY
+import com.thirfir.domain.model.Post
 import com.thirfir.domain.util.addQueryString
+import com.thirfir.presentation.R
 import com.thirfir.presentation.adapter.AttachedFileAdapter
 import com.thirfir.presentation.addViewOfTag
 import com.thirfir.presentation.databinding.FragmentContentBinding
@@ -46,31 +48,9 @@ class ContentFragment: Fragment() {
     ): View {
         binding = FragmentContentBinding.inflate(layoutInflater, container, false)
         postViewModel.fetchPost(bulletin, pid) { post ->
-            post.htmlElements.forEach {
-                it.addViewOfTag(binding.contentContainer, null, requireContext())
-            }
 
-            binding.recyclerViewAttachedFile.layoutManager = LinearLayoutManager(requireContext())
-            binding.recyclerViewAttachedFile.adapter = AttachedFileAdapter {
-                val intent = Intent(requireActivity(), WebViewActivity::class.java)
-                intent.putExtra("url", it.url)
-                startActivity(intent)
-            }.apply {
-                submitList(post.attachedFiles)
-            }
-            binding.recyclerViewAttachedFile.addItemDecoration(
-                object: RecyclerView.ItemDecoration() {
-                    override fun getItemOffsets(
-                        outRect: android.graphics.Rect,
-                        view: View,
-                        parent: RecyclerView,
-                        state: RecyclerView.State,
-                    ) {
-                        super.getItemOffsets(outRect, view, parent, state)
-                        outRect.bottom = 20
-                    }
-                }
-            )
+            initContentView(post)
+            initAttachedFileView(post)
         }
 
         return binding.root
@@ -97,4 +77,37 @@ class ContentFragment: Fragment() {
         requireActivity().finish()
     }
 
+    private fun initContentView(post: Post) {
+        post.htmlElements.forEach {
+            it.addViewOfTag(binding.contentContainer, null, requireContext())
+        }
+    }
+
+    private fun initAttachedFileView(post: Post) {
+        binding.recyclerViewAttachedFile.layoutManager = object : LinearLayoutManager(requireContext()) {
+            override fun canScrollVertically(): Boolean {
+                return false
+            }
+        }
+        binding.recyclerViewAttachedFile.adapter = AttachedFileAdapter {
+            val intent = Intent(requireActivity(), WebViewActivity::class.java)
+            intent.putExtra("url", it.url)
+            startActivity(intent)
+        }.apply {
+            submitList(post.attachedFiles)
+        }
+        binding.recyclerViewAttachedFile.addItemDecoration(
+            object: RecyclerView.ItemDecoration() {
+                override fun getItemOffsets(
+                    outRect: android.graphics.Rect,
+                    view: View,
+                    parent: RecyclerView,
+                    state: RecyclerView.State,
+                ) {
+                    super.getItemOffsets(outRect, view, parent, state)
+                    outRect.bottom = 20
+                }
+            }
+        )
+    }
 }

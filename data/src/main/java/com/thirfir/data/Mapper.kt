@@ -60,7 +60,7 @@ fun PostDTO.toPost(): Post =
                 MARGIN to "0px"
                 )
         ) },
-        attachedFiles = attachedFileDTOs.map { it.toAttachedFile() }
+        attachedFiles = attachedFileDTOs.map { it.toAttachedFile() },
     )
 
 fun AttachedFileDTO.toAttachedFile() = AttachedFile(

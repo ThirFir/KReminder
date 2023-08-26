@@ -28,17 +28,6 @@ class BulletinBoardFragment: Fragment() {
     private lateinit var binding: FragmentBulletinBoardBinding
     private lateinit var onBulletinBoardClickListener: (BulletinBoardItem) -> Unit
 
-    private val bulletinBoardItems = listOf(
-        BulletinBoardItem("일반공지", 14),
-        BulletinBoardItem("장학공지", 15),
-        BulletinBoardItem("학사공지", 16),
-        BulletinBoardItem("학생생활", 21),
-        BulletinBoardItem("채용공지", 150),
-        BulletinBoardItem("현장실습공지", 151),
-        BulletinBoardItem("사회봉사공지", 191),
-        BulletinBoardItem("자유게시판", 22),
-    )
-
     private val modalBottomSheet : BottomSheetDialogFragment by lazy {
         OverflowMenuModalBottomSheet()
     }
@@ -60,10 +49,7 @@ class BulletinBoardFragment: Fragment() {
 
     private fun initClickListeners() {
         onBulletinBoardClickListener = {
-            val intent = Intent(requireContext(), PostListActivity::class.java).apply {
-                putExtra(BULLETIN_QUERY, it.bulletin)
-            }
-            startActivity(intent)
+            it.onClick(requireContext())
         }
         binding.topAppBar.setOnMenuItemClickListener {
             when(it.itemId) {
@@ -84,7 +70,7 @@ class BulletinBoardFragment: Fragment() {
                 return false
             }
         }
-        binding.recyclerViewBulletinBoard.adapter = BulletinBoardsAdapter(bulletinBoardItems, onBulletinBoardClickListener)
+        binding.recyclerViewBulletinBoard.adapter = BulletinBoardsAdapter(BulletinBoardItem.values().toList(), onBulletinBoardClickListener)
         binding.recyclerViewBulletinBoard.addItemDecoration(
             object : RecyclerView.ItemDecoration() {
                 override fun getItemOffsets(

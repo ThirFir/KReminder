@@ -41,10 +41,10 @@ class PostFragment : Fragment() {
         binding = FragmentPostBinding.inflate(layoutInflater, container, false)
 
         binding.run {
-            postTitle.text = postHeader.title
-            binding.postDetail.text = ""
-            binding.postWriter.text = postHeader.author
-            binding.postDate.text = postHeader.date // TODO : Date Format
+            textPostTitle.text = postHeader.title
+            binding.textPostAuthor.text = postHeader.author
+            binding.textPostDate.text = postHeader.date // TODO : Date Format
+            binding.textBoardName.text = postHeader.category
         }
 
 

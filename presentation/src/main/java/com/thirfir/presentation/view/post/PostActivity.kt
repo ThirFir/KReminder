@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
+import com.google.android.material.snackbar.Snackbar
 import com.thirfir.domain.BULLETIN_QUERY
 import com.thirfir.domain.PID
 import com.thirfir.domain.model.Bookmark
@@ -22,6 +23,9 @@ class PostActivity : AppCompatActivity() {
     }
     private val bulletin: Int by lazy {
         intent.getIntExtra(BULLETIN_QUERY, 0)
+    }
+    private val bulletinTitle: String by lazy {
+        intent.getStringExtra("title") ?: ""
     }
     private val pid: Int by lazy {
         intent.getIntExtra(PID, 0)
@@ -49,6 +53,7 @@ class PostActivity : AppCompatActivity() {
             .add(R.id.post_container, PostFragment.newInstance(bulletin, pid, postHeader))
             .commit()
         changeBookmarkIcon(bookmarksViewModel.isBookmarked(pid))
+        binding.topAppBar.title = bulletinTitle
     }
 
     private fun initClickListeners() {
@@ -91,9 +96,9 @@ class PostActivity : AppCompatActivity() {
 
     private fun showBookmarkingMessage(bookmarked: Boolean) {
         if(bookmarked) {
-            Toast.makeText(this, "북마크에 등록되었어요", Toast.LENGTH_SHORT).show()
+            Snackbar.make(binding.root, "북마크 등록되었어요.", Snackbar.LENGTH_SHORT).show()
         } else {
-            Toast.makeText(this, "북마크에서 삭제되었어요", Toast.LENGTH_SHORT).show()
+            Snackbar.make(binding.root, "북마크 해제되었어요.", Snackbar.LENGTH_SHORT).show()
         }
     }
 }

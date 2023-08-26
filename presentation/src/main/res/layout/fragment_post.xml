@@ -12,63 +12,50 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/board_name"
+            android:id="@+id/text_board_name"
             android:layout_width="60dp"
             android:layout_height="20dp"
-            android:layout_margin="6dp"
+            android:layout_marginTop="6dp"
             android:background="@drawable/ic_board_name_rectangle"
             android:gravity="center"
             android:text="@string/board"
             android:textSize="11sp"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/text_post_title"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/post_detail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:text="@string/bullet"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/post_title"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/post_title" />
-
-        <TextView
-            android:id="@+id/post_title"
+            android:id="@+id/text_post_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:text="@string/post_title"
             android:textAlignment="textStart"
             android:textSize="20sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@+id/board_name"
-            app:layout_constraintStart_toEndOf="@+id/post_detail"
-            app:layout_constraintTop_toBottomOf="@+id/board_name" />
+            android:layout_marginHorizontal="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_board_name" />
 
         <TextView
-            android:id="@+id/post_writer"
+            android:id="@+id/text_post_author"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
             android:text="@string/author_label"
             android:textSize="11sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/post_title" />
+            app:layout_constraintStart_toStartOf="@+id/text_post_title"
+            app:layout_constraintTop_toBottomOf="@+id/text_post_title" />
 
         <TextView
-            android:id="@+id/post_date"
+            android:id="@+id/text_post_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/post_date"
             android:textSize="10sp"
-            app:layout_constraintBottom_toBottomOf="@+id/post_writer"
-            app:layout_constraintEnd_toEndOf="@+id/board_name"
-            app:layout_constraintTop_toTopOf="@+id/post_writer" />
+            app:layout_constraintBottom_toBottomOf="@+id/text_post_author"
+            app:layout_constraintEnd_toEndOf="@+id/text_post_title"
+            app:layout_constraintTop_toTopOf="@+id/text_post_author" />
 
         <View
             android:id="@+id/line"
@@ -80,7 +67,7 @@
             android:background="#A9A9A9"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/post_date" />
+            app:layout_constraintTop_toBottomOf="@+id/text_post_date" />
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/post_content"

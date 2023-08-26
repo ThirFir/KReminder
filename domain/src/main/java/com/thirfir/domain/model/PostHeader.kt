@@ -29,6 +29,7 @@ data class PostHeader(
         parcel.writeString(author)
         parcel.writeString(date)
         parcel.writeByte(if (isTopFixed) 1 else 0)
+        parcel.writeString(category)
     }
 
     override fun describeContents(): Int {

@@ -1,5 +1,6 @@
 package com.thirfir.data.datasource.remote.impl
 
+import android.util.Log
 import com.thirfir.data.datasource.remote.PostRemoteDataSource
 import com.thirfir.data.datasource.remote.dto.AttachedFileDTO
 import com.thirfir.data.datasource.remote.dto.PostDTO
@@ -14,6 +15,7 @@ import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import org.jsoup.nodes.Node
 import org.jsoup.nodes.TextNode
+import javax.security.auth.Subject.getSubject
 
 class PostRemoteDataSourceImpl : PostRemoteDataSource {
 
@@ -66,4 +68,5 @@ class PostRemoteDataSourceImpl : PostRemoteDataSource {
         }
         return attrs
     }
+
 }

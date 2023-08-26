@@ -29,7 +29,7 @@ class PostListFragment : Fragment() {
     private lateinit var binding: FragmentPostListBinding
     private lateinit var postAdapter: PostAdapter
     private var currentPage = 1
-    private var pageNum=0;
+    private var pageNum = 0
 
     private lateinit var onBulletinBoardClickListener: (BulletinBoardItem) -> Unit
 
@@ -38,6 +38,9 @@ class PostListFragment : Fragment() {
 
     private val bulletin: Int by lazy {
         requireActivity().intent.getIntExtra("b", 0)
+    }
+    private val bulletinTitle: String by lazy {
+        requireActivity().intent.getStringExtra("title") ?: ""
     }
     private val postHeadersViewModel: PostHeadersViewModel by activityViewModels()
 
@@ -71,24 +74,11 @@ class PostListFragment : Fragment() {
                 return false
             }
         }
-        val MenuItems = listOf(
-            BulletinBoardItem("일반공지", 14),
-            BulletinBoardItem("장학공지", 15),
-            BulletinBoardItem("학사공지", 16),
-            BulletinBoardItem("학생생활", 21),
-            BulletinBoardItem("채용공지", 150),
-            BulletinBoardItem("현장실습공지", 151),
-            BulletinBoardItem("사회봉사공지", 191),
-            BulletinBoardItem("자유게시판", 22),
-        )
 
         onBulletinBoardClickListener = {
-            val intent = Intent(requireContext(), PostListActivity::class.java).apply {
-                putExtra(BULLETIN_QUERY, it.bulletin)
-            }
-            startActivity(intent)
+            it.onClick(requireContext())
         }
-        binding.recyclerViewMenu.adapter=BulletinBoardsAdapter(MenuItems,onBulletinBoardClickListener)
+        binding.recyclerViewMenu.adapter = BulletinBoardsAdapter(BulletinBoardItem.values().toList(), onBulletinBoardClickListener)
 
         //아이콘 클릭시 메뉴 열기
         binding.postMenu.setOnClickListener {
@@ -113,6 +103,7 @@ class PostListFragment : Fragment() {
             val intent = Intent(requireContext(), PostActivity::class.java).apply {
                 putExtra(PID, postListItem.pid)
                 putExtra(BULLETIN_QUERY, this@PostListFragment.bulletin)
+                putExtra("title", bulletinTitle)
                 putExtra("header", postListItem)
             }
 
