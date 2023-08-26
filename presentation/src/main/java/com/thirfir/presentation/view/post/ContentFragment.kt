@@ -9,12 +9,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.thirfir.domain.BASE_URL
 import com.thirfir.domain.BULLETIN
 import com.thirfir.domain.BULLETIN_QUERY
 import com.thirfir.domain.PID
 import com.thirfir.domain.PID_QUERY
 import com.thirfir.domain.util.addQueryString
+import com.thirfir.presentation.adapter.AttachedFileAdapter
 import com.thirfir.presentation.addViewOfTag
 import com.thirfir.presentation.databinding.FragmentContentBinding
 import com.thirfir.presentation.viewmodel.PostViewModel
@@ -46,18 +49,28 @@ class ContentFragment: Fragment() {
             post.htmlElements.forEach {
                 it.addViewOfTag(binding.contentContainer, null, requireContext())
             }
-            post.attachedFiles.forEach {
-                binding.attachedFileContainer.addView(
-                    TextView(requireContext()).apply {
-                        text = it.name
-                        setOnClickListener { _ ->
-                            val intent = Intent(requireActivity(), WebViewActivity::class.java)
-                            intent.putExtra("url", it.url)
-                            startActivity(intent)
-                        }
-                    }
-                )
+
+            binding.recyclerViewAttachedFile.layoutManager = LinearLayoutManager(requireContext())
+            binding.recyclerViewAttachedFile.adapter = AttachedFileAdapter {
+                val intent = Intent(requireActivity(), WebViewActivity::class.java)
+                intent.putExtra("url", it.url)
+                startActivity(intent)
+            }.apply {
+                submitList(post.attachedFiles)
             }
+            binding.recyclerViewAttachedFile.addItemDecoration(
+                object: RecyclerView.ItemDecoration() {
+                    override fun getItemOffsets(
+                        outRect: android.graphics.Rect,
+                        view: View,
+                        parent: RecyclerView,
+                        state: RecyclerView.State,
+                    ) {
+                        super.getItemOffsets(outRect, view, parent, state)
+                        outRect.bottom = 20
+                    }
+                }
+            )
         }
 
         return binding.root
@@ -83,4 +96,5 @@ class ContentFragment: Fragment() {
 
         requireActivity().finish()
     }
+
 }
