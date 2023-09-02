@@ -38,6 +38,22 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
+    <style name="text_small">
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">@color/onBackground</item>
+    </style>
+
+    <style name="text_smaller">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">@color/onBackground</item>
+    </style>
+
+    <style name="text_button_normal">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/secondary</item>
+    </style>
+
     <style name="customTextViewFontStyle" parent="@android:style/Widget.DeviceDefault.TextView">
         <item name="android:fontFamily">@font/spoqa_han_sans_neo</item>
     </style>

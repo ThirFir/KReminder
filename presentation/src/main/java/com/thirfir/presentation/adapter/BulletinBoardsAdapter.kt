@@ -15,13 +15,10 @@ class BulletinBoardsAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(board: BulletinBoardItem) {
             with (binding) {
+                root.setOnClickListener {
+                    onClick(board)
+                }
                 textViewBulletinBoardTitle.text = board.title
-                textViewBulletinBoardTitle.setOnClickListener {
-                    onClick(board)
-                }
-                imageViewNext.setOnClickListener {
-                    onClick(board)
-                }
             }
         }
     }

@@ -11,6 +11,8 @@ data class PostHeader(
     val date: String,
     val isTopFixed: Boolean,
     val category: String,
+    val highlight: Boolean,
+    val viewCount: Int
     // TODO : 데이터 정의
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
@@ -19,7 +21,9 @@ data class PostHeader(
         parcel.readString()!!,
         parcel.readString()!!,
         parcel.readByte() != 0.toByte(),
-        parcel.readString()!!
+        parcel.readString()!!,
+        parcel.readByte() != 0.toByte(),
+        parcel.readInt()
     ) {
     }
 
@@ -30,6 +34,8 @@ data class PostHeader(
         parcel.writeString(date)
         parcel.writeByte(if (isTopFixed) 1 else 0)
         parcel.writeString(category)
+        parcel.writeByte(if (highlight) 1 else 0)
+        parcel.writeInt(viewCount)
     }
 
     override fun describeContents(): Int {

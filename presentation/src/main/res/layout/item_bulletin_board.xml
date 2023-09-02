@@ -1,29 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/background_ripple"
     android:layout_width="match_parent"
     android:layout_height="70dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#FFFFFF">
+    android:clickable="true">
 
     <TextView
         android:id="@+id/text_view_bulletin_board_title"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:gravity="center_vertical"
-        android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/image_view_next"
         android:paddingHorizontal="32dp"
-        tools:text="현장실습공지"/>
+        android:textSize="14sp"
+        app:layout_constraintEnd_toStartOf="@id/image_view_next"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="일반공지" />
 
     <ImageView
         android:id="@+id/image_view_next"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:paddingHorizontal="32dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/text_view_bulletin_board_title"
-        android:paddingHorizontal="32dp"
-        app:srcCompat="@drawable/ic_arrow_next_24"/>
+        app:srcCompat="@drawable/ic_arrow_next_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

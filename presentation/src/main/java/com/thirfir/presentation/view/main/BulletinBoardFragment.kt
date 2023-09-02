@@ -49,13 +49,13 @@ class BulletinBoardFragment: Fragment() {
 
     private fun initRecyclerView() {
 
-        binding.recyclerViewBulletinBoard.also {
-            it.adapter = BulletinBoardsAdapter(BulletinBoardItem.values().toList(), onBulletinBoardClickListener)
+        binding.recyclerViewBulletinBoard.let {
             it.layoutManager = object : LinearLayoutManager(requireContext()) {
                 override fun canScrollVertically(): Boolean {
                     return false
                 }
             }
+            it.adapter = BulletinBoardsAdapter(BulletinBoardItem.values().toList(), onBulletinBoardClickListener)
             it.addItemDecoration(
                 DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL)
             )

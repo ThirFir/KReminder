@@ -15,7 +15,7 @@
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/top_app_bar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="wrap_content"
             app:menu="@menu/activity_post_menu"
             app:navigationIcon="@drawable/ic_arrow_back_24"
             style="@style/Widget.MaterialComponents.Toolbar.Primary" />

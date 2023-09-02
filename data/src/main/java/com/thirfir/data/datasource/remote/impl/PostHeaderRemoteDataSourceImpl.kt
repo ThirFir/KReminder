@@ -40,8 +40,12 @@ class PostHeaderRemoteDataSourceImpl @Inject constructor(
                 val date = select("td.bc-s-cre_dt").text()
                 val author = select("td.bc-s-cre_user_name").text()
                 val category = select("td.bc-s-prefix").text()
-                val views = select("td.bc-s-visit_cnt").text()
+                val viewCount = select("td.bc-s-visit_cnt").text()
                 val isTopFixed = attr("data-name").isNotEmpty()
+
+                var highlight = false
+                if(select("td.bc-s-title div")[0].child(0).tagName() == "img")
+                    highlight = true
 
                 newsList.add(
                     PostHeaderDTO(
@@ -50,8 +54,9 @@ class PostHeaderRemoteDataSourceImpl @Inject constructor(
                         date = date,
                         author = author,
                         category = category,
-                        views = views,
-                        isTopFixed = isTopFixed
+                        viewCount = viewCount,
+                        isTopFixed = isTopFixed,
+                        highlight = highlight
                     )
                 )
             }

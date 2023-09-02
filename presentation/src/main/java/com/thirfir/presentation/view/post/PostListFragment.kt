@@ -5,17 +5,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewTreeObserver.OnScrollChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.thirfir.domain.BULLETIN_QUERY
 import com.thirfir.domain.PID
-import com.thirfir.presentation.adapter.BulletinBoardsAdapter
-import com.thirfir.presentation.adapter.PostAdapter
+import com.thirfir.presentation.adapter.PostHeaderAdapter
 import com.thirfir.presentation.databinding.FragmentPostListBinding
-import com.thirfir.presentation.model.BulletinBoardItem
 import com.thirfir.presentation.viewmodel.PostHeadersViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -27,20 +24,18 @@ import kotlinx.coroutines.launch
 class PostListFragment : Fragment() {
 
     private lateinit var binding: FragmentPostListBinding
-    private lateinit var postAdapter: PostAdapter
+    private lateinit var postHeaderAdapter: PostHeaderAdapter
     private var currentPage = 1
     private var pageNum = 0
-
-    private lateinit var onBulletinBoardClickListener: (BulletinBoardItem) -> Unit
 
     private val ioDispatcher = Dispatchers.IO
     private val ioScope = CoroutineScope(ioDispatcher)
 
     private val bulletin: Int by lazy {
-        requireActivity().intent.getIntExtra("b", 0)
+        arguments?.getInt("b") ?: 0
     }
     private val bulletinTitle: String by lazy {
-        requireActivity().intent.getStringExtra("title") ?: ""
+        arguments?.getString("title") ?: ""
     }
     private val postHeadersViewModel: PostHeadersViewModel by activityViewModels()
 
@@ -61,35 +56,14 @@ class PostListFragment : Fragment() {
         initClickListeners()
         initRecyclerView()
         initPaginationButtons()
-        slideMenu()
 
         return binding.root
     }
 
 
-    private fun slideMenu(){
-        // 초기화
-        binding.recyclerViewMenu.layoutManager = object : LinearLayoutManager(requireContext()) {
-            override fun canScrollVertically(): Boolean {
-                return false
-            }
-        }
-
-        onBulletinBoardClickListener = {
-            it.onClick(requireContext())
-        }
-        binding.recyclerViewMenu.adapter = BulletinBoardsAdapter(BulletinBoardItem.values().toList(), onBulletinBoardClickListener)
-
-        //아이콘 클릭시 메뉴 열기
-        binding.postMenu.setOnClickListener {
-            binding.drawerLayout.openDrawer(binding.recyclerViewMenu)
-        }
-
-    }
-
     private fun initClickListeners() {
-        binding.searchButton.setOnClickListener {
-            val searchText = binding.searchEditText.text.toString()
+        binding.textButtonSearch.setOnClickListener {
+            val searchText = binding.editTextSearch.text.toString()
 
             // TODO : 검색 기능 구현
         }
@@ -97,9 +71,7 @@ class PostListFragment : Fragment() {
 
     private fun initRecyclerView() {
         binding.recyclerViewPost.layoutManager = LinearLayoutManager(requireContext())
-        postAdapter = PostAdapter(
-            postHeadersViewModel.postHeaders.value
-        ) { postListItem ->
+        postHeaderAdapter = PostHeaderAdapter { postListItem ->
             val intent = Intent(requireContext(), PostActivity::class.java).apply {
                 putExtra(PID, postListItem.pid)
                 putExtra(BULLETIN_QUERY, this@PostListFragment.bulletin)
@@ -109,26 +81,11 @@ class PostListFragment : Fragment() {
 
             startActivity(intent)
         }
-        binding.recyclerViewPost.adapter = postAdapter
-
-        binding.recyclerViewPost.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-
-                // 스크롤 상태가 변할 때 호출됨
-                if (!recyclerView.canScrollVertically(1)) {
-                    binding.pageButtonsLayout.visibility = View.VISIBLE
-                } else {
-                    binding.pageButtonsLayout.visibility = View.GONE
-                }
-            }
-        })
+        binding.recyclerViewPost.adapter = postHeaderAdapter
         ioScope.launch {
-            postHeadersViewModel.postHeaders.collect(
-                collector = { postHeaders ->
-                    postAdapter.updateData(postHeaders)
-                }
-            )
+            postHeadersViewModel.postHeaders.collect { postHeaders ->
+                postHeaderAdapter.updateData(postHeaders)
+            }
         }
     }
 
@@ -197,10 +154,11 @@ class PostListFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance() =
+        fun newInstance(b: Int, title: String) =
             PostListFragment().apply {
                 arguments = Bundle().apply {
-                    // Add any arguments if needed
+                    putInt("b", b)
+                    putString("title", title)
                 }
             }
     }

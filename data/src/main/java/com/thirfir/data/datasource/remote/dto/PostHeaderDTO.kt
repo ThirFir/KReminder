@@ -6,6 +6,7 @@ data class PostHeaderDTO(
     val category: String = "",
     val author: String,
     val date: String,
-    val views: String,
+    val viewCount: String,
     val isTopFixed: Boolean,
+    val highlight: Boolean
 )

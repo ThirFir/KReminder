@@ -50,6 +50,8 @@ fun PostHeaderDTO.toPostHeader(): PostHeader =
         date = date,
         isTopFixed = isTopFixed,
         category = category,
+        highlight = highlight,
+        viewCount = viewCount.toInt(),
     )
 
 fun PostDTO.toPost(): Post =
