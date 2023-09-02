@@ -1,12 +1,16 @@
 package com.thirfir.presentation.view.post
 
+import android.app.DownloadManager
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.URLUtil
 import android.widget.TextView
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,6 +28,7 @@ import com.thirfir.presentation.addViewOfTag
 import com.thirfir.presentation.databinding.FragmentContentBinding
 import com.thirfir.presentation.viewmodel.PostViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import java.net.URLDecoder
 
 @AndroidEntryPoint
 class ContentFragment: Fragment() {
@@ -84,6 +89,8 @@ class ContentFragment: Fragment() {
     }
 
     private fun initAttachedFileView(post: Post) {
+        if(post.attachedFiles.isEmpty())
+            binding.attachedFileContainer.visibility = View.GONE
         binding.recyclerViewAttachedFile.layoutManager = object : LinearLayoutManager(requireContext()) {
             override fun canScrollVertically(): Boolean {
                 return false
@@ -96,18 +103,9 @@ class ContentFragment: Fragment() {
         }.apply {
             submitList(post.attachedFiles)
         }
-        binding.recyclerViewAttachedFile.addItemDecoration(
-            object: RecyclerView.ItemDecoration() {
-                override fun getItemOffsets(
-                    outRect: android.graphics.Rect,
-                    view: View,
-                    parent: RecyclerView,
-                    state: RecyclerView.State,
-                ) {
-                    super.getItemOffsets(outRect, view, parent, state)
-                    outRect.bottom = 20
-                }
-            }
-        )
+        binding.buttonDownloadAll.setOnClickListener {
+
+        }
     }
+
 }

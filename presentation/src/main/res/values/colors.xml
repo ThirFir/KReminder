@@ -18,4 +18,6 @@
     <color name="colorOnSurface">#343434</color>
 
     <color name="textColor">#343434</color>
+
+    <color name="rippleColor">#A0A0A0</color>
 </resources>

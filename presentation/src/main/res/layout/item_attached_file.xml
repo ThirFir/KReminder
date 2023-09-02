@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingVertical="8dp"
-    android:paddingHorizontal="16dp">
+    android:paddingHorizontal="8dp">
 
     <ImageView
         android:id="@+id/attached_file_icon"
