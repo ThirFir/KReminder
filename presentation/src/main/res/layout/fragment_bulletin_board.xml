@@ -20,18 +20,9 @@
             tools:listitem="@layout/item_bulletin_board"
             android:overScrollMode="never"
             app:layout_constraintTop_toBottomOf="@id/app_bar_layout"
-            app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
+            app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginHorizontal="22dp"/>
 
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottom_navigation"
-            android:layout_width="match_parent"
-            android:layout_height="72dp"
-            app:labelVisibilityMode="labeled"
-            app:menu="@menu/bottom_navigation_menu"
-            android:background="@drawable/rounded_background"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:itemIconSize="22dp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

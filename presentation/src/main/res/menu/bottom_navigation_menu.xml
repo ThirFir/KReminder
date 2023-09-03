@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/item_1"
+        android:id="@+id/item_bulletin_board_page"
         android:enabled="true"
-        android:icon="@drawable/ic_star_24"
-        android:title="게시판"/>
+        android:icon="@drawable/ic_bulletin_board"
+        android:title="@string/bulletin"/>
     <item
-        android:id="@+id/item_2"
+        android:id="@+id/item_bookmark_page"
         android:enabled="true"
-        android:icon="@drawable/ic_star_24"
-        android:title="즐겨찾기"/>
+        android:icon="@drawable/ic_star_36"
+        android:title="@string/bookmark"/>
     <item
-        android:id="@+id/item_3"
+        android:id="@+id/item_keyword_page"
         android:enabled="true"
-        android:icon="@drawable/ic_star_24"
-        android:title="키워드"/>
+        android:icon="@drawable/ic_notification"
+        android:title="@string/keyword"/>
     <item
-        android:id="@+id/item_4"
+        android:id="@+id/item_setting_page"
         android:enabled="true"
-        android:icon="@drawable/ic_star_24"
-        android:title="설정"/>
+        android:icon="@drawable/ic_settings_36"
+        android:title="@string/setting"/>
 </menu>

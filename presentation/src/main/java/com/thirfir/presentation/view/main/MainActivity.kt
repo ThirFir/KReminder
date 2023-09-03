@@ -7,7 +7,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.thirfir.presentation.R
 import com.thirfir.presentation.databinding.ActivityMainBinding
+import com.thirfir.presentation.view.keyword.KeywordFragment
 import com.thirfir.presentation.view.post.ContentFragment
 import com.thirfir.presentation.viewmodel.PostViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,6 +31,7 @@ class MainActivity : AppCompatActivity() {
         if ( userIdCheck() ) {
             initViews()
             viewModel
+            setOnPageItemClicked()
         }
 
     }
@@ -54,6 +57,34 @@ class MainActivity : AppCompatActivity() {
         }
 
         return ret
+    }
+
+    private fun setOnPageItemClicked() {
+        binding.bottomNavigation.setOnItemSelectedListener {
+            when(it.itemId) {
+                R.id.item_bulletin_board_page -> {
+                    supportFragmentManager.beginTransaction()
+                        .replace(binding.mainFragmentContainer.id, BulletinBoardFragment.newInstance())
+                        .commit()
+                    true
+                }
+                R.id.item_bookmark_page -> {
+                    // TODO : 즐겨찾기 페이지
+                    true
+                }
+                R.id.item_keyword_page -> {
+                    supportFragmentManager.beginTransaction()
+                        .replace(binding.mainFragmentContainer.id, KeywordFragment.newInstance())
+                        .commit()
+                    true
+                }
+                R.id.item_setting_page -> {
+                    true
+                }
+
+                else -> false
+            }
+        }
     }
 
     companion object {
