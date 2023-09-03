@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:hint="@string/search"
         android:layout_marginEnd="16dp"
+        android:layout_marginTop="8dp"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         app:boxStrokeColor="?attr/boxStrokeColor"
         app:hintTextColor="?attr/hintTextColor"
@@ -43,18 +44,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/edit_text_layout_search" />
 
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_Post"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="8dp"
         android:background="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/page_buttons_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_text_layout_search" />
-
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_layout_search"
+        app:layout_constraintVertical_bias="1.0" />
 
     <LinearLayout
         android:id="@+id/page_buttons_layout"

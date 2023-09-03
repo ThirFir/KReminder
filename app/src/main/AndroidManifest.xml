@@ -12,6 +12,8 @@
         android:maxSdkVersion="32" />
 
     <application
+        android:hardwareAccelerated="false"
+        android:largeHeap="true"
         android:requestLegacyExternalStorage="true"
         android:name=".KReminderApplication"
         android:allowBackup="true"

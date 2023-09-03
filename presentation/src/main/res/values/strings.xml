@@ -37,4 +37,5 @@
     <string name="author">작성자</string>
     <string name="no_date">0000-00-00</string>
     <string name="view_count">조회수</string>
+    <string name="external_link">웹페이지</string>
 </resources>

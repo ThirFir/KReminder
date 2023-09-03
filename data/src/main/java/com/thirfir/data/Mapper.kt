@@ -51,7 +51,7 @@ fun PostHeaderDTO.toPostHeader(): PostHeader =
         isTopFixed = isTopFixed,
         category = category,
         highlight = highlight,
-        viewCount = viewCount.toInt(),
+        viewCount = viewCount.replace("[^0-9]".toRegex(), "").toInt()
     )
 
 fun PostDTO.toPost(): Post =

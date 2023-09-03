@@ -1,17 +1,22 @@
 package com.thirfir.presentation.view.post
 
+import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import com.google.android.material.snackbar.Snackbar
+import com.thirfir.domain.BASE_URL
 import com.thirfir.domain.BULLETIN_QUERY
 import com.thirfir.domain.PID
+import com.thirfir.domain.PID_QUERY
 import com.thirfir.domain.model.Bookmark
 import com.thirfir.domain.model.PostHeader
+import com.thirfir.domain.util.addQueryString
 import com.thirfir.presentation.R
 import com.thirfir.presentation.databinding.ActivityPostBinding
+import com.thirfir.presentation.openPostUsingWebView
 import com.thirfir.presentation.viewmodel.BookmarksViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.lang.NullPointerException
@@ -77,6 +82,10 @@ class PostActivity : AppCompatActivity() {
                             changeBookmarkIcon(bookmarked)
                             showBookmarkingMessage(bookmarked)
                         }
+                        true
+                    }
+                    R.id.external_link -> {
+                        openPostUsingWebView(bulletin, pid)
                         true
                     }
 

@@ -1,5 +1,7 @@
 package com.thirfir.presentation.view.post
 
+import android.annotation.SuppressLint
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -34,6 +36,7 @@ class PostFragment : Fragment() {
     }
 
 
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,9 +45,12 @@ class PostFragment : Fragment() {
 
         binding.run {
             textPostTitle.text = postHeader.title
-            binding.textPostAuthor.text = postHeader.author
-            binding.textPostDate.text = postHeader.date // TODO : Date Format
-            binding.textBoardName.text = postHeader.category
+            textPostAuthor.text = postHeader.author
+            textPostDate.text = postHeader.date
+            textBoardName.text = postHeader.category
+            textPostViewCount.text = "조회수 " + postHeader.viewCount.toString()
+            if(bulletin != 14)
+                textBoardName.setBackgroundColor(Color.WHITE)
         }
 
 

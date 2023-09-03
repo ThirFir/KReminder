@@ -7,24 +7,43 @@
     android:orientation="vertical"
     tools:context=".view.post.PostActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/top_app_bar_layout"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/top_app_bar"
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/top_app_bar_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:menu="@menu/activity_post_menu"
-            app:navigationIcon="@drawable/ic_arrow_back_24"
-            style="@style/Widget.MaterialComponents.Toolbar.Primary" />
+            app:liftOnScroll="true"
+            android:layout_height="wrap_content">
 
-    </com.google.android.material.appbar.AppBarLayout>
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/top_app_bar"
+                style="@style/Widget.MaterialComponents.Toolbar.Primary"
+                app:layout_scrollFlags="scroll|enterAlways|snap"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:menu="@menu/activity_post_menu"
+                app:navigationIcon="@drawable/ic_arrow_back_24" />
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/post_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/light_gray" />
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/post_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </androidx.core.widget.NestedScrollView>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
 
 </LinearLayout>
