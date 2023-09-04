@@ -27,6 +27,15 @@ class SettingFragment : Fragment() {
                     .addToBackStack(null)
                     .commit()
             },
+            MenuItem(title = requireContext().getString(R.string.bookmark)) {
+                parentFragmentManager.beginTransaction()
+                .replace(
+                    R.id.settings_fragment_container,
+                    BookmarksFragment.newInstance()
+                )
+                    .addToBackStack(null)
+                    .commit()
+            }
         )
     }
 
